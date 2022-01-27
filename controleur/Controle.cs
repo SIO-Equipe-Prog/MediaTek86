@@ -102,7 +102,21 @@ namespace Mediatek86.controleur
         {
             return Dao.CreerExemplaire(exemplaire);
         }
+        public void CreerDocument(Document document)
+        {
+            Dao.CreerDocument(document);
 
+            if (document is Livre)
+            {
+                Dao.CreerLivreDvd(document);
+                Dao.CreerLivre(document);
+            }
+        }
+        public List<Livre> ActualiseLivresAjout()
+        {
+            return Dao.GetAllLivres();
+
+        }
     }
 
 }

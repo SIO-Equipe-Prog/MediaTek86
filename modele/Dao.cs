@@ -261,6 +261,84 @@ namespace Mediatek86.modele
                 return false;
             }
         }
+         public static void CreerDocument(Document document)
+        {
+            try
+            {
+                string req = "insert into document values (@id,@titre,@image,@idRayon,@idPublic, @idGenre)";
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    {"@id", ((Livre)document).Id },
+                    { "@titre", document.Titre},
+                    { "@image", document.Image},
+                     { "@idRayon", document.IdRayon},
+ { "@idPublic", document.IdPublic},
+ { "@idGenre", document.IdGenre}
 
+
+
+                };
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdate(req, parameters);
+                curs.Close();
+                
+               
+                
+            }catch{
+               
+            }
+        }
+        public static void CreerLivre(Document document)
+        {
+            try
+            {
+                
+                string req = "insert into livre values (@id,@isbn,@auteur,@collection)";
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    {"@id", document.Id },
+                    { "@isbn",((Livre)document).Isbn},
+                    { "@auteur", ((Livre)document).Auteur},
+                     { "@collection",((Livre)document).Collection }
+
+
+
+
+                };
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdate(req, parameters);
+                curs.Close();
+                
+            }
+            catch
+            {
+               
+            }
+        }
+        public static void CreerLivreDvd(Document document)
+        {
+            try
+            {
+
+                string req = "insert into livres_dvd values (@id)";
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    {"@id", document.Id }
+                  
+
+
+
+
+                };
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdate(req, parameters);
+                curs.Close();
+
+            }
+            catch
+            {
+
+            }
+        }
     }
 }
