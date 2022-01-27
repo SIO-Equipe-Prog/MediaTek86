@@ -105,7 +105,6 @@ namespace Mediatek86.controleur
         public void CreerDocument(Document document)
         {
             Dao.CreerDocument(document);
-
             if (document is Livre)
             {
                 Dao.CreerLivreDvd(document);
