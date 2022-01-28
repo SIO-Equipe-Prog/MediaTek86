@@ -820,6 +820,8 @@ namespace Mediatek86.vue
             {
                 pcbDvdImage.Image = null;
             }
+            rdbDvdModifier.Enabled = true;
+            rdbDvdSupprimer.Enabled = true;
         }
 
         /// <summary>
@@ -837,7 +839,8 @@ namespace Mediatek86.vue
             txbDvdRayon.Text = "";
             txbDvdTitre.Text = "";
             pcbDvdImage.Image = null;
-            btnDvdSupprimer.Enabled = false;
+            rdbDvdModifier.Enabled = false;
+            rdbDvdSupprimer.Enabled = false;
         }
 
         /// <summary>
@@ -912,7 +915,10 @@ namespace Mediatek86.vue
                 {
                     Dvd dvd = (Dvd)bdgDvdListe.List[bdgDvdListe.Position];
                     AfficheDvdInfos(dvd);
-                    btnDvdSupprimer.Enabled = true;
+                    if (rdbDvdAjouter.Checked)
+                    {
+                        rdbDvdVisionnage.Checked = true;
+                    }
                 }
                 catch
                 {
@@ -1015,32 +1021,6 @@ namespace Mediatek86.vue
         }
 
         /// <summary>
-        /// Permet l'ajout d'un Dvd
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnDvdAjout_Click(object sender, EventArgs e)
-        {
-            bool actionReussie = GestionDvd("ajouter");
-            btnDvdModifier.Enabled = actionReussie;
-        }
-
-        /// <summary>
-        /// Permet de modifier les informations d'un Dvd sélectionné
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnDvdModifier_Click(object sender, EventArgs e)
-        {
-            if (dgvDvdListe.CurrentCell != null)
-            {
-                string id = dgvDvdListe.SelectedRows[0].Cells[0].Value.ToString();
-                bool actionReussie = GestionDvd("modifier");
-                btnDvdAjout.Enabled = actionReussie;
-            }
-        }
-
-        /// <summary>
         /// Vérifie que les informations détaillées pour le dvd sont
         /// correctes et ajoute ou modifie un dvd
         /// </summary>
@@ -1048,16 +1028,7 @@ namespace Mediatek86.vue
         /// <returns>true si l'action a été effectuée, false si elle a échouée ou est en préparation</returns>
         private bool GestionDvd(string action)
         {
-            if (txbDvdTitre.ReadOnly)
-            {
-                if (action == "ajouter")
-                {
-                    VideDvdInfos();
-                }
-                ActiveDvdInfos(action);
-                return false;
-            }
-            else
+            if (true) // LE CAS OU ON VEUT EFFECTUER AJOUTER OU MODIFIER
             {
                 if (InfosDvdValides())
                 {
@@ -1074,7 +1045,9 @@ namespace Mediatek86.vue
                         int duree = int.Parse(txbDvdDuree.Text);
                         Dvd nouveauDvd = new Dvd(id, titre, image, duree, realisateur, synopsis, genre.Id, genre.Libelle,
                                                  lePublic.Id, lePublic.Libelle, rayon.Id, rayon.Libelle);
-                    } catch {
+                    }
+                    catch
+                    {
                         MessageBox.Show("Certaines des informations indiquées sont invalides.");
                     }
                     switch (action)
@@ -1128,7 +1101,6 @@ namespace Mediatek86.vue
             txbDvdRayon.ReadOnly = true;
             txbDvdTitre.ReadOnly = true;
             txbDvdNumero.ReadOnly = true;
-            btnDvdModifier.Enabled = true;
         }
 
         /// <summary>
@@ -1164,7 +1136,8 @@ namespace Mediatek86.vue
         }
 
         /// <summary>
-        /// Affiche l'image ajoutée lors de l'ajout ou de la modification d'un Dvd
+        /// Affiche l'image ajoutée lors de l'ajout ou de
+        /// la modification d'un Dvd
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1179,16 +1152,109 @@ namespace Mediatek86.vue
             {
                 pcbDvdImage.Image = null;
             }
+            // TODO: tester que l'image s'affiche bien
         }
 
         /// <summary>
-        /// Permet de supprimer un Dvd
+        /// Permet de visionner les Dvds et leur détails en lecture seule
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnDvdSupprimer_Click(object sender, EventArgs e)
+        private void rdbVisionnage_CheckedChanged(object sender, EventArgs e)
         {
+            if (rdbDvdVisionnage.Checked)
+            {
+                GestionRadioDvd("visionnage");
+            }
+        }
 
+        /// <summary>
+        /// Vide les informations détaillées puis permet d'ajouter
+        /// les informations d'un nouveau Dvd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rdbDvdAjouter_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdbDvdAjouter.Checked)
+            {
+                GestionRadioDvd("ajouter");
+            }
+        }
+
+        /// <summary>
+        /// Permet de modifier les informations détaillées d'un Dvd existant
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rdbDvdModifier_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdbDvdModifier.Checked)
+            {
+                if (dgvDvdListe.CurrentCell != null)
+                {
+
+                    GestionRadioDvd("modifier");
+                }
+                else
+                {
+                    rdbDvdVisionnage.Checked = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Permet de supprimer un Dvd existant
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rdbDvdSupprimer_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdbDvdSupprimer.Checked)
+            {
+                if (dgvDvdListe.CurrentCell != null)
+                {
+                    GestionRadioDvd("supprimer");
+                }
+                else
+                {
+                    rdbDvdVisionnage.Checked = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gère l'affichage de la fenêtre selon l'action souhaitée
+        /// </summary>
+        /// <param name="action"></param>
+        private void GestionRadioDvd(string action)
+        {
+            switch (action)
+            {
+                case "visionnage": DesactiveDvdInfos();
+                    if (dgvDvdListe.CurrentCell == null)
+                    {
+                        dgvDvdListe.CurrentCell = dgvDvdListe[0, 0];
+                    }
+                    btnDvdConfirmer.Visible = false;
+                    break;
+                case "ajouter": VideDvdInfos();
+                    ActiveDvdInfos(action);
+                    btnDvdConfirmer.Visible = true;
+                    break;
+                case "modifier": ActiveDvdInfos(action);
+                    btnDvdConfirmer.Visible = true;
+                    break;
+                case "supprimer": DesactiveDvdInfos();
+                    btnDvdConfirmer.Visible = true;
+                    break;
+            }
+        }
+
+        private void btnDvdConfirmer_Click(object sender, EventArgs e)
+        {
+            // TODO: gérer l'envoi de la bonne action selon le bouton radio actif
+            //GestionDvd("");
         }
 
         #endregion
@@ -1456,6 +1522,7 @@ namespace Mediatek86.vue
                 pcbReceptionExemplaireRevueImage.Image = null;
             }
         }
+
 
         #endregion
     }
