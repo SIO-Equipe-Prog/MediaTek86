@@ -31,6 +31,8 @@ namespace Mediatek86.vue
         private List<Revue> lesRevues = new List<Revue>();
         private List<Exemplaire> lesExemplaires = new List<Exemplaire>();
 
+        private bool deselectionManuelle = false;
+
         #endregion
 
 
@@ -176,14 +178,14 @@ namespace Mediatek86.vue
             txbRevuesGenre.Text = revue.Genre;
             txbRevuesPublic.Text = revue.Public;
             txbRevuesRayon.Text = revue.Rayon;
-            txbRevuesTitre.Text = revue.Titre;     
+            txbRevuesTitre.Text = revue.Titre;
             string image = revue.Image;
             try
             {
                 pcbRevuesImage.Image = Image.FromFile(image);
             }
-            catch 
-            { 
+            catch
+            {
                 pcbRevuesImage.Image = null;
             }
         }
@@ -476,7 +478,7 @@ namespace Mediatek86.vue
             else
             {
                 // si la zone de saisie est vide et aucun élément combo sélectionné, réaffichage de la liste complète
-                if (cbxLivresGenres.SelectedIndex < 0 && cbxLivresPublics.SelectedIndex < 0 && cbxLivresRayons.SelectedIndex < 0 
+                if (cbxLivresGenres.SelectedIndex < 0 && cbxLivresPublics.SelectedIndex < 0 && cbxLivresRayons.SelectedIndex < 0
                     && txbLivresNumRecherche.Text.Equals(""))
                 {
                     RemplirLivresListeComplete();
@@ -498,13 +500,13 @@ namespace Mediatek86.vue
             txbLivresGenre.Text = livre.Genre;
             txbLivresPublic.Text = livre.Public;
             txbLivresRayon.Text = livre.Rayon;
-            txbLivresTitre.Text = livre.Titre;      
+            txbLivresTitre.Text = livre.Titre;
             string image = livre.Image;
             try
             {
                 pcbLivresImage.Image = Image.FromFile(image);
             }
-            catch 
+            catch
             {
                 pcbLivresImage.Image = null;
             }
@@ -865,7 +867,7 @@ namespace Mediatek86.vue
             txbDvdRealisateur.Text = dvd.Realisateur;
             txbDvdSynopsis.Text = dvd.Synopsis;
             txbDvdImage.Text = dvd.Image;
-            txbDvdDuree.Text = dvd.Duree.ToString() ;
+            txbDvdDuree.Text = dvd.Duree.ToString();
             txbDvdNumero.Text = dvd.Id;
             txbDvdGenre.Text = dvd.Genre;
             txbDvdPublic.Text = dvd.Public;
@@ -876,10 +878,12 @@ namespace Mediatek86.vue
             {
                 pcbDvdImage.Image = Image.FromFile(image);
             }
-            catch 
+            catch
             {
                 pcbDvdImage.Image = null;
             }
+            rdbDvdModifier.Enabled = true;
+            rdbDvdSupprimer.Enabled = true;
         }
 
         /// <summary>
@@ -897,6 +901,8 @@ namespace Mediatek86.vue
             txbDvdRayon.Text = "";
             txbDvdTitre.Text = "";
             pcbDvdImage.Image = null;
+            rdbDvdModifier.Enabled = false;
+            rdbDvdSupprimer.Enabled = false;
         }
 
         /// <summary>
@@ -958,18 +964,22 @@ namespace Mediatek86.vue
 
         /// <summary>
         /// Sur la sélection d'une ligne ou cellule dans le grid
-        /// affichage des informations du dvd
+        /// affichage des informations du Dvd
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void dgvDvdListe_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvDvdListe.CurrentCell != null)
+            if (dgvDvdListe.CurrentCell != null && !deselectionManuelle)
             {
                 try
                 {
                     Dvd dvd = (Dvd)bdgDvdListe.List[bdgDvdListe.Position];
                     AfficheDvdInfos(dvd);
+                    if (rdbDvdAjouter.Checked)
+                    {
+                        rdbDvdVisionnage.Checked = true;
+                    }
                 }
                 catch
                 {
@@ -979,6 +989,10 @@ namespace Mediatek86.vue
             else
             {
                 VideDvdInfos();
+                if (deselectionManuelle)
+                {
+                    deselectionManuelle = false;
+                }
             }
         }
 
@@ -1071,6 +1085,255 @@ namespace Mediatek86.vue
             RemplirDvdListe(sortedList);
         }
 
+        /// <summary>
+        /// Vérifie que les informations détaillées pour le dvd sont
+        /// correctes et ajoute ou modifie un dvd
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns>true si l'action a été effectuée, false si elle a échouée ou est en préparation</returns>
+        private bool GestionDvd(string action)
+        {
+            if (true) // LE CAS OU ON VEUT EFFECTUER AJOUTER OU MODIFIER
+            {
+                if (InfosDvdValides())
+                {
+                    try
+                    {
+                        string id = txbDvdNumero.Text;
+                        string titre = txbDvdTitre.Text;
+                        string image = txbDvdImage.Text;
+                        string realisateur = txbDvdRealisateur.Text;
+                        string synopsis = txbDvdSynopsis.Text;
+                        Genre genre = (Genre)controle.GetAllGenres().Find(x => x.Libelle == txbDvdGenre.Text);
+                        Public lePublic = (Public)controle.GetAllPublics().Find(x => x.Libelle == txbDvdPublic.Text);
+                        Rayon rayon = (Rayon)controle.GetAllRayons().Find(x => x.Libelle == txbDvdRayon.Text);
+                        int duree = int.Parse(txbDvdDuree.Text);
+                        Dvd nouveauDvd = new Dvd(id, titre, image, duree, realisateur, synopsis, genre.Id, genre.Libelle,
+                                                 lePublic.Id, lePublic.Libelle, rayon.Id, rayon.Libelle);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Certaines des informations indiquées sont invalides.");
+                    }
+                    switch (action)
+                    {
+                        case "ajouter": // AJOUT DVD ICI
+                            break;
+                        case "modifier": // MODIF DVD ICI
+                            break;
+                    }
+                    DesactiveDvdInfos();
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("Un titre, un genre, un public et un rayon corrects doivent être indiqués");
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Active les zones de saisie des informations détaillées
+        /// </summary>
+        private void ActiveDvdInfos(string action)
+        {
+            txbDvdRealisateur.ReadOnly = false;
+            txbDvdSynopsis.ReadOnly = false;
+            txbDvdImage.ReadOnly = false;
+            txbDvdDuree.ReadOnly = false;
+            txbDvdGenre.ReadOnly = false;
+            txbDvdPublic.ReadOnly = false;
+            txbDvdRayon.ReadOnly = false;
+            txbDvdTitre.ReadOnly = false;
+            if (action == "ajouter")
+            {
+                txbDvdNumero.ReadOnly = false;
+            }
+        }
+
+        /// <summary>
+        /// Désactive les zones de saisie des informations détaillées
+        /// </summary>
+        private void DesactiveDvdInfos()
+        {
+            txbDvdRealisateur.ReadOnly = true;
+            txbDvdSynopsis.ReadOnly = true;
+            txbDvdImage.ReadOnly = true;
+            txbDvdDuree.ReadOnly = true;
+            txbDvdGenre.ReadOnly = true;
+            txbDvdPublic.ReadOnly = true;
+            txbDvdRayon.ReadOnly = true;
+            txbDvdTitre.ReadOnly = true;
+            txbDvdNumero.ReadOnly = true;
+        }
+
+        /// <summary>
+        /// Vérifie que les informations indiquées sont valides
+        /// </summary>
+        /// <returns>true si les informations sont valides</returns>
+        private bool InfosDvdValides()
+        {
+            if (!controle.GetAllGenres().Exists(x => x.Libelle == txbDvdGenre.Text))
+            {
+                return false;
+            }
+            if (!controle.GetAllPublics().Exists(x => x.Libelle == txbDvdPublic.Text))
+            {
+                return false;
+            }
+            if (!controle.GetAllRayons().Exists(x => x.Libelle == txbDvdRayon.Text))
+            {
+                return false;
+            }
+
+            if (txbDvdTitre.Text.Equals(""))
+            {
+                return false;
+            }
+
+            if (!int.TryParse(txbDvdDuree.Text, out _))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Affiche l'image ajoutée lors de l'ajout ou de
+        /// la modification d'un Dvd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void txbDvdImage_TextChanged(object sender, EventArgs e)
+        {
+            string image = txbDvdImage.Text;
+            try
+            {
+                pcbDvdImage.Image = Image.FromFile(image);
+            }
+            catch
+            {
+                pcbDvdImage.Image = null;
+            }
+            // TODO: tester que l'image s'affiche bien
+        }
+
+        /// <summary>
+        /// Permet de visionner les Dvds et leur détails en lecture seule
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rdbVisionnage_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdbDvdVisionnage.Checked)
+            {
+                GestionRadioDvd("visionnage");
+            }
+        }
+
+        /// <summary>
+        /// Vide les informations détaillées puis permet d'ajouter
+        /// les informations d'un nouveau Dvd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rdbDvdAjouter_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdbDvdAjouter.Checked)
+            {
+                GestionRadioDvd("ajouter");
+            }
+        }
+
+        /// <summary>
+        /// Permet de modifier les informations détaillées d'un Dvd existant
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rdbDvdModifier_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdbDvdModifier.Checked)
+            {
+                if (dgvDvdListe.CurrentCell != null)
+                {
+
+                    GestionRadioDvd("modifier");
+                }
+                else
+                {
+                    rdbDvdVisionnage.Checked = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Permet de supprimer un Dvd existant
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rdbDvdSupprimer_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdbDvdSupprimer.Checked)
+            {
+                if (dgvDvdListe.CurrentCell != null)
+                {
+                    GestionRadioDvd("supprimer");
+                }
+                else
+                {
+                    rdbDvdVisionnage.Checked = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gère l'affichage de la fenêtre selon l'action souhaitée
+        /// </summary>
+        /// <param name="action">Action à réaliser</param>
+        private void GestionRadioDvd(string action)
+        {
+            switch (action)
+            {
+                case "visionnage":
+                    btnDvdConfirmer.Visible = false;
+                    btnDvdConfirmer.Text = "";
+                    DesactiveDvdInfos();
+                    if (dgvDvdListe.CurrentCell == null)
+                    {
+                        dgvDvdListe.CurrentCell = dgvDvdListe[3, 0];
+                        Dvd dvd = (Dvd)bdgDvdListe.List[bdgDvdListe.Position];
+                        AfficheDvdInfos(dvd);
+                    }
+                    break;
+                case "ajouter":
+                    btnDvdConfirmer.Text = "Ajouter";
+                    deselectionManuelle = true;
+                    dgvDvdListe.CurrentCell = null;
+                    ActiveDvdInfos(action);
+                    btnDvdConfirmer.Visible = true;
+                    dgvDvdListe.ReadOnly = true;
+                    break;
+                case "modifier":
+                    btnDvdConfirmer.Text = "Modifier";
+                    ActiveDvdInfos(action);
+                    btnDvdConfirmer.Visible = true;
+                    break;
+                case "supprimer":
+                    btnDvdConfirmer.Text = "Supprimer";
+                    DesactiveDvdInfos();
+                    btnDvdConfirmer.Visible = true;
+                    break;
+            }
+        }
+
+        private void btnDvdConfirmer_Click(object sender, EventArgs e)
+        {
+            // TODO: gérer l'envoi de la bonne action selon le bouton radio actif
+            //GestionDvd("");
+        }
+
         #endregion
 
 
@@ -1157,13 +1420,13 @@ namespace Mediatek86.vue
             txbReceptionRevueGenre.Text = revue.Genre;
             txbReceptionRevuePublic.Text = revue.Public;
             txbReceptionRevueRayon.Text = revue.Rayon;
-            txbReceptionRevueTitre.Text = revue.Titre;         
+            txbReceptionRevueTitre.Text = revue.Titre;
             string image = revue.Image;
             try
             {
                 pcbReceptionRevueImage.Image = Image.FromFile(image);
             }
-            catch 
+            catch
             {
                 pcbReceptionRevueImage.Image = null;
             }
@@ -1236,12 +1499,12 @@ namespace Mediatek86.vue
             {
                 filePath = openFileDialog.FileName;
             }
-            txbReceptionExemplaireImage.Text = filePath;         
+            txbReceptionExemplaireImage.Text = filePath;
             try
             {
                 pcbReceptionExemplaireImage.Image = Image.FromFile(filePath);
             }
-            catch 
+            catch
             {
                 pcbReceptionExemplaireImage.Image = null;
             }
@@ -1273,7 +1536,8 @@ namespace Mediatek86.vue
                     {
                         MessageBox.Show("numéro de publication déjà existant", "Erreur");
                     }
-                }catch
+                }
+                catch
                 {
                     MessageBox.Show("le numéro de parution doit être numérique", "Information");
                     txbReceptionExemplaireNumero.Text = "";
@@ -1336,8 +1600,8 @@ namespace Mediatek86.vue
             }
         }
 
+
         #endregion
 
-        
     }
 }

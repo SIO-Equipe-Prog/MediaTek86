@@ -173,7 +173,7 @@ namespace Mediatek86.bdd
         /// </summary>
         private void ErreurGraveBddNonAccessible(Exception e)
         {
-            MessageBox.Show("Base de données non accessibles", "Erreur grave");
+            MessageBox.Show("Base de données non accessible", "Erreur grave");
             Console.WriteLine(e.Message);
             Environment.Exit(1);
         }
