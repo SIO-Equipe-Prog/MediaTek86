@@ -24,6 +24,9 @@ namespace Mediatek86.vue
         private readonly BindingSource bdgRevuesListe = new BindingSource();
         private readonly BindingSource bdgExemplairesListe = new BindingSource();
         private List<Livre> lesLivres = new List<Livre>();
+        private List<Categorie> lesGenres = new List<Categorie>();
+        private List<Categorie> lesPublics = new List<Categorie>();
+        private List<Categorie> lesRayons = new List<Categorie>();
         private List<Dvd> lesDvd = new List<Dvd>();
         private List<Revue> lesRevues = new List<Revue>();
         private List<Exemplaire> lesExemplaires = new List<Exemplaire>();
@@ -394,6 +397,9 @@ namespace Mediatek86.vue
         private void TabLivres_Enter(object sender, EventArgs e)
         {
             lesLivres = controle.GetAllLivres();
+            lesGenres = controle.GetAllGenres();
+            lesPublics = controle.GetAllPublics();
+            lesRayons = controle.GetAllRayons();
             RemplirComboCategorie(controle.GetAllGenres(), bdgGenres, cbxLivresGenres);
             RemplirComboCategorie(controle.GetAllPublics(), bdgPublics, cbxLivresPublics);
             RemplirComboCategorie(controle.GetAllRayons(), bdgRayons, cbxLivresRayons);
@@ -695,6 +701,60 @@ namespace Mediatek86.vue
             RemplirLivresListe(sortedList);
         }
 
+        private void btnLivresAjout_Click(object sender, EventArgs e)
+        {
+            List<Livre> sortedList = new List<Livre>();
+            try
+                {
+                    
+                    string titre = txbLivresTitre.Text;
+                    string image = txbLivresImage.Text;
+
+                    string isbn = txbLivresIsbn.Text;
+                    string auteur = txbLivresAuteur.Text;
+                    
+                    string collection = txbLivresCollection.Text;
+                   
+                    string genre = txbLivresGenre.Text;
+                    string idGenre = lesGenres.Find(x => x.Libelle == genre).Id;
+                    string lePublic = txbLivresPublic.Text;
+                    string idPublic = lesPublics.Find(x => x.Libelle == lePublic).Id;
+                    string rayon = txbLivresRayon.Text;
+                    string idRayon = lesRayons.Find(x => x.Libelle == rayon).Id;
+                    sortedList = lesLivres.OrderBy(o => o.Id).ToList();
+                    string newid = sortedList[sortedList.Count - 1].Id;
+                    int identifiant = int.Parse(newid);
+                    identifiant = identifiant + 1;
+                    string id = identifiant.ToString();
+                    id = "000" + id;
+                    Livre unlivre = new Livre(id, titre, image, isbn, auteur, collection, idGenre, genre, idPublic, lePublic, idRayon, rayon);
+                    controle.CreerDocument(unlivre);
+                    lesLivres = actualisteLivres();
+                }
+            
+                catch
+                {
+                    
+                }
+            
+  
+
+        }
+
+        private void btnLivresModifier_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnLivresSupprimer_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private List<Livre> actualisteLivres()
+        {
+            return controle.ActualiseLivresAjout();
+        }
         #endregion
 
 
