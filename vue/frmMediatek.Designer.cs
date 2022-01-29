@@ -648,7 +648,6 @@ namespace Mediatek86.vue
             this.btnDvdConfirmer.Name = "btnDvdConfirmer";
             this.btnDvdConfirmer.Size = new System.Drawing.Size(96, 22);
             this.btnDvdConfirmer.TabIndex = 24;
-            this.btnDvdConfirmer.Text = "Confirmer";
             this.btnDvdConfirmer.UseVisualStyleBackColor = true;
             this.btnDvdConfirmer.Visible = false;
             this.btnDvdConfirmer.Click += new System.EventHandler(this.btnDvdConfirmer_Click);

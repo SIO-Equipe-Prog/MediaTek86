@@ -88,9 +88,9 @@ namespace Mediatek86.controleur
         /// récupère les exemplaires d'une revue
         /// </summary>
         /// <returns>Collection d'objets Exemplaire</returns>
-        public List<Exemplaire> GetExemplairesRevue(string idDocuement)
+        public List<Exemplaire> GetExemplairesRevue(string idDocument)
         {
-            return Dao.GetExemplairesRevue(idDocuement);
+            return Dao.GetExemplairesRevue(idDocument);
         }
 
         /// <summary>
@@ -109,6 +109,8 @@ namespace Mediatek86.controleur
         /// <param name="document"></param>
         public bool CreerDocument(Document document)
         {
+            // TODO: gérer via des transactions : if(doc is X)creer(); if(doc is Y)creer2(); etc...
+            // TODO: aussi ajouter un trigger dans la BDD
             if (Dao.CreerDocument(document))
             {
                 if (document is Revue revue)
@@ -196,6 +198,26 @@ namespace Mediatek86.controleur
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Récupère les commandes d'un document
+        /// </summary>
+        /// <param name="idDocument"></param>
+        /// <returns>Liste d'objets CommandeDocument</returns>
+        public List<CommandeDocument> GetCommandesDocument(string idDocument)
+        {
+            return Dao.GetCommandesDocument(idDocument);
+        }
+
+        /// <summary>
+        /// Récupère les abonnements d'une revue
+        /// </summary>
+        /// <param name="idDocument"></param>
+        /// <returns>Liste d'objets Abonnement</returns>
+        public List<Abonnement> GetAbonnements(string idDocument)
+        {
+            return Dao.GetAbonnements(idDocument);
         }
     }
 }

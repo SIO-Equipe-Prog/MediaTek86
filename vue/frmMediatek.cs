@@ -1035,7 +1035,7 @@ namespace Mediatek86.vue
         /// correctes et ajoute ou modifie un dvd
         /// </summary>
         /// <param name="action"></param>
-        /// <returns>true si l'action a été effectuée, false si elle a échouée ou est en préparation</returns>
+        /// <returns>true si l'action a été effectuée, false si elle a échouée</returns>
         private bool GestionDvd(string action)
         {
             bool succes = false;
@@ -1079,8 +1079,9 @@ namespace Mediatek86.vue
                             succes = false;
                         }
                         break;
-                    case "Supprimer": Dvd leDvd = lesDvd.Find(x => x.Id == txbDvdNumero.Text);
-                        if (leDvd != null)
+                    case "Supprimer": string idDvd = txbDvdNumero.Text;
+                        Dvd leDvd = lesDvd.Find(x => x.Id == idDvd);
+                        if (leDvd != null && controle.GetCommandesDocument(idDvd).Count == 0 && controle.GetExemplairesRevue(idDvd).Count == 0)
                         {
                             DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimmer le dvd '" + leDvd.Titre + "' ?", "Confirmation", MessageBoxButtons.YesNo);
                             if (reponse == DialogResult.Yes)
@@ -1321,11 +1322,9 @@ namespace Mediatek86.vue
         /// <param name="e"></param>
         private void btnDvdConfirmer_Click(object sender, EventArgs e)
         {
-            RadioButton rbActif = grpDvdGestion.Controls.OfType<RadioButton>().FirstOrDefault(x => x.Checked);
-            string action = rbActif.Text;
-            if (GestionDvd(action))
+            if (GestionDvd(btnDvdConfirmer.Text))
             {
-                RemplirDvdListe(lesDvd.OrderBy(o => o.Titre).ToList());
+                RemplirDvdListe(lesDvd.OrderBy(o => o.Titre).ToList());       
             }
         }
 
