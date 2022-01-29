@@ -102,22 +102,101 @@ namespace Mediatek86.controleur
         {
             return Dao.CreerExemplaire(exemplaire);
         }
-        public void CreerDocument(Document document)
-        {
-            Dao.CreerDocument(document);
 
-            if (document is Livre)
+        /// <summary>
+        /// Crée un document (livre, dvd ou revue) dans la bdd
+        /// </summary>
+        /// <param name="document"></param>
+        public bool CreerDocument(Document document)
+        {
+            if (Dao.CreerDocument(document))
             {
-                Dao.CreerLivreDvd(document);
-                Dao.CreerLivre(document);
+                if (document is Revue revue)
+                {
+                    // TODO: créer le méthode d'ajout de revue au Dao et le retour true
+                }
+                else
+                {
+                    Dao.CreerLivreDvd((LivreDvd)document);
+                    if (document is Livre livre && Dao.CreerLivre(livre))
+                    {
+                        lesLivres.Add(livre);
+                        return true;
+                    }
+                    if (document is Dvd dvd && Dao.CreerDvd(dvd))
+                    {
+                        lesDvd.Add(dvd);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Modifie un document (livre, dvd ou revue) dans la bdd
+        /// </summary>
+        /// <param name="document"></param>
+        public bool ModifierDocument(Document document)
+        {
+            if (Dao.ModifierDocument(document))
+            {
+                if (document is Revue revue)
+                {
+                    // TODO: créer la méthode de modification de revue au Dao et le retour true
+                }
+                if (document is Livre livre)
+                {
+                    // TODO: créer la méthode de modification de livre au Dao et le retour true
+                }
+                if (document is Dvd dvd && Dao.ModifierDvd(dvd))
+                {
+                    int index = lesDvd.FindIndex(x => x.Id == dvd.Id);
+                    lesDvd[index] = dvd;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Supprime un document (livre, dvd ou revue) de la bdd
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
+        public bool SupprimerDocument(Document document)
+        {
+            bool succesSuppr = false;
+            if (document is Revue revue)
+            {
+                // TODO: créer la méthode de suppression de revue au Dao et assigner la valeur à succes
+            }
+            else
+            {
+                if (document is Livre livre)
+                {
+                    // TODO: créer la méthode de suppression de livre au Dao
+                }
+                if (document is Dvd dvd && Dao.SupprimerDvd(dvd))
+                {
+                    lesDvd.Remove(dvd);
+                    succesSuppr = true;
+                }
+                if (succesSuppr)
+                {
+                    succesSuppr = Dao.SupprimerLivreDvd((LivreDvd)document);
+                }
+            }
+
+            if (succesSuppr)
+            {
+                return Dao.SupprimerDocument(document);
+            }
+            else
+            {
+                return false;
             }
         }
-        public List<Livre> ActualiseLivresAjout()
-        {
-            return Dao.GetAllLivres();
-
-        }
     }
-
 }
 

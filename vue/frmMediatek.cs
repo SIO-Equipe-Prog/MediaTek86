@@ -700,61 +700,6 @@ namespace Mediatek86.vue
             }
             RemplirLivresListe(sortedList);
         }
-
-        private void btnLivresAjout_Click(object sender, EventArgs e)
-        {
-            List<Livre> sortedList = new List<Livre>();
-            try
-                {
-                    
-                    string titre = txbLivresTitre.Text;
-                    string image = txbLivresImage.Text;
-
-                    string isbn = txbLivresIsbn.Text;
-                    string auteur = txbLivresAuteur.Text;
-                    
-                    string collection = txbLivresCollection.Text;
-                   
-                    string genre = txbLivresGenre.Text;
-                    string idGenre = lesGenres.Find(x => x.Libelle == genre).Id;
-                    string lePublic = txbLivresPublic.Text;
-                    string idPublic = lesPublics.Find(x => x.Libelle == lePublic).Id;
-                    string rayon = txbLivresRayon.Text;
-                    string idRayon = lesRayons.Find(x => x.Libelle == rayon).Id;
-                    sortedList = lesLivres.OrderBy(o => o.Id).ToList();
-                    string newid = sortedList[sortedList.Count - 1].Id;
-                    int identifiant = int.Parse(newid);
-                    identifiant = identifiant + 1;
-                    string id = identifiant.ToString();
-                    id = "000" + id;
-                    Livre unlivre = new Livre(id, titre, image, isbn, auteur, collection, idGenre, genre, idPublic, lePublic, idRayon, rayon);
-                    controle.CreerDocument(unlivre);
-                    lesLivres = actualisteLivres();
-                }
-            
-                catch
-                {
-                    
-                }
-            
-  
-
-        }
-
-        private void btnLivresModifier_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnLivresSupprimer_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private List<Livre> actualisteLivres()
-        {
-            return controle.ActualiseLivresAjout();
-        }
         #endregion
 
 
@@ -1093,50 +1038,79 @@ namespace Mediatek86.vue
         /// <returns>true si l'action a été effectuée, false si elle a échouée ou est en préparation</returns>
         private bool GestionDvd(string action)
         {
-            if (true) // LE CAS OU ON VEUT EFFECTUER AJOUTER OU MODIFIER
+            bool succes = false;
+            if (InfosDvdValides())
             {
-                if (InfosDvdValides())
+                switch (action)
                 {
-                    try
-                    {
-                        string id = txbDvdNumero.Text;
-                        string titre = txbDvdTitre.Text;
-                        string image = txbDvdImage.Text;
-                        string realisateur = txbDvdRealisateur.Text;
-                        string synopsis = txbDvdSynopsis.Text;
-                        Genre genre = (Genre)controle.GetAllGenres().Find(x => x.Libelle == txbDvdGenre.Text);
-                        Public lePublic = (Public)controle.GetAllPublics().Find(x => x.Libelle == txbDvdPublic.Text);
-                        Rayon rayon = (Rayon)controle.GetAllRayons().Find(x => x.Libelle == txbDvdRayon.Text);
-                        int duree = int.Parse(txbDvdDuree.Text);
-                        Dvd nouveauDvd = new Dvd(id, titre, image, duree, realisateur, synopsis, genre.Id, genre.Libelle,
-                                                 lePublic.Id, lePublic.Libelle, rayon.Id, rayon.Libelle);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Certaines des informations indiquées sont invalides.");
-                    }
-                    switch (action)
-                    {
-                        case "ajouter": // AJOUT DVD ICI
-                            break;
-                        case "modifier": // MODIF DVD ICI
-                            break;
-                    }
-                    DesactiveDvdInfos();
-                    return true;
+                    case "Ajouter": case "Modifier":
+                        Dvd nouveauDvd = null;
+                        try
+                        {
+                            string id = txbDvdNumero.Text;
+                            string titre = txbDvdTitre.Text;
+                            string image = txbDvdImage.Text;
+                            string realisateur = txbDvdRealisateur.Text;
+                            string synopsis = txbDvdSynopsis.Text;
+                            Genre genre = (Genre)controle.GetAllGenres().Find(x => x.Libelle == txbDvdGenre.Text);
+                            Public lePublic = (Public)controle.GetAllPublics().Find(x => x.Libelle == txbDvdPublic.Text);
+                            Rayon rayon = (Rayon)controle.GetAllRayons().Find(x => x.Libelle == txbDvdRayon.Text);
+                            int duree = int.Parse(txbDvdDuree.Text);
+                            nouveauDvd = new Dvd(id, titre, image, duree, realisateur, synopsis, genre.Id, genre.Libelle,
+                                                     lePublic.Id, lePublic.Libelle, rayon.Id, rayon.Libelle);
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Certaines des informations indiquées sont invalides.");
+                        }
+                        if (nouveauDvd != null)
+                        {
+                            if (action == "Ajouter")
+                            {
+                                succes = controle.CreerDocument(nouveauDvd);
+                            }
+                            else
+                            {
+                                succes = controle.ModifierDocument(nouveauDvd);
+                            }
+                        }
+                        else
+                        {
+                            succes = false;
+                        }
+                        break;
+                    case "Supprimer": Dvd leDvd = lesDvd.Find(x => x.Id == txbDvdNumero.Text);
+                        if (leDvd != null)
+                        {
+                            DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimmer le dvd '" + leDvd.Titre + "' ?", "Confirmation", MessageBoxButtons.YesNo);
+                            if (reponse == DialogResult.Yes)
+                            {
+                                succes = controle.SupprimerDocument(leDvd);
+                                break;
+                            }
+                        }
+                        succes = false;
+                        break;
                 }
-                else
+                if (succes)
                 {
-                    MessageBox.Show("Un titre, un genre, un public et un rayon corrects doivent être indiqués");
+                    rdbDvdVisionnage.Checked = true;
+                    lesDvd = controle.GetAllDvd();
                 }
             }
-            return false;
+            else
+            {
+                MessageBox.Show("Un titre, un genre, un public, un rayon et une durée corrects doivent être indiqués");
+            }
+            
+            return succes;
         }
+        
 
         /// <summary>
         /// Active les zones de saisie des informations détaillées
         /// </summary>
-        private void ActiveDvdInfos(string action)
+        private void ActiveDvdInfos()
         {
             txbDvdRealisateur.ReadOnly = false;
             txbDvdSynopsis.ReadOnly = false;
@@ -1146,10 +1120,6 @@ namespace Mediatek86.vue
             txbDvdPublic.ReadOnly = false;
             txbDvdRayon.ReadOnly = false;
             txbDvdTitre.ReadOnly = false;
-            if (action == "ajouter")
-            {
-                txbDvdNumero.ReadOnly = false;
-            }
         }
 
         /// <summary>
@@ -1165,7 +1135,6 @@ namespace Mediatek86.vue
             txbDvdPublic.ReadOnly = true;
             txbDvdRayon.ReadOnly = true;
             txbDvdTitre.ReadOnly = true;
-            txbDvdNumero.ReadOnly = true;
         }
 
         /// <summary>
@@ -1217,7 +1186,6 @@ namespace Mediatek86.vue
             {
                 pcbDvdImage.Image = null;
             }
-            // TODO: tester que l'image s'affiche bien
         }
 
         /// <summary>
@@ -1311,13 +1279,14 @@ namespace Mediatek86.vue
                     btnDvdConfirmer.Text = "Ajouter";
                     deselectionManuelle = true;
                     dgvDvdListe.CurrentCell = null;
-                    ActiveDvdInfos(action);
+                    ActiveDvdInfos();
+                    txbDvdNumero.Text = AutoIncrementDvdId();
                     btnDvdConfirmer.Visible = true;
                     dgvDvdListe.ReadOnly = true;
                     break;
                 case "modifier":
                     btnDvdConfirmer.Text = "Modifier";
-                    ActiveDvdInfos(action);
+                    ActiveDvdInfos();
                     btnDvdConfirmer.Visible = true;
                     break;
                 case "supprimer":
@@ -1328,10 +1297,36 @@ namespace Mediatek86.vue
             }
         }
 
+        /// <summary>
+        /// Ajoute 1 à l'id du dernier Dvd
+        /// </summary>
+        /// <returns>L'id suivant l'id le plus élevé</returns>
+        private string AutoIncrementDvdId()
+        {
+            List<Dvd> dvdTries = controle.GetAllDvd().OrderBy(o => o.Id).ToList();
+            string dernierId = dvdTries[dvdTries.Count - 1].Id;
+            int idmath = int.Parse(dernierId) + 1;
+            string nouvelId = idmath.ToString();
+            while (nouvelId.Length < 5)
+            {
+                nouvelId = "0" + nouvelId;
+            }
+            return nouvelId;
+        }
+
+        /// <summary>
+        /// Trouve l'action à gérer selon le bouton radio actif et démarre son exécution
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDvdConfirmer_Click(object sender, EventArgs e)
         {
-            // TODO: gérer l'envoi de la bonne action selon le bouton radio actif
-            //GestionDvd("");
+            RadioButton rbActif = grpDvdGestion.Controls.OfType<RadioButton>().FirstOrDefault(x => x.Checked);
+            string action = rbActif.Text;
+            if (GestionDvd(action))
+            {
+                RemplirDvdListe(lesDvd.OrderBy(o => o.Titre).ToList());
+            }
         }
 
         #endregion

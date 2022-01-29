@@ -13,7 +13,7 @@ namespace Mediatek86.modele
         private static readonly string userid = "root";
         private static readonly string password = "";
         private static readonly string database = "mediatek86";
-        private static readonly string connectionString = "server="+server+";user id="+userid+";password="+password+";database="+database+";SslMode=none";
+        private static readonly string connectionString = "server=" + server + ";user id=" + userid + ";password=" + password + ";database=" + database + ";SslMode=none";
 
         /// <summary>
         /// Retourne tous les genres à partir de la BDD
@@ -110,7 +110,7 @@ namespace Mediatek86.modele
                 string genre = (string)curs.Field("genre");
                 string lepublic = (string)curs.Field("public");
                 string rayon = (string)curs.Field("rayon");
-                Livre livre = new Livre(id, titre, image, isbn, auteur, collection, idgenre, genre, 
+                Livre livre = new Livre(id, titre, image, isbn, auteur, collection, idgenre, genre,
                     idpublic, lepublic, idrayon, rayon);
                 lesLivres.Add(livre);
             }
@@ -239,7 +239,7 @@ namespace Mediatek86.modele
         /// ecriture d'un exemplaire en base de données
         /// </summary>
         /// <param name="exemplaire"></param>
-        /// <returns>true si l'insertion a pu se faire</returns>
+        /// <returns>true si l'opération a réussi</returns>
         public static bool CreerExemplaire(Exemplaire exemplaire)
         {
             try
@@ -257,87 +257,260 @@ namespace Mediatek86.modele
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
                 return true;
-            }catch{
+            }
+            catch
+            {
                 return false;
             }
         }
-         public static void CreerDocument(Document document)
+
+        /// <summary>
+        /// Écriture d'un document en base de données
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns>true si l'opération a réussi</returns>
+        public static bool CreerDocument(Document document)
         {
             try
             {
                 string req = "insert into document values (@id,@titre,@image,@idRayon,@idPublic, @idGenre)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-                    {"@id", ((Livre)document).Id },
+                    {"@id", document.Id },
                     { "@titre", document.Titre},
                     { "@image", document.Image},
-                     { "@idRayon", document.IdRayon},
- { "@idPublic", document.IdPublic},
- { "@idGenre", document.IdGenre}
-
-
-
+                    { "@idRayon", document.IdRayon},
+                    { "@idPublic", document.IdPublic},
+                    { "@idGenre", document.IdGenre}
                 };
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
-                
-               
-                
-            }catch{
-               
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
-        public static void CreerLivre(Document document)
+
+        /// <summary>
+        /// Écriture d'un livre en base de données
+        /// </summary>
+        /// <param name="livre"></param>
+        /// <returns>true si l'opération a réussi</returns>
+        public static bool CreerLivre(Livre livre)
         {
             try
             {
-                
                 string req = "insert into livre values (@id,@isbn,@auteur,@collection)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-                    {"@id", document.Id },
-                    { "@isbn",((Livre)document).Isbn},
-                    { "@auteur", ((Livre)document).Auteur},
-                     { "@collection",((Livre)document).Collection }
-
-
-
-
+                    {"@id", livre.Id },
+                    { "@isbn",livre.Isbn},
+                    { "@auteur", livre.Auteur},
+                    { "@collection",livre.Collection }
                 };
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
-                
+                return true;
             }
             catch
             {
-               
+                return false;
             }
         }
-        public static void CreerLivreDvd(Document document)
+
+        /// <summary>
+        /// Écriture d'un livre ou d'un dvd en base de données
+        /// </summary>
+        /// <param name="livreDvd"></param>
+        /// <returns>true si l'opération a réussi</returns>
+        public static bool CreerLivreDvd(LivreDvd livreDvd)
         {
             try
             {
-
                 string req = "insert into livres_dvd values (@id)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-                    {"@id", document.Id }
-                  
-
-
-
-
+                    {"@id", livreDvd.Id }
                 };
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
-
+                return true;
             }
             catch
             {
+                return false;
+            }
+        }
 
+        /// <summary>
+        /// Écriture d'un dvd en base de données
+        /// </summary>
+        /// <param name="dvd"></param>
+        /// <returns>true si l'opération a réussi</returns>
+        public static bool CreerDvd(Dvd dvd)
+        {
+            try
+            {
+                string req = "insert into dvd values (@id,@synopsis,@realisateur,@duree)";
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    { "@id", dvd.Id },
+                    { "@synopsis", dvd.Synopsis},
+                    { "@realisateur", dvd.Realisateur},
+                    { "@duree", dvd.Duree}
+                };
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdate(req, parameters);
+                curs.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Modification d'un document dans la base de données
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns>true si l'opération a réussi</returns>
+        public static bool ModifierDocument(Document document)
+        {
+            try
+            {
+                string req = "update document set titre=@titre, image=@image, idRayon=@idRayon, idPublic=@idPublic, idGenre=@idGenre ";
+                req += "where id=@id";
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                { "@titre", document.Titre },
+                { "@image", document.Image },
+                { "@idRayon", document.IdRayon },
+                { "@idPublic", document.IdPublic },
+                { "@idGenre", document.IdGenre },
+                { "@id", document.Id }
+            };
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdate(req, parameters);
+                curs.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Modification d'un dvd dans la base de données
+        /// </summary>
+        /// <param name="dvd"></param>
+        /// <returns>true si l'opération a réussi</returns>
+        public static bool ModifierDvd(Dvd dvd)
+        {
+            try
+            {
+                string req = "update dvd set synopsis=@synopsis, realisateur=@realisateur, duree=@duree ";
+                req += "where id=@id";
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    { "@synopsis", dvd.Synopsis},
+                    { "@realisateur", dvd.Realisateur},
+                    { "@duree", dvd.Duree},
+                    { "@id", dvd.Id }
+                };
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdate(req, parameters);
+                curs.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Suppression d'un document dans la base de données
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns>true si l'opération a réussi</returns>
+        public static bool SupprimerDocument(Document document)
+        {
+            try
+            {
+                string req = "delete from document ";
+                req += "where id=@id";
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    { "@id", document.Id }
+                };
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdate(req, parameters);
+                curs.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
+        /// <summary>
+        /// Suppression d'un livre ou d'un dvd dans la base de données
+        /// </summary>
+        /// <param name="livreDvd"></param>
+        /// <returns></returns>
+        public static bool SupprimerLivreDvd(LivreDvd livreDvd)
+        {
+            try
+            {
+                string req = "delete from livres_dvd ";
+                req += "where id=@id";
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    { "@id", livreDvd.Id }
+                };
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdate(req, parameters);
+                curs.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Suppression d'un dvd dans la base de données
+        /// </summary>
+        /// <param name="dvd"></param>
+        /// <returns></returns>
+        public static bool SupprimerDvd(Dvd dvd)
+        {
+            try
+            {
+                string req = "delete from dvd ";
+                req += "where id=@id";
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    { "@id", dvd.Id }
+                };
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdate(req, parameters);
+                curs.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }
