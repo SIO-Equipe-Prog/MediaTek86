@@ -31,6 +31,12 @@ namespace Mediatek86.vue
         {
             this.tabOngletsApplication = new System.Windows.Forms.TabControl();
             this.tabLivres = new System.Windows.Forms.TabPage();
+            this.grpLivreGestion = new System.Windows.Forms.GroupBox();
+            this.btnLivreConfirmer = new System.Windows.Forms.Button();
+            this.rdbLivreSupprimer = new System.Windows.Forms.RadioButton();
+            this.rdbLivreModifier = new System.Windows.Forms.RadioButton();
+            this.rdbLivreAjouter = new System.Windows.Forms.RadioButton();
+            this.rdbLivreVisionnage = new System.Windows.Forms.RadioButton();
             this.grpLivresInfos = new System.Windows.Forms.GroupBox();
             this.txbLivresIsbn = new System.Windows.Forms.TextBox();
             this.txbLivresImage = new System.Windows.Forms.TextBox();
@@ -189,6 +195,7 @@ namespace Mediatek86.vue
             this.btnReceptionRechercher = new System.Windows.Forms.Button();
             this.tabOngletsApplication.SuspendLayout();
             this.tabLivres.SuspendLayout();
+            this.grpLivreGestion.SuspendLayout();
             this.grpLivresInfos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbLivresImage)).BeginInit();
             this.grpLivresRecherche.SuspendLayout();
@@ -230,6 +237,7 @@ namespace Mediatek86.vue
             // 
             // tabLivres
             // 
+            this.tabLivres.Controls.Add(this.grpLivreGestion);
             this.tabLivres.Controls.Add(this.grpLivresInfos);
             this.tabLivres.Controls.Add(this.grpLivresRecherche);
             this.tabLivres.Location = new System.Drawing.Point(4, 22);
@@ -239,6 +247,78 @@ namespace Mediatek86.vue
             this.tabLivres.Text = "Livres";
             this.tabLivres.UseVisualStyleBackColor = true;
             this.tabLivres.Enter += new System.EventHandler(this.TabLivres_Enter);
+            // 
+            // grpLivreGestion
+            // 
+            this.grpLivreGestion.Controls.Add(this.btnLivreConfirmer);
+            this.grpLivreGestion.Controls.Add(this.rdbLivreSupprimer);
+            this.grpLivreGestion.Controls.Add(this.rdbLivreModifier);
+            this.grpLivreGestion.Controls.Add(this.rdbLivreAjouter);
+            this.grpLivreGestion.Controls.Add(this.rdbLivreVisionnage);
+            this.grpLivreGestion.Location = new System.Drawing.Point(8, 632);
+            this.grpLivreGestion.Name = "grpLivreGestion";
+            this.grpLivreGestion.Size = new System.Drawing.Size(859, 43);
+            this.grpLivreGestion.TabIndex = 22;
+            this.grpLivreGestion.TabStop = false;
+            this.grpLivreGestion.Text = "Gestion";
+            // 
+            // btnLivreConfirmer
+            // 
+            this.btnLivreConfirmer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLivreConfirmer.Location = new System.Drawing.Point(757, 15);
+            this.btnLivreConfirmer.Name = "btnLivreConfirmer";
+            this.btnLivreConfirmer.Size = new System.Drawing.Size(96, 22);
+            this.btnLivreConfirmer.TabIndex = 24;
+            this.btnLivreConfirmer.Text = "Confirmer";
+            this.btnLivreConfirmer.UseVisualStyleBackColor = true;
+            this.btnLivreConfirmer.Visible = false;
+            this.btnLivreConfirmer.Click += new System.EventHandler(this.btnLivreConfirmer_Click);
+            // 
+            // rdbLivreSupprimer
+            // 
+            this.rdbLivreSupprimer.AutoSize = true;
+            this.rdbLivreSupprimer.Location = new System.Drawing.Point(658, 18);
+            this.rdbLivreSupprimer.Name = "rdbLivreSupprimer";
+            this.rdbLivreSupprimer.Size = new System.Drawing.Size(72, 17);
+            this.rdbLivreSupprimer.TabIndex = 23;
+            this.rdbLivreSupprimer.Text = "Supprimer";
+            this.rdbLivreSupprimer.UseVisualStyleBackColor = true;
+            this.rdbLivreSupprimer.CheckedChanged += new System.EventHandler(this.rdbLivreSupprimer_CheckedChanged);
+            // 
+            // rdbLivreModifier
+            // 
+            this.rdbLivreModifier.AutoSize = true;
+            this.rdbLivreModifier.Location = new System.Drawing.Point(473, 18);
+            this.rdbLivreModifier.Name = "rdbLivreModifier";
+            this.rdbLivreModifier.Size = new System.Drawing.Size(62, 17);
+            this.rdbLivreModifier.TabIndex = 22;
+            this.rdbLivreModifier.Text = "Modifier";
+            this.rdbLivreModifier.UseVisualStyleBackColor = true;
+            this.rdbLivreModifier.CheckedChanged += new System.EventHandler(this.rdbLivreModifier_CheckedChanged);
+            // 
+            // rdbLivreAjouter
+            // 
+            this.rdbLivreAjouter.AutoSize = true;
+            this.rdbLivreAjouter.Location = new System.Drawing.Point(302, 18);
+            this.rdbLivreAjouter.Name = "rdbLivreAjouter";
+            this.rdbLivreAjouter.Size = new System.Drawing.Size(58, 17);
+            this.rdbLivreAjouter.TabIndex = 21;
+            this.rdbLivreAjouter.Text = "Ajouter";
+            this.rdbLivreAjouter.UseVisualStyleBackColor = true;
+            this.rdbLivreAjouter.CheckedChanged += new System.EventHandler(this.rdbLivreAjouter_CheckedChanged);
+            // 
+            // rdbLivreVisionnage
+            // 
+            this.rdbLivreVisionnage.AutoSize = true;
+            this.rdbLivreVisionnage.Checked = true;
+            this.rdbLivreVisionnage.Location = new System.Drawing.Point(102, 18);
+            this.rdbLivreVisionnage.Name = "rdbLivreVisionnage";
+            this.rdbLivreVisionnage.Size = new System.Drawing.Size(77, 17);
+            this.rdbLivreVisionnage.TabIndex = 20;
+            this.rdbLivreVisionnage.TabStop = true;
+            this.rdbLivreVisionnage.Text = "Visionnage";
+            this.rdbLivreVisionnage.UseVisualStyleBackColor = true;
+            this.rdbLivreVisionnage.CheckedChanged += new System.EventHandler(this.rdbLivreVisionnage_CheckedChanged);
             // 
             // grpLivresInfos
             // 
@@ -697,7 +777,7 @@ namespace Mediatek86.vue
             this.rdbDvdVisionnage.TabStop = true;
             this.rdbDvdVisionnage.Text = "Visionnage";
             this.rdbDvdVisionnage.UseVisualStyleBackColor = true;
-            this.rdbDvdVisionnage.CheckedChanged += new System.EventHandler(this.rdbVisionnage_CheckedChanged);
+            this.rdbDvdVisionnage.CheckedChanged += new System.EventHandler(this.rdbDvdVisionnage_CheckedChanged);
             // 
             // grpDvdInfos
             // 
@@ -1897,8 +1977,11 @@ namespace Mediatek86.vue
             this.Text = "Gestion Médiathèque";
             this.tabOngletsApplication.ResumeLayout(false);
             this.tabLivres.ResumeLayout(false);
+            this.grpLivreGestion.ResumeLayout(false);
+            this.grpLivreGestion.PerformLayout();
             this.grpLivresInfos.ResumeLayout(false);
             this.grpLivresInfos.PerformLayout();
+            
             ((System.ComponentModel.ISupportInitialize)(this.pcbLivresImage)).EndInit();
             this.grpLivresRecherche.ResumeLayout(false);
             this.grpLivresRecherche.PerformLayout();
@@ -2083,6 +2166,12 @@ namespace Mediatek86.vue
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.PictureBox pcbReceptionExemplaireRevueImage;
         private System.Windows.Forms.Label label56;
+        private System.Windows.Forms.GroupBox grpLivreGestion;
+        private System.Windows.Forms.RadioButton rdbLivreSupprimer;
+        private System.Windows.Forms.RadioButton rdbLivreModifier;
+        private System.Windows.Forms.RadioButton rdbLivreAjouter;
+        private System.Windows.Forms.RadioButton rdbLivreVisionnage;
+        private System.Windows.Forms.Button btnLivreConfirmer;
         private System.Windows.Forms.GroupBox grpDvdGestion;
         private System.Windows.Forms.GroupBox grpRevueGestion;
         private System.Windows.Forms.Button btnRevueSupprimer;
