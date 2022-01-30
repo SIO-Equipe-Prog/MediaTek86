@@ -21,5 +21,6 @@ namespace Mediatek86.metier
 
         public DateTime DateFinAbonnement { get => dateFinAbonnement; }
         public string IdRevue { get => idRevue; }
+        public DateTime DateFinAbonnement { get => dateFinAbonnement; }
     }
 }
