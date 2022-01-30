@@ -1035,7 +1035,7 @@ namespace Mediatek86.vue
         /// correctes et ajoute ou modifie un dvd
         /// </summary>
         /// <param name="action"></param>
-        /// <returns>true si l'action a été effectuée, false si elle a échouée</returns>
+        /// <returns>true si l'action s'est déroulé correctement</returns>
         private bool GestionDvd(string action)
         {
             bool succes = false;
@@ -1044,53 +1044,10 @@ namespace Mediatek86.vue
                 switch (action)
                 {
                     case "Ajouter": case "Modifier":
-                        Dvd nouveauDvd = null;
-                        try
-                        {
-                            string id = txbDvdNumero.Text;
-                            string titre = txbDvdTitre.Text;
-                            string image = txbDvdImage.Text;
-                            string realisateur = txbDvdRealisateur.Text;
-                            string synopsis = txbDvdSynopsis.Text;
-                            Genre genre = (Genre)controle.GetAllGenres().Find(x => x.Libelle == txbDvdGenre.Text);
-                            Public lePublic = (Public)controle.GetAllPublics().Find(x => x.Libelle == txbDvdPublic.Text);
-                            Rayon rayon = (Rayon)controle.GetAllRayons().Find(x => x.Libelle == txbDvdRayon.Text);
-                            int duree = int.Parse(txbDvdDuree.Text);
-                            nouveauDvd = new Dvd(id, titre, image, duree, realisateur, synopsis, genre.Id, genre.Libelle,
-                                                     lePublic.Id, lePublic.Libelle, rayon.Id, rayon.Libelle);
-                        }
-                        catch
-                        {
-                            MessageBox.Show("Certaines des informations indiquées sont invalides.");
-                        }
-                        if (nouveauDvd != null)
-                        {
-                            if (action == "Ajouter")
-                            {
-                                succes = controle.CreerDocument(nouveauDvd);
-                            }
-                            else
-                            {
-                                succes = controle.ModifierDocument(nouveauDvd);
-                            }
-                        }
-                        else
-                        {
-                            succes = false;
-                        }
+                        succes = AjoutModifDvd(action);
                         break;
-                    case "Supprimer": string idDvd = txbDvdNumero.Text;
-                        Dvd leDvd = lesDvd.Find(x => x.Id == idDvd);
-                        if (leDvd != null && controle.GetCommandesDocument(idDvd).Count == 0 && controle.GetExemplairesRevue(idDvd).Count == 0)
-                        {
-                            DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimmer le dvd '" + leDvd.Titre + "' ?", "Confirmation", MessageBoxButtons.YesNo);
-                            if (reponse == DialogResult.Yes)
-                            {
-                                succes = controle.SupprimerDocument(leDvd);
-                                break;
-                            }
-                        }
-                        succes = false;
+                    case "Supprimer": 
+                        succes = SuppressionDvd();
                         break;
                 }
                 if (succes)
@@ -1105,6 +1062,68 @@ namespace Mediatek86.vue
             }
             
             return succes;
+        }
+
+        /// <summary>
+        /// Ajoute ou modifie un Dvd selon l'action passée en paramètre
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns>true si l'opération a réussie</returns>
+        private bool AjoutModifDvd(string action)
+        {
+            Dvd nouveauDvd = null;
+            try
+            {
+                string id = txbDvdNumero.Text;
+                string titre = txbDvdTitre.Text;
+                string image = txbDvdImage.Text;
+                string realisateur = txbDvdRealisateur.Text;
+                string synopsis = txbDvdSynopsis.Text;
+                Genre genre = (Genre)controle.GetAllGenres().Find(x => x.Libelle == txbDvdGenre.Text);
+                Public lePublic = (Public)controle.GetAllPublics().Find(x => x.Libelle == txbDvdPublic.Text);
+                Rayon rayon = (Rayon)controle.GetAllRayons().Find(x => x.Libelle == txbDvdRayon.Text);
+                int duree = int.Parse(txbDvdDuree.Text);
+                nouveauDvd = new Dvd(id, titre, image, duree, realisateur, synopsis, genre.Id, genre.Libelle,
+                                         lePublic.Id, lePublic.Libelle, rayon.Id, rayon.Libelle);
+            }
+            catch
+            {
+                MessageBox.Show("Certaines des informations indiquées sont invalides.");
+            }
+            if (nouveauDvd != null)
+            {
+                if (action == "Ajouter")
+                {
+                    return controle.CreerDocument(nouveauDvd);
+                }
+                else
+                {
+                    return controle.ModifierDocument(nouveauDvd);
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Supprime un Dvd
+        /// </summary>
+        /// <returns>true la suppression a réussie</returns>
+        private bool SuppressionDvd()
+        {
+            string idDvd = txbDvdNumero.Text;
+            Dvd leDvd = lesDvd.Find(x => x.Id == idDvd);
+            if (leDvd != null && controle.GetCommandesDocument(idDvd).Count == 0 && controle.GetExemplairesRevue(idDvd).Count == 0)
+            {
+                DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimmer le dvd '" + leDvd.Titre + "' ?", "Confirmation", MessageBoxButtons.YesNo);
+                if (reponse == DialogResult.Yes)
+                {
+                    return controle.SupprimerDocument(leDvd);
+                }
+            }
+            return false;
         }
         
 
