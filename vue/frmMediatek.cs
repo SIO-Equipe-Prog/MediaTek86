@@ -701,11 +701,6 @@ namespace Mediatek86.vue
             RemplirLivresListe(sortedList);
         }
 
-
-
-
-
-
         /// <summary>
         /// Vérifie que les informations détaillées pour le livre sont
         /// correctes et ajoute ou modifie ou supprime un livre
@@ -714,72 +709,77 @@ namespace Mediatek86.vue
         /// <returns>true si l'action a été effectuée, false si elle a échouée ou est en préparation</returns>
         private bool GestionLivre(string action)
         {
+            bool succes = false;
 
-            if (true) // LE CAS OU ON VEUT EFFECTUER AJOUTER OU MODIFIER
+            if (InfosLivreValides())
             {
-                if (InfosLivreValides())
+                switch (action)
                 {
-                    try
-                    {
-                        List<Livre> sortedList = new List<Livre>();
-                        string id = txbLivresNumero.Text;
-                        sortedList = lesLivres.OrderBy(o => o.Id).ToList();
-                        string lastid = sortedList[sortedList.Count - 1].Id;
-                        int identifiant = int.Parse(lastid);
-                        identifiant = identifiant + 1;
-                        string newid = identifiant.ToString();
-                        newid = "000" + newid;
-                        string titre = txbLivresTitre.Text;
-                        string image = txbLivresImage.Text;
-                        string auteur = txbLivresAuteur.Text;
-                        string isbn = txbLivresIsbn.Text;
-                        Genre genre = (Genre)controle.GetAllGenres().Find(x => x.Libelle == txbLivresGenre.Text);
-                        Public lePublic = (Public)controle.GetAllPublics().Find(x => x.Libelle == txbLivresPublic.Text);
-                        Rayon rayon = (Rayon)controle.GetAllRayons().Find(x => x.Libelle == txbLivresRayon.Text);
-                        string collection = txbLivresCollection.Text;
-
-
-
-                        switch (action)
+                    case "Ajouter":
+                    case "Modifier":
+                        Livre nouveauLivre = null;
+                        try
                         {
-                            case "Ajouter":
-                                Livre nouveauLivre = new Livre(newid, titre, image, isbn, auteur, collection, genre.Id, genre.Libelle,
-                                                   lePublic.Id, lePublic.Libelle, rayon.Id, rayon.Libelle);
-                                controle.CreerDocument(nouveauLivre);
-                                VideLivresInfos();
-                                break;
-                            case "Modifier":
-                                nouveauLivre = new Livre(id, titre, image, isbn, auteur, collection, genre.Id, genre.Libelle,
-                                                   lePublic.Id, lePublic.Libelle, rayon.Id, rayon.Libelle);
-                                controle.ModifierDocument(nouveauLivre);
-                                break;
-                            case "Supprimer":
-
-                                if (controle.GetExemplairesRevue(id).Count == 0)
-                                {
-                                    controle.SupprimerDocument(id);
-                                }
-                                break;
+                            string id = txbLivresNumero.Text;
+                            string titre = txbLivresTitre.Text;
+                            string image = txbLivresImage.Text;
+                            string auteur = txbLivresAuteur.Text;
+                            string isbn = txbLivresIsbn.Text;
+                            Genre genre = (Genre)controle.GetAllGenres().Find(x => x.Libelle == txbLivresGenre.Text);
+                            Public lePublic = (Public)controle.GetAllPublics().Find(x => x.Libelle == txbLivresPublic.Text);
+                            Rayon rayon = (Rayon)controle.GetAllRayons().Find(x => x.Libelle == txbLivresRayon.Text);
+                            string collection = txbLivresCollection.Text;
+                            nouveauLivre = new Livre(id, titre, image, isbn, auteur, collection, genre.Id, genre.Libelle,
+                                lePublic.Id, lePublic.Libelle, rayon.Id, rayon.Libelle);
+                            lesLivres = actualisteLivres();
                         }
-                        lesLivres = actualisteLivres();
-                        RemplirLivresListe(lesLivres);
+                        catch
+                        {
+                            MessageBox.Show("Certaines des informations indiquées sont invalides.");
+                        }
+                        if (nouveauLivre != null)
+                        {
+                            if (action == "Ajouter")
+                            {
+                                succes = controle.CreerDocument(nouveauLivre);
+                            }
+                            else
+                            {
+                                succes = controle.ModifierDocument(nouveauLivre);
 
-
-                        return true;
-
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Certaines des informations indiquées sont invalides.");
-                    }
-
+                            }
+                        }
+                        else
+                        {
+                            succes = false;
+                        }
+                        break;
+                    case "Supprimer":
+                        Livre leLivre = lesLivres.Find(x => x.Id == txbLivresNumero.Text);
+                        if (leLivre != null && controle.GetExemplairesRevue(txbLivresNumero.Text).Count == 0)
+                        {
+                            DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer le dvd '" + leLivre.Titre + "' ?", "Confirmation", MessageBoxButtons.YesNo);
+                            if (reponse == DialogResult.Yes)
+                            {
+                                succes = controle.SupprimerDocument(leLivre);
+                                break;
+                            }
+                        }
+                        succes = false;
+                        break;
                 }
-                else
+                if (succes)
                 {
-                    MessageBox.Show("Un titre, un genre, un public et un rayon corrects doivent être indiqués");
+                    rdbLivreVisionnage.Checked = true;
+                    lesLivres = actualisteLivres();
+                    RemplirLivresListe(lesLivres);
                 }
             }
-            return false;
+            else
+            {
+                MessageBox.Show("Un titre, un genre, un public et un rayon corrects doivent être indiqués");
+            }
+            return succes;
         }
 
         /// <summary>
@@ -840,10 +840,22 @@ namespace Mediatek86.vue
             {
                 return false;
             }
-
-
             return true;
         }
+
+        private string AutoIncrementLivreId()
+        {
+            List<Livre> livreTries = controle.GetAllLivres().OrderBy(o => o.Id).ToList();
+            string dernierId = livreTries[livreTries.Count - 1].Id;
+            int idmath = int.Parse(dernierId) + 1;
+            string nouvelId = idmath.ToString();
+            while (nouvelId.Length < 5)
+            {
+                nouvelId = "0" + nouvelId;
+            }
+            return nouvelId;
+        }
+
 
         /// <summary>
         /// Affiche l'image ajoutée lors de l'ajout ou de
@@ -952,44 +964,33 @@ namespace Mediatek86.vue
                         Livre livre = (Livre)bdgLivresListe.List[bdgLivresListe.Position];
                         AfficheLivresInfos(livre);
                     }
-
                     break;
                 case "ajouter":
                     btnLivreConfirmer.Text = "Ajouter";
                     deselectionManuelle = true;
                     dgvLivresListe.CurrentCell = null;
                     ActiveLivreInfos(action);
+                    txbLivresNumero.Text = AutoIncrementLivreId();
                     btnLivreConfirmer.Visible = true;
                     dgvLivresListe.ReadOnly = true;
                     VideLivresInfos();
-
                     break;
                 case "modifier":
                     btnLivreConfirmer.Text = "Modifier";
                     ActiveLivreInfos(action);
                     btnLivreConfirmer.Visible = true;
-
                     break;
                 case "supprimer":
                     btnLivreConfirmer.Text = "Supprimer";
                     DesactiveLivreInfos();
                     btnLivreConfirmer.Visible = true;
-
                     break;
-
             }
         }
 
         private void btnLivreConfirmer_Click(object sender, EventArgs e)
         {
-            // TODO: gérer l'envoi de la bonne action selon le bouton radio actif
-            //GestionDvd("");
-
-
             GestionLivre(btnLivreConfirmer.Text);
-
-
-
         }
 
         private List<Livre> actualisteLivres()

@@ -235,6 +235,8 @@ namespace Mediatek86.modele
             return lesExemplaires;
         }
 
+        
+
         /// <summary>
         /// ecriture d'un exemplaire en base de données
         /// </summary>
@@ -268,7 +270,7 @@ namespace Mediatek86.modele
         /// ecriture d'un document en base de données
         /// </summary>
         /// <param name="document"></param>
-        public static void CreerDocument(Document document)
+        public static bool CreerDocument(Document document)
         {
             try
             {
@@ -278,17 +280,18 @@ namespace Mediatek86.modele
                     {"@id", ((Livre)document).Id },
                     { "@titre", document.Titre},
                     { "@image", document.Image},
-                     { "@idRayon", document.IdRayon},
+                    { "@idRayon", document.IdRayon},
                     { "@idPublic", document.IdPublic},
                     { "@idGenre", document.IdGenre}
                 };
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
+                return true;
             }
             catch
             {
-
+                return false;
             }
         }
 
@@ -296,7 +299,7 @@ namespace Mediatek86.modele
         /// ecriture d'un livre en base de données
         /// </summary>
         /// <param name="document"></param>
-        public static void CreerLivre(Document document)
+        public static bool CreerLivre(Document document)
         {
             try
             {
@@ -307,20 +310,16 @@ namespace Mediatek86.modele
                     {"@id", document.Id },
                     { "@isbn",((Livre)document).Isbn},
                     { "@auteur", ((Livre)document).Auteur},
-                     { "@collection",((Livre)document).Collection }
-
-
-
-
+                    { "@collection",((Livre)document).Collection }
                 };
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
-
+                return true;
             }
             catch
             {
-
+                return false;
             }
         }
 
@@ -328,7 +327,7 @@ namespace Mediatek86.modele
         /// ecriture d'un livre ou dvd en base de données
         /// </summary>
         /// <param name="document"></param>
-        public static void CreerLivreDvd(Document document)
+        public static bool CreerLivreDvd(Document document)
         {
             try
             {
@@ -337,53 +336,42 @@ namespace Mediatek86.modele
                 Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
                     {"@id", document.Id }
-
-
-
-
-
                 };
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
-
+                return true;
             }
             catch
             {
-
+                return false;
             }
         }
-        public static void ModifierDocument(Document document)
+        public static bool ModifierDocument(Document document)
         {
             try
             {
                 string req = "update document set titre = @titre, image = @image, idRayon = @idRayon, idPublic = @idPublic, idGenre = @idGenre where id=@id";
                 Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-
                     { "@titre", document.Titre},
                     { "@image", document.Image},
-                     { "@idRayon", document.IdRayon},
- { "@idPublic", document.IdPublic},
- { "@idGenre", document.IdGenre},
-    {"@id", ((Livre)document).Id }
-
-
-
+                    { "@idRayon", document.IdRayon},
+                    { "@idPublic", document.IdPublic},
+                    { "@idGenre", document.IdGenre},
+                    {"@id", ((Livre)document).Id }
                 };
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
-
-
-
+                return true;
             }
             catch
             {
-
+                return false;
             }
         }
-        public static void ModifierLivre(Document document)
+        public static bool ModifierLivre(Document document)
         {
             try
             {
@@ -391,101 +379,76 @@ namespace Mediatek86.modele
                 string req = "update livre set ISBN = @isbn, auteur = @auteur, collection = @collection where id=@id";
                 Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-
                     { "@isbn",((Livre)document).Isbn},
                     { "@auteur", ((Livre)document).Auteur},
-                     { "@collection",((Livre)document).Collection },
-                      {"@id", document.Id }
-
-
-
-
+                    { "@collection",((Livre)document).Collection },
+                    {"@id", document.Id }
                 };
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
-
+                return true;
             }
             catch
             {
-
+                return false;
             }
         }
-        public static void SupprimerDocument(string id)
+        public static bool SupprimerDocument(Document document)
         {
             try
             {
                 string req = "delete from document where id=@id";
                 Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-
-{"@id", id }
-
-
-
+                    {"id", document.Id }
                 };
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
-
-
-
+                return true;
             }
             catch
             {
-
+                return false;
             }
         }
-        public static void SupprimerLivreDvd(string id)
+        public static bool SupprimerLivreDvd(Document document)
         {
             try
             {
-
                 string req = "delete from livres_dvd where id=@id";
                 Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-
-
-                      {"@id", id }
-
-
-
-
+                      {"@id", document.Id }
                 };
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
-
+                return true;
             }
             catch
             {
-
+                return false;
             }
         }
-        public static void SupprimerLivre(string id)
+        public static bool SupprimerLivre(Document document)
         {
             try
             {
-
                 string req = "delete from livre where id=@id";
                 Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-
-
-                      {"@id", id }
-
-
-
-
+                      {"@id", document.Id }
                 };
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
-
+                return true;
             }
             catch
             {
-
+                return false;
             }
         }
     }
