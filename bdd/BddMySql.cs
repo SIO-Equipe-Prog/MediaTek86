@@ -11,7 +11,7 @@ namespace Mediatek86.bdd
         /// Unique instance de la classe
         /// </summary>
         private static BddMySql instance = null;
-        
+
         /// <summary>
         /// objet de connexion à la BDD à partir d'une chaîne de connexion
         /// </summary>
@@ -60,7 +60,7 @@ namespace Mediatek86.bdd
         public void ReqSelect(string stringQuery, Dictionary<string, object> parameters)
         {
             MySqlCommand command;
-            
+
             try
             {
                 command = new MySqlCommand(stringQuery, connection);
@@ -148,6 +148,48 @@ namespace Mediatek86.bdd
             }
             catch (MySqlException e)
             {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+            catch (InvalidOperationException e)
+            {
+                ErreurGraveBddNonAccessible(e);
+            }
+        }
+
+        /// <summary>
+        /// Exécution de multiples requêtes autres que "select" au sein d'une même transaction
+        /// </summary>
+        /// <param name="stringQueries"></param>
+        /// <param name="allParameters"></param>
+        public void ReqUpdateTransaction(List<string> stringQueries, List<Dictionary<string, object>> allParameters)
+        {
+            MySqlTransaction transaction = null;
+            try
+            {
+                transaction = connection.BeginTransaction();
+
+                for (int k = 0; k < stringQueries.Count; k++)
+                {
+                    using (MySqlCommand command = new MySqlCommand(stringQueries[k], connection, transaction))
+                    {
+                        if (!(allParameters[k] is null))
+                        {
+                            foreach (KeyValuePair<string, object> parameter in allParameters[k])
+                            {
+                                command.Parameters.Add(new MySqlParameter(parameter.Key, parameter.Value));
+                            }
+                        }
+                        command.Prepare();
+                        command.ExecuteNonQuery();
+                    }
+                }
+                transaction.Commit();
+                transaction.Dispose();
+            }
+            catch (MySqlException e)
+            {
+                transaction.Rollback();
                 Console.WriteLine(e.Message);
                 throw;
             }
