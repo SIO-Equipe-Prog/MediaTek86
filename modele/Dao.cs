@@ -437,7 +437,7 @@ namespace Mediatek86.modele
                 List<string> allReq = new List<string>
                 {
                     "insert into document values (@id,@titre,@image,@idRayon,@idPublic, @idGenre);",
-                    "insert into livre values (@id,@empruntable,@periodicite,@delaiMiseADispo);"
+                    "insert into revue values (@id,@empruntable,@periodicite,@delaiMiseADispo);"
                 };
                 List<Dictionary<string, object>> allParameters = new List<Dictionary<string, object>>();
                 allParameters.Add(new Dictionary<string, object>
