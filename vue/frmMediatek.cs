@@ -24,9 +24,14 @@ namespace Mediatek86.vue
         private readonly BindingSource bdgRevuesListe = new BindingSource();
         private readonly BindingSource bdgExemplairesListe = new BindingSource();
         private List<Livre> lesLivres = new List<Livre>();
+        private List<Categorie> lesGenres = new List<Categorie>();
+        private List<Categorie> lesPublics = new List<Categorie>();
+        private List<Categorie> lesRayons = new List<Categorie>();
         private List<Dvd> lesDvd = new List<Dvd>();
         private List<Revue> lesRevues = new List<Revue>();
         private List<Exemplaire> lesExemplaires = new List<Exemplaire>();
+
+        private bool deselectionManuelle = false;
 
         #endregion
 
@@ -173,14 +178,14 @@ namespace Mediatek86.vue
             txbRevuesGenre.Text = revue.Genre;
             txbRevuesPublic.Text = revue.Public;
             txbRevuesRayon.Text = revue.Rayon;
-            txbRevuesTitre.Text = revue.Titre;     
+            txbRevuesTitre.Text = revue.Titre;
             string image = revue.Image;
             try
             {
                 pcbRevuesImage.Image = Image.FromFile(image);
             }
-            catch 
-            { 
+            catch
+            {
                 pcbRevuesImage.Image = null;
             }
             rdbRevueModifier.Enabled = true;
@@ -726,6 +731,9 @@ namespace Mediatek86.vue
         private void TabLivres_Enter(object sender, EventArgs e)
         {
             lesLivres = controle.GetAllLivres();
+            lesGenres = controle.GetAllGenres();
+            lesPublics = controle.GetAllPublics();
+            lesRayons = controle.GetAllRayons();
             RemplirComboCategorie(controle.GetAllGenres(), bdgGenres, cbxLivresGenres);
             RemplirComboCategorie(controle.GetAllPublics(), bdgPublics, cbxLivresPublics);
             RemplirComboCategorie(controle.GetAllRayons(), bdgRayons, cbxLivresRayons);
@@ -804,7 +812,7 @@ namespace Mediatek86.vue
             else
             {
                 // si la zone de saisie est vide et aucun élément combo sélectionné, réaffichage de la liste complète
-                if (cbxLivresGenres.SelectedIndex < 0 && cbxLivresPublics.SelectedIndex < 0 && cbxLivresRayons.SelectedIndex < 0 
+                if (cbxLivresGenres.SelectedIndex < 0 && cbxLivresPublics.SelectedIndex < 0 && cbxLivresRayons.SelectedIndex < 0
                     && txbLivresNumRecherche.Text.Equals(""))
                 {
                     RemplirLivresListeComplete();
@@ -826,13 +834,13 @@ namespace Mediatek86.vue
             txbLivresGenre.Text = livre.Genre;
             txbLivresPublic.Text = livre.Public;
             txbLivresRayon.Text = livre.Rayon;
-            txbLivresTitre.Text = livre.Titre;      
+            txbLivresTitre.Text = livre.Titre;
             string image = livre.Image;
             try
             {
                 pcbLivresImage.Image = Image.FromFile(image);
             }
-            catch 
+            catch
             {
                 pcbLivresImage.Image = null;
             }
@@ -1465,7 +1473,7 @@ namespace Mediatek86.vue
             txbDvdRealisateur.Text = dvd.Realisateur;
             txbDvdSynopsis.Text = dvd.Synopsis;
             txbDvdImage.Text = dvd.Image;
-            txbDvdDuree.Text = dvd.Duree.ToString() ;
+            txbDvdDuree.Text = dvd.Duree.ToString();
             txbDvdNumero.Text = dvd.Id;
             txbDvdGenre.Text = dvd.Genre;
             txbDvdPublic.Text = dvd.Public;
@@ -1476,10 +1484,12 @@ namespace Mediatek86.vue
             {
                 pcbDvdImage.Image = Image.FromFile(image);
             }
-            catch 
+            catch
             {
                 pcbDvdImage.Image = null;
             }
+            rdbDvdModifier.Enabled = true;
+            rdbDvdSupprimer.Enabled = true;
         }
 
         /// <summary>
@@ -1497,6 +1507,8 @@ namespace Mediatek86.vue
             txbDvdRayon.Text = "";
             txbDvdTitre.Text = "";
             pcbDvdImage.Image = null;
+            rdbDvdModifier.Enabled = false;
+            rdbDvdSupprimer.Enabled = false;
         }
 
         /// <summary>
@@ -1558,18 +1570,22 @@ namespace Mediatek86.vue
 
         /// <summary>
         /// Sur la sélection d'une ligne ou cellule dans le grid
-        /// affichage des informations du dvd
+        /// affichage des informations du Dvd
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void dgvDvdListe_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvDvdListe.CurrentCell != null)
+            if (dgvDvdListe.CurrentCell != null && !deselectionManuelle)
             {
                 try
                 {
                     Dvd dvd = (Dvd)bdgDvdListe.List[bdgDvdListe.Position];
                     AfficheDvdInfos(dvd);
+                    if (rdbDvdAjouter.Checked)
+                    {
+                        rdbDvdVisionnage.Checked = true;
+                    }
                 }
                 catch
                 {
@@ -1579,6 +1595,10 @@ namespace Mediatek86.vue
             else
             {
                 VideDvdInfos();
+                if (deselectionManuelle)
+                {
+                    deselectionManuelle = false;
+                }
             }
         }
 
@@ -2080,13 +2100,13 @@ namespace Mediatek86.vue
             txbReceptionRevueGenre.Text = revue.Genre;
             txbReceptionRevuePublic.Text = revue.Public;
             txbReceptionRevueRayon.Text = revue.Rayon;
-            txbReceptionRevueTitre.Text = revue.Titre;         
+            txbReceptionRevueTitre.Text = revue.Titre;
             string image = revue.Image;
             try
             {
                 pcbReceptionRevueImage.Image = Image.FromFile(image);
             }
-            catch 
+            catch
             {
                 pcbReceptionRevueImage.Image = null;
             }
@@ -2159,12 +2179,12 @@ namespace Mediatek86.vue
             {
                 filePath = openFileDialog.FileName;
             }
-            txbReceptionExemplaireImage.Text = filePath;         
+            txbReceptionExemplaireImage.Text = filePath;
             try
             {
                 pcbReceptionExemplaireImage.Image = Image.FromFile(filePath);
             }
-            catch 
+            catch
             {
                 pcbReceptionExemplaireImage.Image = null;
             }
@@ -2196,7 +2216,8 @@ namespace Mediatek86.vue
                     {
                         MessageBox.Show("numéro de publication déjà existant", "Erreur");
                     }
-                }catch
+                }
+                catch
                 {
                     MessageBox.Show("le numéro de parution doit être numérique", "Information");
                     txbReceptionExemplaireNumero.Text = "";
@@ -2259,7 +2280,7 @@ namespace Mediatek86.vue
             }
         }
 
-        #endregion
 
+        #endregion
     }
 }
