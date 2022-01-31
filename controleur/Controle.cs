@@ -101,6 +101,24 @@ namespace Mediatek86.controleur
             return Dao.GetCommandesDocument(idDocuement);
         }
         /// <summary>
+        /// récupère les exemplaires d'une revue
+        /// </summary>
+        /// <returns>Collection d'objets Exemplaire</returns>
+        public List<Abonnement> GetAbonnements(string idDocument)
+        {
+            return Dao.GetAbonnements(idDocument);
+        }
+
+        /// <summary>
+        /// récupère les exemplaires d'une revue
+        /// </summary>
+        /// <returns>Collection d'objets Exemplaire</returns>
+        public List<CommandeDocument> GetCommandesDocument(string idDocument)
+        {
+            return Dao.GetCommandesDocument(idDocument);
+        }
+
+        /// <summary>
         /// Crée un exemplaire d'une revue dans la bdd
         /// </summary>
         /// <param name="exemplaire">L'objet Exemplaire concerné</param>
@@ -176,25 +194,9 @@ namespace Mediatek86.controleur
             return false;
         }
 
-        /// <summary>
-        /// Récupère les commandes d'un document
-        /// </summary>
-        /// <param name="idDocument"></param>
-        /// <returns>Liste d'objets CommandeDocument</returns>
-        public List<CommandeDocument> GetCommandesDocument(string idDocument)
-        {
-            return Dao.GetCommandesDocument(idDocument);
-        }
+        
 
-        /// <summary>
-        /// Récupère les abonnements d'une revue
-        /// </summary>
-        /// <param name="idDocument"></param>
-        /// <returns>Liste d'objets Abonnement</returns>
-        public List<Abonnement> GetAbonnements(string idDocument)
-        {
-            return Dao.GetAbonnements(idDocument);
-        }
+        
     }
 }
 

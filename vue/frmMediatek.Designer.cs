@@ -118,9 +118,11 @@ namespace Mediatek86.vue
             this.txbDvdTitreRecherche = new System.Windows.Forms.TextBox();
             this.tabRevues = new System.Windows.Forms.TabPage();
             this.grpRevueGestion = new System.Windows.Forms.GroupBox();
-            this.btnRevueSupprimer = new System.Windows.Forms.Button();
-            this.btnRevueModifier = new System.Windows.Forms.Button();
-            this.btnRevueAjout = new System.Windows.Forms.Button();
+            this.btnRevueConfirmer = new System.Windows.Forms.Button();
+            this.rdbRevueSupprimer = new System.Windows.Forms.RadioButton();
+            this.rdbRevueModifier = new System.Windows.Forms.RadioButton();
+            this.rdbRevueAjouter = new System.Windows.Forms.RadioButton();
+            this.rdbRevueVisionnage = new System.Windows.Forms.RadioButton();
             this.grpRevuesInfos = new System.Windows.Forms.GroupBox();
             this.chkRevuesEmpruntable = new System.Windows.Forms.CheckBox();
             this.txbRevuesImage = new System.Windows.Forms.TextBox();
@@ -1171,46 +1173,75 @@ namespace Mediatek86.vue
             this.tabRevues.Enter += new System.EventHandler(this.tabRevues_Enter);
             // 
             // grpRevueGestion
-            // 
-            this.grpRevueGestion.Controls.Add(this.btnRevueSupprimer);
-            this.grpRevueGestion.Controls.Add(this.btnRevueModifier);
-            this.grpRevueGestion.Controls.Add(this.btnRevueAjout);
+            //
+            this.grpRevueGestion.Controls.Add(this.btnRevueConfirmer);
+            this.grpRevueGestion.Controls.Add(this.rdbRevueSupprimer);
+            this.grpRevueGestion.Controls.Add(this.rdbRevueModifier);
+            this.grpRevueGestion.Controls.Add(this.rdbRevueAjouter);
+            this.grpRevueGestion.Controls.Add(this.rdbRevueVisionnage);
             this.grpRevueGestion.Location = new System.Drawing.Point(8, 632);
             this.grpRevueGestion.Name = "grpRevueGestion";
             this.grpRevueGestion.Size = new System.Drawing.Size(859, 43);
-            this.grpRevueGestion.TabIndex = 23;
+            this.grpRevueGestion.TabIndex = 22;
             this.grpRevueGestion.TabStop = false;
             this.grpRevueGestion.Text = "Gestion";
             // 
-            // btnRevueSupprimer
+            // btnRevueConfirmer
             // 
-            this.btnRevueSupprimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRevueSupprimer.Location = new System.Drawing.Point(656, 15);
-            this.btnRevueSupprimer.Name = "btnRevueSupprimer";
-            this.btnRevueSupprimer.Size = new System.Drawing.Size(96, 22);
-            this.btnRevueSupprimer.TabIndex = 19;
-            this.btnRevueSupprimer.Text = "Supprimer";
-            this.btnRevueSupprimer.UseVisualStyleBackColor = true;
+            this.btnRevueConfirmer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRevueConfirmer.Location = new System.Drawing.Point(757, 15);
+            this.btnRevueConfirmer.Name = "btnRevueConfirmer";
+            this.btnRevueConfirmer.Size = new System.Drawing.Size(96, 22);
+            this.btnRevueConfirmer.TabIndex = 24;
+            this.btnRevueConfirmer.UseVisualStyleBackColor = true;
+            this.btnRevueConfirmer.Visible = false;
+            this.btnRevueConfirmer.Click += new System.EventHandler(this.btnRevueConfirmer_Click);
             // 
-            // btnRevueModifier
+            // rdbRevueSupprimer
             // 
-            this.btnRevueModifier.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRevueModifier.Location = new System.Drawing.Point(375, 15);
-            this.btnRevueModifier.Name = "btnRevueModifier";
-            this.btnRevueModifier.Size = new System.Drawing.Size(96, 22);
-            this.btnRevueModifier.TabIndex = 18;
-            this.btnRevueModifier.Text = "Modifier";
-            this.btnRevueModifier.UseVisualStyleBackColor = true;
+            this.rdbRevueSupprimer.AutoSize = true;
+            this.rdbRevueSupprimer.Location = new System.Drawing.Point(658, 18);
+            this.rdbRevueSupprimer.Name = "rdbRevueSupprimer";
+            this.rdbRevueSupprimer.Size = new System.Drawing.Size(72, 17);
+            this.rdbRevueSupprimer.TabIndex = 23;
+            this.rdbRevueSupprimer.Text = "Supprimer";
+            this.rdbRevueSupprimer.UseVisualStyleBackColor = true;
+            this.rdbRevueSupprimer.CheckedChanged += new System.EventHandler(this.rdbRevueSupprimer_CheckedChanged);
             // 
-            // btnRevueAjout
+            // rdbRevueModifier
             // 
-            this.btnRevueAjout.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRevueAjout.Location = new System.Drawing.Point(96, 15);
-            this.btnRevueAjout.Name = "btnRevueAjout";
-            this.btnRevueAjout.Size = new System.Drawing.Size(96, 22);
-            this.btnRevueAjout.TabIndex = 17;
-            this.btnRevueAjout.Text = "Ajouter";
-            this.btnRevueAjout.UseVisualStyleBackColor = true;
+            this.rdbRevueModifier.AutoSize = true;
+            this.rdbRevueModifier.Location = new System.Drawing.Point(473, 18);
+            this.rdbRevueModifier.Name = "rdbRevueModifier";
+            this.rdbRevueModifier.Size = new System.Drawing.Size(62, 17);
+            this.rdbRevueModifier.TabIndex = 22;
+            this.rdbRevueModifier.Text = "Modifier";
+            this.rdbRevueModifier.UseVisualStyleBackColor = true;
+            this.rdbRevueModifier.CheckedChanged += new System.EventHandler(this.rdbRevueModifier_CheckedChanged);
+            // 
+            // rdbRevueAjouter
+            // 
+            this.rdbRevueAjouter.AutoSize = true;
+            this.rdbRevueAjouter.Location = new System.Drawing.Point(302, 18);
+            this.rdbRevueAjouter.Name = "rdbRevueAjout";
+            this.rdbRevueAjouter.Size = new System.Drawing.Size(58, 17);
+            this.rdbRevueAjouter.TabIndex = 21;
+            this.rdbRevueAjouter.Text = "Ajouter";
+            this.rdbRevueAjouter.UseVisualStyleBackColor = true;
+            this.rdbRevueAjouter.CheckedChanged += new System.EventHandler(this.rdbRevueAjouter_CheckedChanged);
+            // 
+            // rdbRevueVisionnage
+            // 
+            this.rdbRevueVisionnage.AutoSize = true;
+            this.rdbRevueVisionnage.Checked = true;
+            this.rdbRevueVisionnage.Location = new System.Drawing.Point(102, 18);
+            this.rdbRevueVisionnage.Name = "rdbRevueVisionnage";
+            this.rdbRevueVisionnage.Size = new System.Drawing.Size(77, 17);
+            this.rdbRevueVisionnage.TabIndex = 20;
+            this.rdbRevueVisionnage.TabStop = true;
+            this.rdbRevueVisionnage.Text = "Visionnage";
+            this.rdbRevueVisionnage.UseVisualStyleBackColor = true;
+            this.rdbRevueVisionnage.CheckedChanged += new System.EventHandler(this.rdbRevueVisionnage_CheckedChanged);
             // 
             // grpRevuesInfos
             // 
@@ -1996,6 +2027,7 @@ namespace Mediatek86.vue
             ((System.ComponentModel.ISupportInitialize)(this.dgvDvdListe)).EndInit();
             this.tabRevues.ResumeLayout(false);
             this.grpRevueGestion.ResumeLayout(false);
+            this.grpRevueGestion.PerformLayout();
             this.grpRevuesInfos.ResumeLayout(false);
             this.grpRevuesInfos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbRevuesImage)).EndInit();
@@ -2172,15 +2204,18 @@ namespace Mediatek86.vue
         private System.Windows.Forms.RadioButton rdbLivreVisionnage;
         private System.Windows.Forms.Button btnLivreConfirmer;
         private System.Windows.Forms.GroupBox grpDvdGestion;
-        private System.Windows.Forms.GroupBox grpRevueGestion;
-        private System.Windows.Forms.Button btnRevueSupprimer;
-        private System.Windows.Forms.Button btnRevueModifier;
-        private System.Windows.Forms.Button btnRevueAjout;
+
         private System.Windows.Forms.RadioButton rdbDvdSupprimer;
         private System.Windows.Forms.RadioButton rdbDvdModifier;
         private System.Windows.Forms.RadioButton rdbDvdAjouter;
         private System.Windows.Forms.RadioButton rdbDvdVisionnage;
         private System.Windows.Forms.Button btnDvdConfirmer;
+        private System.Windows.Forms.GroupBox grpRevueGestion;
+        private System.Windows.Forms.RadioButton rdbRevueSupprimer;
+        private System.Windows.Forms.RadioButton rdbRevueModifier;
+        private System.Windows.Forms.RadioButton rdbRevueAjouter;
+        private System.Windows.Forms.RadioButton rdbRevueVisionnage;
+        private System.Windows.Forms.Button btnRevueConfirmer;
     }
 }
 

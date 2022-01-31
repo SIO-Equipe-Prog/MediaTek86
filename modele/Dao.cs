@@ -684,6 +684,8 @@ namespace Mediatek86.modele
             }
         }
 
+        
+
         /// <summary>
         /// Suppression d'une revue dans la base de données
         /// </summary>
@@ -694,8 +696,7 @@ namespace Mediatek86.modele
             try
             {
 
-                string req = "insert into livres_dvd values (@id)";
-                Dictionary<string, object> parameters = new Dictionary<string, object>
+                List<string> allReq = new List<string>
                 {
                     "delete from revue "
                         + "where id=@id",

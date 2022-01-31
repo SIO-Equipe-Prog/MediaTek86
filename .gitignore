@@ -361,7 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/.scannerwork
+/.sonarlint/mediatek86/CSharp/SonarLint.xml
 /.sonarlint
 /.sonarqube/conf
-/refresh-scanner.bat
-/.scannerwork
