@@ -94,6 +94,24 @@ namespace Mediatek86.controleur
         }
 
         /// <summary>
+        /// récupère les exemplaires d'une revue
+        /// </summary>
+        /// <returns>Collection d'objets Exemplaire</returns>
+        public List<Abonnement> GetAbonnements(string idDocument)
+        {
+            return Dao.GetAbonnements(idDocument);
+        }
+
+        /// <summary>
+        /// récupère les exemplaires d'une revue
+        /// </summary>
+        /// <returns>Collection d'objets Exemplaire</returns>
+        public List<CommandeDocument> GetCommandesDocument(string idDocument)
+        {
+            return Dao.GetCommandesDocument(idDocument);
+        }
+
+        /// <summary>
         /// Crée un exemplaire d'une revue dans la bdd
         /// </summary>
         /// <param name="exemplaire">L'objet Exemplaire concerné</param>
@@ -105,5 +123,58 @@ namespace Mediatek86.controleur
 
     }
 
+        /// <summary>
+        /// Crée un document (livre, dvd ou revue) dans la bdd
+        /// </summary>
+        /// <param name="document"></param>
+        public bool ModifierDocument(Document document)
+        {
+            if (document is Revue revue && Dao.ModifierRevue(revue))
+            {
+                int index = lesRevues.FindIndex(x => x.Id == revue.Id);
+                lesRevues[index] = revue;
+                return true;
+            }
+            if (document is Livre livre && Dao.ModifierLivre(livre))
+            {
+                int index = lesRevues.FindIndex(x => x.Id == livre.Id);
+                lesLivres[index] = livre;
+                return true;
+            }
+            if (document is Dvd dvd && Dao.ModifierDvd(dvd))
+            {
+                int index = lesRevues.FindIndex(x => x.Id == dvd.Id);
+                lesDvd[index] = dvd;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Crée un document (livre, dvd ou revue) dans la bdd
+        /// </summary>
+        /// <param name="document"></param>
+        public bool SupprimerDocument(Document document)
+        {
+            if (document is Revue revue && Dao.SupprimerRevue(revue))
+            {
+                lesRevues.Remove(revue);
+                return true;
+            }
+            if (document is Livre livre && Dao.SupprimerLivre(livre))
+            {
+                lesLivres.Remove(livre);
+                return true;
+            }
+            if (document is Dvd dvd && Dao.SupprimerDvd(dvd))
+            {
+                lesDvd.Remove(dvd);
+                return true;
+            }
+            return false;
+        }
+
+        
+    }
 }
 
