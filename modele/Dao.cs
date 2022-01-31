@@ -328,7 +328,7 @@ namespace Mediatek86.modele
                 DateTime dateCommande = (DateTime)curs.Field("dateCommande");
                 double montant = (double)curs.Field("montant");
                 string idRevue = (string)curs.Field("idRevue");
-                Abonnement abonnement = new Abonnement(idCommande, dateFinAbonnement, dateCommande, montant, idRevue);
+                Abonnement abonnement = new Abonnement(idCommande, dateFinAbonnement, idRevue, dateCommande, montant);
                 lesAbonnements.Add(abonnement);
             }
             curs.Close();

@@ -92,14 +92,7 @@ namespace Mediatek86.controleur
         {
             return Dao.GetExemplairesRevue(idDocument);
         }
-        /// <summary>
-        /// récupère les exemplaires d'une revue
-        /// </summary>
-        /// <returns>Collection d'objets Exemplaire</returns>
-        public List<Commande> GetCommandesDocument(string idDocuement)
-        {
-            return Dao.GetCommandesDocument(idDocuement);
-        }
+        
         /// <summary>
         /// récupère les exemplaires d'une revue
         /// </summary>
@@ -164,10 +157,21 @@ namespace Mediatek86.controleur
                 lesRevues[index] = revue;
                 return true;
             }
+            if (document is Livre livre && Dao.ModifierLivre(livre))
+            {
+                int index = lesLivres.FindIndex(x => x.Id == livre.Id);
+                lesLivres[index] = livre;
+                return true;
+            }
+            if (document is Dvd dvd && Dao.ModifierDvd(dvd))
+            {
+                int index = lesDvd.FindIndex(x => x.Id == dvd.Id);
+                lesDvd[index] = dvd;
+                return true;
+            }
+            return false;
         }
-        public List<Livre> ActualiseLivres()
-        {
-            return Dao.GetAllLivres();
+       
 
         /// <summary>
         /// Supprime un document (livre, dvd ou revue) de la bdd
