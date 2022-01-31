@@ -698,7 +698,7 @@ namespace Mediatek86.vue
             this.rdbDvdVisionnage.TabStop = true;
             this.rdbDvdVisionnage.Text = "Visionnage";
             this.rdbDvdVisionnage.UseVisualStyleBackColor = true;
-            this.rdbDvdVisionnage.CheckedChanged += new System.EventHandler(this.rdbVisionnage_CheckedChanged);
+            this.rdbDvdVisionnage.CheckedChanged += new System.EventHandler(this.rdbDvdVisionnage_CheckedChanged);
             // 
             // grpDvdInfos
             // 

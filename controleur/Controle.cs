@@ -197,66 +197,7 @@ namespace Mediatek86.controleur
             return false;
         }
 
-        /// <summary>
-        /// Récupère les commandes d'un document
-        /// </summary>
-        /// <param name="idDocument"></param>
-        /// <returns>Liste d'objets CommandeDocument</returns>
-        public List<CommandeDocument> GetCommandesDocument(string idDocument)
-        {
-            return Dao.GetCommandesDocument(idDocument);
-        }
-
-        /// <summary>
-        /// Crée un document (livre, dvd ou revue) dans la bdd
-        /// </summary>
-        /// <param name="document"></param>
-        public bool ModifierDocument(Document document)
-        {
-            if (document is Revue revue && Dao.ModifierRevue(revue))
-            {
-                int index = lesRevues.FindIndex(x => x.Id == revue.Id);
-                lesRevues[index] = revue;
-                return true;
-            }
-            if (document is Livre livre && Dao.ModifierLivre(livre))
-            {
-                int index = lesRevues.FindIndex(x => x.Id == livre.Id);
-                lesLivres[index] = livre;
-                return true;
-            }
-            if (document is Dvd dvd && Dao.ModifierDvd(dvd))
-            {
-                int index = lesRevues.FindIndex(x => x.Id == dvd.Id);
-                lesDvd[index] = dvd;
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Crée un document (livre, dvd ou revue) dans la bdd
-        /// </summary>
-        /// <param name="document"></param>
-        public bool SupprimerDocument(Document document)
-        {
-            if (document is Revue revue && Dao.SupprimerRevue(revue))
-            {
-                lesRevues.Remove(revue);
-                return true;
-            }
-            if (document is Livre livre && Dao.SupprimerLivre(livre))
-            {
-                lesLivres.Remove(livre);
-                return true;
-            }
-            if (document is Dvd dvd && Dao.SupprimerDvd(dvd))
-            {
-                lesDvd.Remove(dvd);
-                return true;
-            }
-            return false;
-        }
+        
 
         
     }
