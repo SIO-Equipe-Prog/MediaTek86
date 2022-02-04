@@ -79,6 +79,27 @@ namespace Mediatek86.modele
         }
 
         /// <summary>
+        /// Retourne toutes les étapes de suivi à partir de la BDD
+        /// </summary>
+        /// <returns>Collection d'objets Suivi</returns>
+        public static List<Suivi> GetAllSuivis()
+        {
+            List<Suivi> lesSuivis = new List<Suivi>();
+            string req = "Select * from suivi order by id";
+
+            BddMySql curs = BddMySql.GetInstance(connectionString);
+            curs.ReqSelect(req, null);
+
+            while (curs.Read())
+            {
+                Suivi leSuivi = new Suivi((string)curs.Field("id"), (string)curs.Field("libelle"));
+                lesSuivis.Add(leSuivi);
+            }
+            curs.Close();
+            return lesSuivis;
+        }
+
+        /// <summary>
         /// Retourne toutes les livres à partir de la BDD
         /// </summary>
         /// <returns>Liste d'objets Livre</returns>
@@ -272,8 +293,9 @@ namespace Mediatek86.modele
         public static List<CommandeDocument> GetCommandesDocument(string idDocument)
         {
             List<CommandeDocument> lesCommandes = new List<CommandeDocument>();
-            string req = "Select cd.id, cd.nbexemplaire, cd.idlivredvd, c.datecommande, c.montant ";
+            string req = "Select cd.id, cd.nbexemplaire, cd.idlivredvd, cd.idsuivi as suivi, c.datecommande, c.montant ";
             req += "from commandedocument cd join commande c on cd.id=c.id ";
+            req += "join suivi s on cd.idsuivi = s.id ";
             req += "where cd.idlivredvd = @idDocument ";
             req += "order by c.datecommande DESC";
             Dictionary<string, object> parameters = new Dictionary<string, object>
@@ -291,7 +313,9 @@ namespace Mediatek86.modele
                 DateTime dateCommande = (DateTime)curs.Field("dateCommande");
                 double montant = (double)curs.Field("montant");
                 string idLivreDvd = (string)curs.Field("idLivreDvd");
-                CommandeDocument commandeDocument = new CommandeDocument(idCommande, nbExemplaire, dateCommande, montant, idLivreDvd);
+                string idSuivi = (string)curs.Field("idSuivi");
+                string suivi = (string)curs.Field("suivi");
+                CommandeDocument commandeDocument = new CommandeDocument(idCommande, nbExemplaire, dateCommande, montant, idLivreDvd, idSuivi, suivi);
                 lesCommandes.Add(commandeDocument);
             }
             curs.Close();
@@ -709,6 +733,45 @@ namespace Mediatek86.modele
                 allParameters.Add(new Dictionary<string, object>
                 {
                     {"@id", revue.Id },
+                });
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdateTransaction(allReq, allParameters);
+                curs.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Crée une nouvelle commande pour un livre ou un dvd dans la base de données
+        /// </summary>
+        /// <param name="commandeDocument"></param>
+        /// <returns></returns>
+        public static bool CreerCommandeDocument(CommandeDocument commandeDocument)
+        {
+            try
+            {
+                List<string> allReq = new List<string>
+                {
+                    "insert into commande values (@id,@datecommande,@montant);",
+                    "insert into commandedocument values (@id,@nbexemplaire,@idlivredvd,@idsuivi);"
+                };
+                List<Dictionary<string, object>> allParameters = new List<Dictionary<string, object>>();
+                allParameters.Add(new Dictionary<string, object>
+                {
+                    {"@id", commandeDocument.Id },
+                    { "@datecommande", commandeDocument.DateCommande},
+                    { "@montant", commandeDocument.Montant}
+                });
+                allParameters.Add(new Dictionary<string, object>
+                {
+                    {"@id", commandeDocument.Id },
+                    { "@nbexemplaire", commandeDocument.NbExemplaire},
+                    { "@idlivredvd", commandeDocument.IdLivreDvd},
+                    { "@idsuivi", commandeDocument.IdSuivi}
                 });
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdateTransaction(allReq, allParameters);

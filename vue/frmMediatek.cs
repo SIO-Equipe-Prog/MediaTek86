@@ -15,6 +15,7 @@ namespace Mediatek86.vue
 
         private readonly Controle controle;
         const string ETATNEUF = "00001";
+        const string SUIVIENCOURS = "00001";
 
         private readonly BindingSource bdgLivresListe = new BindingSource();
         private readonly BindingSource bdgDvdListe = new BindingSource();
@@ -23,13 +24,16 @@ namespace Mediatek86.vue
         private readonly BindingSource bdgRayons = new BindingSource();
         private readonly BindingSource bdgRevuesListe = new BindingSource();
         private readonly BindingSource bdgExemplairesListe = new BindingSource();
+        private readonly BindingSource bdgCommandesDvdListe = new BindingSource();
         private List<Livre> lesLivres = new List<Livre>();
         private List<Categorie> lesGenres = new List<Categorie>();
         private List<Categorie> lesPublics = new List<Categorie>();
         private List<Categorie> lesRayons = new List<Categorie>();
+        private List<Suivi> lesSuivis = new List<Suivi>();
         private List<Dvd> lesDvd = new List<Dvd>();
         private List<Revue> lesRevues = new List<Revue>();
         private List<Exemplaire> lesExemplaires = new List<Exemplaire>();
+        private List<CommandeDocument> lesCommandesDocument = new List<CommandeDocument>();
 
         private bool deselectionManuelle = false;
 
@@ -60,7 +64,6 @@ namespace Mediatek86.vue
                 cbx.SelectedIndex = -1;
             }
         }
-
         #endregion
 
 
@@ -285,7 +288,7 @@ namespace Mediatek86.vue
                     if (rdbRevueAjouter.Checked)
                     {
                         rdbRevueVisionnage.Checked = true;
-                    }  
+                    }
                 }
                 catch
                 {
@@ -687,8 +690,16 @@ namespace Mediatek86.vue
         /// <returns>L'id suivant l'id le plus élevé</returns>
         private string AutoIncrementRevueId()
         {
-            List<Revue> revueTries = controle.GetAllRevues().OrderBy(o => o.Id).ToList();
-            string dernierId = revueTries[revueTries.Count - 1].Id;
+            List<Revue> revueTries = lesRevues.OrderBy(o => o.Id).ToList();
+            string dernierId;
+            if (revueTries.Count > 0)
+            {
+                dernierId = revueTries[revueTries.Count - 1].Id;
+            }
+            else
+            {
+                dernierId = "10001";
+            }
             int idmath = int.Parse(dernierId) + 1;
             string nouvelId = idmath.ToString();
             while (nouvelId.Length < 4)
@@ -712,7 +723,7 @@ namespace Mediatek86.vue
             }
         }
 
-        
+
         #endregion
 
 
@@ -1097,9 +1108,9 @@ namespace Mediatek86.vue
                 string isbn = txbLivresIsbn.Text;
                 string auteur = txbLivresAuteur.Text;
                 string collection = txbLivresCollection.Text;
-                Genre genre = (Genre)controle.GetAllGenres().Find(x => x.Libelle == txbLivresGenre.Text);
-                Public lePublic = (Public)controle.GetAllPublics().Find(x => x.Libelle == txbLivresPublic.Text);
-                Rayon rayon = (Rayon)controle.GetAllRayons().Find(x => x.Libelle == txbLivresRayon.Text);
+                Genre genre = (Genre)lesGenres.Find(x => x.Libelle == txbLivresGenre.Text);
+                Public lePublic = (Public)lesPublics.Find(x => x.Libelle == txbLivresPublic.Text);
+                Rayon rayon = (Rayon)lesRayons.Find(x => x.Libelle == txbLivresRayon.Text);
                 nouveauLivre = new Livre(id, titre, image, isbn, auteur, collection, genre.Id, genre.Libelle,
                     lePublic.Id, lePublic.Libelle, rayon.Id, rayon.Libelle);
             }
@@ -1180,15 +1191,15 @@ namespace Mediatek86.vue
         /// <returns>true si les informations sont valides</returns>
         private bool InfosLivreValides()
         {
-            if (!controle.GetAllGenres().Exists(x => x.Libelle == txbLivresGenre.Text))
+            if (!lesGenres.Exists(x => x.Libelle == txbLivresGenre.Text))
             {
                 return false;
             }
-            if (!controle.GetAllPublics().Exists(x => x.Libelle == txbLivresPublic.Text))
+            if (!lesPublics.Exists(x => x.Libelle == txbLivresPublic.Text))
             {
                 return false;
             }
-            if (!controle.GetAllRayons().Exists(x => x.Libelle == txbLivresRayon.Text))
+            if (!lesRayons.Exists(x => x.Libelle == txbLivresRayon.Text))
             {
                 return false;
             }
@@ -1198,7 +1209,7 @@ namespace Mediatek86.vue
                 return false;
             }
 
-            
+
             return true;
         }
 
@@ -1336,8 +1347,16 @@ namespace Mediatek86.vue
         /// <returns>L'id suivant l'id le plus élevé</returns>
         private string AutoIncrementLivreId()
         {
-            List<Livre> LivreTries = controle.GetAllLivres().OrderBy(o => o.Id).ToList();
-            string dernierId = LivreTries[LivreTries.Count - 1].Id;
+            List<Livre> LivreTries = lesLivres.OrderBy(o => o.Id).ToList();
+            string dernierId;
+            if (LivreTries.Count > 0)
+            {
+                dernierId = LivreTries[LivreTries.Count - 1].Id;
+            }
+            else
+            {
+                dernierId = "00001";
+            }
             int idmath = int.Parse(dernierId) + 1;
             string nouvelId = idmath.ToString();
             while (nouvelId.Length < 5)
@@ -1360,7 +1379,7 @@ namespace Mediatek86.vue
             }
         }
 
-        
+
         #endregion
 
 
@@ -1744,9 +1763,9 @@ namespace Mediatek86.vue
                 int duree = int.Parse(txbDvdDuree.Text);
                 string realisateur = txbDvdRealisateur.Text;
                 string synopsis = txbDvdSynopsis.Text;
-                Genre genre = (Genre)controle.GetAllGenres().Find(x => x.Libelle == txbDvdGenre.Text);
-                Public lePublic = (Public)controle.GetAllPublics().Find(x => x.Libelle == txbDvdPublic.Text);
-                Rayon rayon = (Rayon)controle.GetAllRayons().Find(x => x.Libelle == txbDvdRayon.Text);
+                Genre genre = (Genre)lesGenres.Find(x => x.Libelle == txbDvdGenre.Text);
+                Public lePublic = (Public)lesPublics.Find(x => x.Libelle == txbDvdPublic.Text);
+                Rayon rayon = (Rayon)lesRayons.Find(x => x.Libelle == txbDvdRayon.Text);
                 nouveauDvd = new Dvd(id, titre, image, duree, realisateur, synopsis, genre.Id, genre.Libelle,
                     lePublic.Id, lePublic.Libelle, rayon.Id, rayon.Libelle);
             }
@@ -1829,15 +1848,15 @@ namespace Mediatek86.vue
         /// <returns>true si les informations sont valides</returns>
         private bool InfosDvdValides()
         {
-            if (!controle.GetAllGenres().Exists(x => x.Libelle == txbDvdGenre.Text))
+            if (!lesGenres.Exists(x => x.Libelle == txbDvdGenre.Text))
             {
                 return false;
             }
-            if (!controle.GetAllPublics().Exists(x => x.Libelle == txbDvdPublic.Text))
+            if (!lesPublics.Exists(x => x.Libelle == txbDvdPublic.Text))
             {
                 return false;
             }
-            if (!controle.GetAllRayons().Exists(x => x.Libelle == txbDvdRayon.Text))
+            if (!lesRayons.Exists(x => x.Libelle == txbDvdRayon.Text))
             {
                 return false;
             }
@@ -1989,8 +2008,16 @@ namespace Mediatek86.vue
         /// <returns>L'id suivant l'id le plus élevé</returns>
         private string AutoIncrementDvdId()
         {
-            List<Dvd> dvdTries = controle.GetAllDvd().OrderBy(o => o.Id).ToList();
-            string dernierId = dvdTries[dvdTries.Count - 1].Id;
+            List<Dvd> dvdTries = lesDvd.OrderBy(o => o.Id).ToList();
+            string dernierId;
+            if (dvdTries.Count > 0)
+            {
+                dernierId = dvdTries[dvdTries.Count - 1].Id;
+            }
+            else
+            {
+                dernierId = "20001";
+            }
             int idmath = int.Parse(dernierId) + 1;
             string nouvelId = idmath.ToString();
             while (nouvelId.Length < 5)
@@ -2009,11 +2036,11 @@ namespace Mediatek86.vue
         {
             if (GestionDvd(btnDvdConfirmer.Text))
             {
-                RemplirDvdListe(lesDvd.OrderBy(o => o.Titre).ToList());       
+                RemplirDvdListe(lesDvd.OrderBy(o => o.Titre).ToList());
             }
         }
 
-        
+
         #endregion
 
 
@@ -2281,6 +2308,188 @@ namespace Mediatek86.vue
         }
 
 
+        #endregion
+
+
+        #region Commandes de Dvd
+        //-----------------------------------------------------------
+        // ONGLET "COMMANDES DE DVD"
+        //-----------------------------------------------------------
+
+        /// <summary>
+        /// Ouverture de l'onglet Commandes de DVD : 
+        /// appel de la méthode pour charger les dvd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tabCommandeDvd_Enter(object sender, EventArgs e)
+        {
+            lesDvd = controle.GetAllDvd();
+            lesSuivis = controle.GetAllSuivis();
+        }
+
+        /// <summary>
+        /// Affiche les informations détaillées et les commandes du Dvd choisi
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCommandeDvdAfficher_Click(object sender, EventArgs e)
+        {
+            if (!txbCommandeDvdSelectionNumero.Text.Equals(""))
+            {
+                Dvd leDvd = lesDvd.Find(dvd => dvd.Id == txbCommandeDvdSelectionNumero.Text);
+                if (leDvd != null)
+                {
+                    AfficheCommandeDvdInfos(leDvd);
+                    lesCommandesDocument = controle.GetCommandesDocument(leDvd.Id);
+                    RemplirCommandeDvdListe(lesCommandesDocument);
+                }
+                else
+                {
+                    VideCommandeDvdInfos();
+                    VideCommandeDvdListe();
+                }
+            }
+            else
+            {
+                VideCommandeDvdInfos();
+                VideCommandeDvdListe();
+            }
+        }
+
+        /// <summary>
+        /// Remplit le datagrid avec la liste reçue en paramètre
+        /// </summary>
+        private void RemplirCommandeDvdListe(List<CommandeDocument> commandes)
+        {
+            bdgCommandesDvdListe.DataSource = commandes;
+            dgvCommandesDvdListe.DataSource = bdgCommandesDvdListe;
+            dgvCommandesDvdListe.Columns["idLivreDvd"].Visible = false;
+            dgvCommandesDvdListe.Columns["idSuivi"].Visible = false;
+            dgvCommandesDvdListe.Columns["id"].Visible = false;
+            dgvCommandesDvdListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvCommandesDvdListe.Columns["dateCommande"].DisplayIndex = 0;
+            dgvCommandesDvdListe.Columns["dateCommande"].HeaderText = "Date commande";
+            dgvCommandesDvdListe.Columns["nbExemplaire"].DisplayIndex = 1;
+            dgvCommandesDvdListe.Columns["nbExemplaire"].HeaderText = "Nb exemplaires";
+            dgvCommandesDvdListe.Columns["montant"].DisplayIndex = 2;
+        }
+
+        /// <summary>
+        /// Vide la liste des commandes
+        /// </summary>
+        private void VideCommandeDvdListe()
+        {
+            bdgCommandesDvdListe.List.Clear();
+            dgvCommandesDvdListe.DataSource = null;
+        }
+
+        /// <summary>
+        /// Affichage des informations du dvd sélectionné et permet les nouveaux ajouts
+        /// </summary>
+        /// <param name="dvd"></param>
+        private void AfficheCommandeDvdInfos(Dvd dvd)
+        {
+            txbCommandeDvdRealisateur.Text = dvd.Realisateur;
+            txbCommandeDvdSynopsis.Text = dvd.Synopsis;
+            txbCommandeDvdImage.Text = dvd.Image;
+            txbCommandeDvdDuree.Text = dvd.Duree.ToString();
+            txbCommandeDvdNumero.Text = dvd.Id;
+            txbCommandeDvdGenre.Text = dvd.Genre;
+            txbCommandeDvdPublic.Text = dvd.Public;
+            txbCommandeDvdRayon.Text = dvd.Rayon;
+            txbCommandeDvdTitre.Text = dvd.Titre;
+            string image = dvd.Image;
+            try
+            {
+                pcbCommandeDvdImage.Image = Image.FromFile(image);
+            }
+            catch
+            {
+                pcbCommandeDvdImage.Image = null;
+            }
+            grpCommandeDvdAjout.Enabled = true;
+        }
+
+        /// <summary>
+        /// Vide les zones d'affichage des informations du dvd et empêche les nouveaux ajouts
+        /// </summary>
+        private void VideCommandeDvdInfos()
+        {
+            txbCommandeDvdRealisateur.Text = "";
+            txbCommandeDvdSynopsis.Text = "";
+            txbCommandeDvdImage.Text = "";
+            txbCommandeDvdDuree.Text = "";
+            txbCommandeDvdNumero.Text = "";
+            txbCommandeDvdGenre.Text = "";
+            txbCommandeDvdPublic.Text = "";
+            txbCommandeDvdRayon.Text = "";
+            txbCommandeDvdTitre.Text = "";
+            pcbCommandeDvdImage.Image = null;
+            grpCommandeDvdAjout.Enabled = false;
+        }
+        private void btnCommandeDvdAjouter_Click(object sender, EventArgs e)
+        {
+            if (AjoutCommandeDvd())
+            {
+                lesCommandesDocument = controle.GetCommandesDocument(txbCommandeDvdSelectionNumero.Text);
+                RemplirCommandeDvdListe(lesCommandesDocument);
+            }
+        }
+
+        private bool AjoutCommandeDvd()
+        {
+            if (nudCommandeDvdAjoutNbExemplaires.Value > 0 && !txbCommandeDvdAjoutMontant.Text.Equals(""))
+            {
+                CommandeDocument nouvelleCommande = null;
+                try
+                {
+                    string id = AutoIncrementCommandeDocumentId((List<CommandeDocument>)bdgCommandesDvdListe.List);
+                    decimal nbExemplaires = nudCommandeDvdAjoutNbExemplaires.Value;
+                    double montant = double.Parse(txbCommandeDvdAjoutMontant.Text);
+                    string idLivreDvd = txbCommandeDvdNumero.Text;
+                    Suivi suivi = lesSuivis.Find(x => x.Id == SUIVIENCOURS);
+                    nouvelleCommande = new CommandeDocument(id, nbExemplaires, DateTime.Now, montant, idLivreDvd, suivi.Id, suivi.Libelle);
+                    return controle.CreerCommande(nouvelleCommande);
+                }
+                catch
+                {
+                    MessageBox.Show("Certaines des informations indiquées sont invalides.");
+                    return false;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Un nombre d'exemplaires et un montant doivent être précisés");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Récupère l'id de la dernière commande et y ajoute 1
+        /// </summary>
+        /// <param name="commandeDocuments"></param>
+        /// <returns></returns>
+        private string AutoIncrementCommandeDocumentId(List<CommandeDocument> commandeDocuments)
+        {
+            List<CommandeDocument> commandesTriees = commandeDocuments.OrderBy(o => o.Id).ToList();
+            string dernierId;
+            if (commandesTriees.Count > 0)
+            {
+                dernierId = commandesTriees[commandesTriees.Count - 1].Id;
+            }
+            else
+            {
+                dernierId = "00001";
+            }
+            int idmath = int.Parse(dernierId) + 1;
+            string nouvelId = idmath.ToString();
+            while (nouvelId.Length < 5)
+            {
+                nouvelId = "0" + nouvelId;
+            }
+            return nouvelId;
+        }
         #endregion
     }
 }

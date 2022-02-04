@@ -14,6 +14,7 @@ namespace Mediatek86.controleur
         private readonly List<Categorie> lesRayons;
         private readonly List<Categorie> lesPublics;
         private readonly List<Categorie> lesGenres;
+        private readonly List<Suivi> lesSuivis;
 
         /// <summary>
         /// Ouverture de la fenêtre
@@ -26,6 +27,7 @@ namespace Mediatek86.controleur
             lesGenres = Dao.GetAllGenres();
             lesRayons = Dao.GetAllRayons();
             lesPublics = Dao.GetAllPublics();
+            lesSuivis = Dao.GetAllSuivis();
             FrmMediatek frmMediatek = new FrmMediatek(this);
             frmMediatek.ShowDialog();
         }
@@ -82,6 +84,11 @@ namespace Mediatek86.controleur
         public List<Categorie> GetAllPublics()
         {
             return lesPublics;
+        }
+
+        public List<Suivi> GetAllSuivis()
+        {
+            return lesSuivis;
         }
 
         /// <summary>
@@ -197,9 +204,18 @@ namespace Mediatek86.controleur
             return false;
         }
 
-        
-
-        
+        public bool CreerCommande(Commande commande)
+        {
+            if (commande is CommandeDocument commandeDocument)
+            {
+                return Dao.CreerCommandeDocument(commandeDocument);
+            }
+            if (commande is Abonnement)
+            {
+                // TODO: permettre l'ajout d'abonnements (revues)
+            }
+            return false;
+        }
     }
 }
 
