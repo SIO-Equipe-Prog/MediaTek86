@@ -2444,7 +2444,7 @@ namespace Mediatek86.vue
                 CommandeDocument nouvelleCommande = null;
                 try
                 {
-                    string id = AutoIncrementCommandeDocumentId((List<CommandeDocument>)bdgCommandesDvdListe.List);
+                    string id = AutoIncrementCommandeId(controle.GetAllCommandes());
                     decimal nbExemplaires = nudCommandeDvdAjoutNbExemplaires.Value;
                     double montant = double.Parse(txbCommandeDvdAjoutMontant.Text);
                     string idLivreDvd = txbCommandeDvdNumero.Text;
@@ -2468,11 +2468,11 @@ namespace Mediatek86.vue
         /// <summary>
         /// Récupère l'id de la dernière commande et y ajoute 1
         /// </summary>
-        /// <param name="commandeDocuments"></param>
+        /// <param name="commandes"></param>
         /// <returns></returns>
-        private string AutoIncrementCommandeDocumentId(List<CommandeDocument> commandeDocuments)
+        private string AutoIncrementCommandeId(List<Commande> commandes)
         {
-            List<CommandeDocument> commandesTriees = commandeDocuments.OrderBy(o => o.Id).ToList();
+            List<Commande> commandesTriees = commandes.OrderBy(o => o.Id).ToList();
             string dernierId;
             if (commandesTriees.Count > 0)
             {

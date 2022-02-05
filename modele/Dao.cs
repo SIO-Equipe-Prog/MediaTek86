@@ -99,6 +99,23 @@ namespace Mediatek86.modele
             return lesSuivis;
         }
 
+        public static List<Commande> GetAllCommandes()
+        {
+            List<Commande> lesCommandes = new List<Commande>();
+            string req = "Select * from commande order by id";
+
+            BddMySql curs = BddMySql.GetInstance(connectionString);
+            curs.ReqSelect(req, null);
+
+            while (curs.Read())
+            {
+                Commande laCommande = new Commande((string)curs.Field("id"), (DateTime)curs.Field("datecommande"), (double)curs.Field("montant"));
+                lesCommandes.Add(laCommande);
+            }
+            curs.Close();
+            return lesCommandes;
+        }
+
         /// <summary>
         /// Retourne toutes les livres à partir de la BDD
         /// </summary>
@@ -293,7 +310,7 @@ namespace Mediatek86.modele
         public static List<CommandeDocument> GetCommandesDocument(string idDocument)
         {
             List<CommandeDocument> lesCommandes = new List<CommandeDocument>();
-            string req = "Select cd.id, cd.nbexemplaire, cd.idlivredvd, cd.idsuivi as suivi, c.datecommande, c.montant ";
+            string req = "Select cd.id, cd.nbexemplaire, cd.idlivredvd, cd.idsuivi, s.libelle as suivi, c.datecommande, c.montant ";
             req += "from commandedocument cd join commande c on cd.id=c.id ";
             req += "join suivi s on cd.idsuivi = s.id ";
             req += "where cd.idlivredvd = @idDocument ";
