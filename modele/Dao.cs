@@ -655,7 +655,7 @@ namespace Mediatek86.modele
                         + "where id=@id",
                     "delete from document "
                         + "where id=@id"
-                    
+
                 };
                 List<Dictionary<string, object>> allParameters = new List<Dictionary<string, object>>();
                 allParameters.Add(new Dictionary<string, object>
@@ -723,7 +723,7 @@ namespace Mediatek86.modele
             }
         }
 
-        
+
 
         /// <summary>
         /// Suppression d'une revue dans la base de données
@@ -789,6 +789,64 @@ namespace Mediatek86.modele
                     { "@nbexemplaire", commandeDocument.NbExemplaire},
                     { "@idlivredvd", commandeDocument.IdLivreDvd},
                     { "@idsuivi", commandeDocument.IdSuivi}
+                });
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdateTransaction(allReq, allParameters);
+                curs.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Modifie l'étape de suivi pour un livre ou un dvd dans la base de données
+        /// </summary>
+        /// <param name="commandeDocument"></param>
+        /// <returns></returns>
+        public static bool ModifierCommandeDocument(CommandeDocument commandeDocument)
+        {
+            try
+            {
+                string req = "update commandedocument set idsuivi=@idSuivi ";
+                req += "where id=@id";
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    { "@idSuivi", commandeDocument.IdSuivi},
+                    { "@id", commandeDocument.Id}
+                };
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdate(req, parameters);
+                curs.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool SupprimerCommandeDocument(CommandeDocument commandeDocument)
+        {
+            try
+            {
+                List<string> allReq = new List<string>
+                {
+                    "delete from commandedocument "
+                        + "where id=@id",
+                    "delete from commande "
+                        + "where id=@id"
+                };
+                List<Dictionary<string, object>> allParameters = new List<Dictionary<string, object>>();
+                allParameters.Add(new Dictionary<string, object>
+                {
+                    {"@id", commandeDocument.Id },
+                });
+                allParameters.Add(new Dictionary<string, object>
+                {
+                    {"@id", commandeDocument.Id },
                 });
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdateTransaction(allReq, allParameters);

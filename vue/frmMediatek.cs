@@ -25,6 +25,7 @@ namespace Mediatek86.vue
         private readonly BindingSource bdgRevuesListe = new BindingSource();
         private readonly BindingSource bdgExemplairesListe = new BindingSource();
         private readonly BindingSource bdgCommandesDvdListe = new BindingSource();
+        private readonly BindingSource bdgSuivis = new BindingSource();
         private List<Livre> lesLivres = new List<Livre>();
         private List<Categorie> lesGenres = new List<Categorie>();
         private List<Categorie> lesPublics = new List<Categorie>();
@@ -35,7 +36,7 @@ namespace Mediatek86.vue
         private List<Exemplaire> lesExemplaires = new List<Exemplaire>();
         private List<CommandeDocument> lesCommandesDocument = new List<CommandeDocument>();
 
-        private bool deselectionManuelle = false;
+        private bool selectionManuelle = false;
 
         #endregion
 
@@ -63,6 +64,47 @@ namespace Mediatek86.vue
             {
                 cbx.SelectedIndex = -1;
             }
+        }
+
+        /// <summary>
+        /// Rempli le combo de suivis pour les commandes
+        /// </summary>
+        /// <param name="lesSuivis"></param>
+        /// <param name="bdg"></param>
+        /// <param name="cbx"></param>
+        public void RemplirComboSuivi(List<Suivi> lesSuivis, BindingSource bdg, ComboBox cbx)
+        {
+            bdg.DataSource = lesSuivis;
+            cbx.DataSource = bdg;
+            if (cbx.Items.Count > 0)
+            {
+                cbx.SelectedIndex = 0;
+            }
+        }
+
+        /// <summary>
+        /// Retire les étapes de suivis qui ne doivent pas pouvoir
+        /// être sélectionnés pour le suivi passé en paramètre
+        /// </summary>
+        /// <param name="suivi"></param>
+        /// <returns>Liste d'étapes possibles pour l'objet suivi donné</returns>
+        private List<Suivi> GetSuivisAffiches(CommandeDocument commandeDocument)
+        {
+            Suivi suivi = lesSuivis.Find(x => x.Id == commandeDocument.IdSuivi);
+            List<Suivi> suivisAffiches = new List<Suivi>();
+            suivisAffiches.AddRange(lesSuivis);
+            string libelle = suivi.Libelle;
+            if (libelle == "livrée" || libelle == "réglée")
+            {
+                suivisAffiches.RemoveAll(x => x.Libelle.Length > 6);
+            }
+            else
+            {
+                suivisAffiches.RemoveAt(suivisAffiches.FindIndex(x => x.Libelle == "réglée"));
+            }
+            suivisAffiches.Remove(suivi);
+            suivisAffiches.Insert(0, suivi);
+            return suivisAffiches;
         }
         #endregion
 
@@ -279,7 +321,7 @@ namespace Mediatek86.vue
         /// <param name="e"></param>
         private void dgvRevuesListe_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvRevuesListe.CurrentCell != null && !deselectionManuelle)
+            if (dgvRevuesListe.CurrentCell != null && !selectionManuelle)
             {
                 try
                 {
@@ -298,9 +340,9 @@ namespace Mediatek86.vue
             else
             {
                 VideRevuesInfos();
-                if (deselectionManuelle)
+                if (selectionManuelle)
                 {
-                    deselectionManuelle = false;
+                    selectionManuelle = false;
                 }
             }
         }
@@ -664,7 +706,7 @@ namespace Mediatek86.vue
                     break;
                 case "ajouter":
                     btnRevueConfirmer.Text = "Ajouter";
-                    deselectionManuelle = true;
+                    selectionManuelle = true;
                     dgvRevuesListe.CurrentCell = null;
                     ActiveRevueInfos();
                     txbRevuesNumero.Text = AutoIncrementRevueId();
@@ -943,7 +985,7 @@ namespace Mediatek86.vue
         /// <param name="e"></param>
         private void DgvLivresListe_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvLivresListe.CurrentCell != null && !deselectionManuelle)
+            if (dgvLivresListe.CurrentCell != null && !selectionManuelle)
             {
                 try
                 {
@@ -962,9 +1004,9 @@ namespace Mediatek86.vue
             else
             {
                 VideLivresInfos();
-                if (deselectionManuelle)
+                if (selectionManuelle)
                 {
-                    deselectionManuelle = false;
+                    selectionManuelle = false;
                 }
             }
         }
@@ -1321,7 +1363,7 @@ namespace Mediatek86.vue
                     break;
                 case "ajouter":
                     btnLivreConfirmer.Text = "Ajouter";
-                    deselectionManuelle = true;
+                    selectionManuelle = true;
                     dgvLivresListe.CurrentCell = null;
                     ActiveLivreInfos();
                     txbLivresNumero.Text = AutoIncrementLivreId();
@@ -1595,7 +1637,7 @@ namespace Mediatek86.vue
         /// <param name="e"></param>
         private void dgvDvdListe_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvDvdListe.CurrentCell != null && !deselectionManuelle)
+            if (dgvDvdListe.CurrentCell != null && !selectionManuelle)
             {
                 try
                 {
@@ -1614,9 +1656,9 @@ namespace Mediatek86.vue
             else
             {
                 VideDvdInfos();
-                if (deselectionManuelle)
+                if (selectionManuelle)
                 {
-                    deselectionManuelle = false;
+                    selectionManuelle = false;
                 }
             }
         }
@@ -1982,7 +2024,7 @@ namespace Mediatek86.vue
                     break;
                 case "ajouter":
                     btnDvdConfirmer.Text = "Ajouter";
-                    deselectionManuelle = true;
+                    selectionManuelle = true;
                     dgvDvdListe.CurrentCell = null;
                     ActiveDvdInfos();
                     txbDvdNumero.Text = AutoIncrementDvdId();
@@ -2326,6 +2368,7 @@ namespace Mediatek86.vue
         {
             lesDvd = controle.GetAllDvd();
             lesSuivis = controle.GetAllSuivis();
+
         }
 
         /// <summary>
@@ -2373,6 +2416,10 @@ namespace Mediatek86.vue
             dgvCommandesDvdListe.Columns["nbExemplaire"].DisplayIndex = 1;
             dgvCommandesDvdListe.Columns["nbExemplaire"].HeaderText = "Nb exemplaires";
             dgvCommandesDvdListe.Columns["montant"].DisplayIndex = 2;
+            if (commandes.Count > 0)
+            {
+                grpCommandeDvdModifier.Enabled = true;
+            }
         }
 
         /// <summary>
@@ -2380,8 +2427,9 @@ namespace Mediatek86.vue
         /// </summary>
         private void VideCommandeDvdListe()
         {
-            bdgCommandesDvdListe.List.Clear();
             dgvCommandesDvdListe.DataSource = null;
+            grpCommandeDvdModifier.Enabled = false;
+            cbxCommandeDvdModifier.DataSource = null;
         }
 
         /// <summary>
@@ -2428,6 +2476,12 @@ namespace Mediatek86.vue
             pcbCommandeDvdImage.Image = null;
             grpCommandeDvdAjout.Enabled = false;
         }
+
+        /// <summary>
+        /// Ajoute une nouvelle commande de dvd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnCommandeDvdAjouter_Click(object sender, EventArgs e)
         {
             if (AjoutCommandeDvd())
@@ -2437,6 +2491,10 @@ namespace Mediatek86.vue
             }
         }
 
+        /// <summary>
+        /// Crée un nouvel objet dvd et l'envoi à la base de données pour l'ajouter
+        /// </summary>
+        /// <returns>true si l'opération a été effectuée</returns>
         private bool AjoutCommandeDvd()
         {
             if (nudCommandeDvdAjoutNbExemplaires.Value > 0 && !txbCommandeDvdAjoutMontant.Text.Equals(""))
@@ -2489,6 +2547,91 @@ namespace Mediatek86.vue
                 nouvelId = "0" + nouvelId;
             }
             return nouvelId;
+        }
+
+        /// <summary>
+        /// Affiche les étapes de suivis disponibles pour la commande sélectionnée
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgvCommandesDvdListe_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvCommandesDvdListe.CurrentCell != null)
+            {
+                try
+                {
+                    CommandeDocument commande = (CommandeDocument)bdgCommandesDvdListe.List[bdgCommandesDvdListe.Position];
+                    List<Suivi> suivisAffiches = GetSuivisAffiches(commande);
+                    RemplirComboSuivi(suivisAffiches, bdgSuivis, cbxCommandeDvdModifier);
+                    string idLivree = lesSuivis.Find(x => x.Libelle == "livrée").Id;
+                    string idReglee = lesSuivis.Find(x => x.Libelle == "réglée").Id;
+                    if (commande.IdSuivi != idLivree && commande.IdSuivi != idReglee)
+                    {
+                        btnCommandeDvdSupprimer.Enabled = true;
+                    }
+                    else
+                    {
+                        btnCommandeDvdSupprimer.Enabled = false;
+                    }
+                }
+                catch
+                {
+                    VideCommandeDvdListe();
+                }
+            }
+            else
+            {
+                grpCommandeDvdModifier.Enabled = false;
+                cbxCommandeDvdModifier.DataSource = null;
+            }
+        }
+
+        /// <summary>
+        /// Modifie l'étape de suivi de la commande sélectionnée
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCommandeDvdModifier_Click(object sender, EventArgs e)
+        {
+            CommandeDocument commande = (CommandeDocument)bdgCommandesDvdListe.List[bdgCommandesDvdListe.Position];
+            Suivi suivi = (Suivi)bdgSuivis.List[bdgSuivis.Position];
+            if (suivi.Id != commande.IdSuivi)
+            {
+                CommandeDocument commandeMod = new CommandeDocument(commande.Id, commande.NbExemplaire, commande.DateCommande,
+                                                                    commande.Montant, commande.IdLivreDvd, suivi.Id, suivi.Libelle);
+                if (controle.ModifierCommande(commandeMod))
+                {
+                    int index = lesCommandesDocument.IndexOf(commande);
+                    lesCommandesDocument[index] = commandeMod;
+                    bdgCommandesDvdListe.ResetBindings(false);
+                }
+            }
+            else
+            {
+                MessageBox.Show("L'étape de suivi choisie est l'étape actuelle de la commande, cette modification est inutile !");
+            }
+        }
+
+        /// <summary>
+        /// Supprime la commande sélectionnée si elle n'est pas encore livrée
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCommandeDvdSupprimer_Click(object sender, EventArgs e)
+        {
+            if (dgvCommandesDvdListe.CurrentCell != null)
+            {
+                CommandeDocument commande = (CommandeDocument)bdgCommandesDvdListe.List[bdgCommandesDvdListe.Position];
+                DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer la commande suivante ?" + Environment.NewLine + 
+                                                       "Date commande : " + commande.DateCommande.ToString("dd MMM yyyy") + Environment.NewLine +
+                                                       "Nombre d'exemplaires : " + commande.NbExemplaire + Environment.NewLine +
+                                                       "Montant : " + commande.Montant, "Confirmation", MessageBoxButtons.YesNo);
+                if (reponse == DialogResult.Yes && controle.SupprimerCommande(commande))
+                {
+                    lesCommandesDocument.Remove(commande);
+                    bdgCommandesDvdListe.ResetBindings(false);
+                }
+            }
         }
         #endregion
     }

@@ -117,9 +117,9 @@ namespace Mediatek86.controleur
         }
 
         /// <summary>
-        /// récupère les exemplaires d'une revue
+        /// récupère les exemplaires d'un livre ou d'un dvd
         /// </summary>
-        /// <returns>Collection d'objets Exemplaire</returns>
+        /// <returns>Collection d'objets CommandeDocument</returns>
         public List<CommandeDocument> GetCommandesDocument(string idDocument)
         {
             return Dao.GetCommandesDocument(idDocument);
@@ -190,7 +190,7 @@ namespace Mediatek86.controleur
         /// Supprime un document (livre, dvd ou revue) de la bdd
         /// </summary>
         /// <param name="document"></param>
-        /// <returns></returns>
+        /// <returns>True si la création a pu se faire</returns>
         public bool SupprimerDocument(Document document)
         {
             if (document is Revue revue && Dao.SupprimerRevue(revue))
@@ -211,15 +211,43 @@ namespace Mediatek86.controleur
             return false;
         }
 
+        /// <summary>
+        /// Crée une commande (pour livre, dvd ou revue) dans la bdd
+        /// </summary>
+        /// <param name="commande"></param>
+        /// <returns>True si la création a pu se faire</returns>
         public bool CreerCommande(Commande commande)
         {
             if (commande is CommandeDocument commandeDocument)
             {
                 return Dao.CreerCommandeDocument(commandeDocument);
             }
-            if (commande is Abonnement)
+            if (commande is Abonnement abonnement)
             {
                 // TODO: permettre l'ajout d'abonnements (revues)
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Modifie l'étape de suivi d'une commande pour un livre ou un dvd
+        /// </summary>
+        /// <param name="commande"></param>
+        /// <returns>True si la création a pu se faire</returns>
+        public bool ModifierCommande(CommandeDocument commande)
+        {
+            return Dao.ModifierCommandeDocument(commande);
+        }
+
+        public bool SupprimerCommande(Commande commande)
+        {
+            if (commande is CommandeDocument commandeDocument)
+            {
+                return Dao.SupprimerCommandeDocument(commandeDocument);
+            }
+            if (commande is Abonnement abonnement)
+            {
+                // TODO: permettre la suppression d'abonnements (revues)
             }
             return false;
         }
