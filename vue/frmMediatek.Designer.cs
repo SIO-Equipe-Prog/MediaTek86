@@ -197,6 +197,7 @@ namespace Mediatek86.vue
             this.btnReceptionRechercher = new System.Windows.Forms.Button();
             this.tabCommandesLivres = new System.Windows.Forms.TabPage();
             this.grpNouvelleCommandeLivre = new System.Windows.Forms.GroupBox();
+            this.nudCommandesLivresNbExemplaire = new System.Windows.Forms.NumericUpDown();
             this.label71 = new System.Windows.Forms.Label();
             this.txbCommandesLivresMontant = new System.Windows.Forms.TextBox();
             this.btnCommandesLivreAjout = new System.Windows.Forms.Button();
@@ -222,12 +223,14 @@ namespace Mediatek86.vue
             this.label61 = new System.Windows.Forms.Label();
             this.label62 = new System.Windows.Forms.Label();
             this.grpCommandesListe = new System.Windows.Forms.GroupBox();
+            this.btnCommandesLivreSupprimer = new System.Windows.Forms.Button();
+            this.btnLivresSuivisModifier = new System.Windows.Forms.Button();
+            this.cbxLivresSuivis = new System.Windows.Forms.ComboBox();
             this.dgvCommandesLivreListe = new System.Windows.Forms.DataGridView();
             this.grpCommandesLivresRecherche = new System.Windows.Forms.GroupBox();
             this.btnCommandesLivresNumRecherche = new System.Windows.Forms.Button();
             this.txbCommandesLivresNumRecherche = new System.Windows.Forms.TextBox();
             this.label57 = new System.Windows.Forms.Label();
-            this.nudCommandesLivresNbExemplaire = new System.Windows.Forms.NumericUpDown();
             this.tabOngletsApplication.SuspendLayout();
             this.tabLivres.SuspendLayout();
             this.grpLivreGestion.SuspendLayout();
@@ -256,12 +259,12 @@ namespace Mediatek86.vue
             ((System.ComponentModel.ISupportInitialize)(this.pcbReceptionRevueImage)).BeginInit();
             this.tabCommandesLivres.SuspendLayout();
             this.grpNouvelleCommandeLivre.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCommandesLivresNbExemplaire)).BeginInit();
             this.grpCommandesLivresInfos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbLivreImage)).BeginInit();
             this.grpCommandesListe.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCommandesLivreListe)).BeginInit();
             this.grpCommandesLivresRecherche.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCommandesLivresNbExemplaire)).BeginInit();
             this.SuspendLayout();
             // 
             // tabOngletsApplication
@@ -2067,6 +2070,14 @@ namespace Mediatek86.vue
             this.grpNouvelleCommandeLivre.TabStop = false;
             this.grpNouvelleCommandeLivre.Text = "NouvelleCommandeLivre";
             // 
+            // nudCommandesLivresNbExemplaire
+            // 
+            this.nudCommandesLivresNbExemplaire.Location = new System.Drawing.Point(160, 65);
+            this.nudCommandesLivresNbExemplaire.Name = "nudCommandesLivresNbExemplaire";
+            this.nudCommandesLivresNbExemplaire.Size = new System.Drawing.Size(120, 20);
+            this.nudCommandesLivresNbExemplaire.TabIndex = 11;
+            this.nudCommandesLivresNbExemplaire.Visible = false;
+            // 
             // label71
             // 
             this.label71.AutoSize = true;
@@ -2083,6 +2094,7 @@ namespace Mediatek86.vue
             this.txbCommandesLivresMontant.Name = "txbCommandesLivresMontant";
             this.txbCommandesLivresMontant.Size = new System.Drawing.Size(100, 20);
             this.txbCommandesLivresMontant.TabIndex = 9;
+            this.txbCommandesLivresMontant.Visible = false;
             // 
             // btnCommandesLivreAjout
             // 
@@ -2092,6 +2104,7 @@ namespace Mediatek86.vue
             this.btnCommandesLivreAjout.TabIndex = 6;
             this.btnCommandesLivreAjout.Text = "Ajouter";
             this.btnCommandesLivreAjout.UseVisualStyleBackColor = true;
+            this.btnCommandesLivreAjout.Visible = false;
             this.btnCommandesLivreAjout.Click += new System.EventHandler(this.btnCommandesLivreAjout_Click);
             // 
             // label67
@@ -2295,6 +2308,9 @@ namespace Mediatek86.vue
             // 
             // grpCommandesListe
             // 
+            this.grpCommandesListe.Controls.Add(this.btnCommandesLivreSupprimer);
+            this.grpCommandesListe.Controls.Add(this.btnLivresSuivisModifier);
+            this.grpCommandesListe.Controls.Add(this.cbxLivresSuivis);
             this.grpCommandesListe.Controls.Add(this.dgvCommandesLivreListe);
             this.grpCommandesListe.Location = new System.Drawing.Point(18, 479);
             this.grpCommandesListe.Name = "grpCommandesListe";
@@ -2303,13 +2319,45 @@ namespace Mediatek86.vue
             this.grpCommandesListe.TabStop = false;
             this.grpCommandesListe.Text = "ListeCommandesLivre";
             // 
+            // btnCommandesLivreSupprimer
+            // 
+            this.btnCommandesLivreSupprimer.Location = new System.Drawing.Point(694, 157);
+            this.btnCommandesLivreSupprimer.Name = "btnCommandesLivreSupprimer";
+            this.btnCommandesLivreSupprimer.Size = new System.Drawing.Size(75, 40);
+            this.btnCommandesLivreSupprimer.TabIndex = 7;
+            this.btnCommandesLivreSupprimer.Text = "Supprimer";
+            this.btnCommandesLivreSupprimer.UseVisualStyleBackColor = true;
+            this.btnCommandesLivreSupprimer.Visible = false;
+            this.btnCommandesLivreSupprimer.Click += new System.EventHandler(this.btnCommandesLivreSupprimer_Click);
+            // 
+            // btnLivresSuivisModifier
+            // 
+            this.btnLivresSuivisModifier.Location = new System.Drawing.Point(694, 54);
+            this.btnLivresSuivisModifier.Name = "btnLivresSuivisModifier";
+            this.btnLivresSuivisModifier.Size = new System.Drawing.Size(92, 53);
+            this.btnLivresSuivisModifier.TabIndex = 6;
+            this.btnLivresSuivisModifier.Text = "Modifier étape de suivi";
+            this.btnLivresSuivisModifier.UseVisualStyleBackColor = true;
+            this.btnLivresSuivisModifier.Visible = false;
+            this.btnLivresSuivisModifier.Click += new System.EventHandler(this.btnLivresSuivis_Click);
+            // 
+            // cbxLivresSuivis
+            // 
+            this.cbxLivresSuivis.FormattingEnabled = true;
+            this.cbxLivresSuivis.Location = new System.Drawing.Point(567, 71);
+            this.cbxLivresSuivis.Name = "cbxLivresSuivis";
+            this.cbxLivresSuivis.Size = new System.Drawing.Size(121, 21);
+            this.cbxLivresSuivis.TabIndex = 5;
+            this.cbxLivresSuivis.Visible = false;
+            // 
             // dgvCommandesLivreListe
             // 
             this.dgvCommandesLivreListe.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCommandesLivreListe.Location = new System.Drawing.Point(105, 55);
+            this.dgvCommandesLivreListe.Location = new System.Drawing.Point(53, 40);
             this.dgvCommandesLivreListe.Name = "dgvCommandesLivreListe";
-            this.dgvCommandesLivreListe.Size = new System.Drawing.Size(528, 176);
+            this.dgvCommandesLivreListe.Size = new System.Drawing.Size(485, 176);
             this.dgvCommandesLivreListe.TabIndex = 4;
+            this.dgvCommandesLivreListe.SelectionChanged += new System.EventHandler(this.dgvCommandesLivreListe_SelectionChanged);
             // 
             // grpCommandesLivresRecherche
             // 
@@ -2349,13 +2397,6 @@ namespace Mediatek86.vue
             this.label57.Size = new System.Drawing.Size(186, 13);
             this.label57.TabIndex = 0;
             this.label57.Text = "Saisir un numéro de document :\r\n";
-            // 
-            // nudCommandesLivresNbExemplaire
-            // 
-            this.nudCommandesLivresNbExemplaire.Location = new System.Drawing.Point(160, 65);
-            this.nudCommandesLivresNbExemplaire.Name = "nudCommandesLivresNbExemplaire";
-            this.nudCommandesLivresNbExemplaire.Size = new System.Drawing.Size(120, 20);
-            this.nudCommandesLivresNbExemplaire.TabIndex = 11;
             // 
             // FrmMediatek
             // 
@@ -2405,6 +2446,7 @@ namespace Mediatek86.vue
             this.tabCommandesLivres.ResumeLayout(false);
             this.grpNouvelleCommandeLivre.ResumeLayout(false);
             this.grpNouvelleCommandeLivre.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCommandesLivresNbExemplaire)).EndInit();
             this.grpCommandesLivresInfos.ResumeLayout(false);
             this.grpCommandesLivresInfos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbLivreImage)).EndInit();
@@ -2412,7 +2454,6 @@ namespace Mediatek86.vue
             ((System.ComponentModel.ISupportInitialize)(this.dgvCommandesLivreListe)).EndInit();
             this.grpCommandesLivresRecherche.ResumeLayout(false);
             this.grpCommandesLivresRecherche.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCommandesLivresNbExemplaire)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2619,6 +2660,9 @@ namespace Mediatek86.vue
         private System.Windows.Forms.Label label71;
         private System.Windows.Forms.TextBox txbCommandesLivresMontant;
         private System.Windows.Forms.NumericUpDown nudCommandesLivresNbExemplaire;
+        private System.Windows.Forms.Button btnLivresSuivisModifier;
+        private System.Windows.Forms.ComboBox cbxLivresSuivis;
+        private System.Windows.Forms.Button btnCommandesLivreSupprimer;
     }
 }
 

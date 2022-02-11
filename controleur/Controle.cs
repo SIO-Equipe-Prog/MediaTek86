@@ -110,7 +110,7 @@ namespace Mediatek86.controleur
         {
             return Dao.GetExemplairesRevue(idDocument);
         }
-        
+
         /// <summary>
         /// récupère les exemplaires d'une revue
         /// </summary>
@@ -128,7 +128,7 @@ namespace Mediatek86.controleur
         {
             return Dao.GetCommandesDocument(idDocument);
         }
-        
+
         /// <summary>
         /// Crée un exemplaire d'une revue dans la bdd
         /// </summary>
@@ -189,7 +189,7 @@ namespace Mediatek86.controleur
             }
             return false;
         }
-       
+
 
         /// <summary>
         /// Supprime un document (livre, dvd ou revue) de la bdd
@@ -215,10 +215,11 @@ namespace Mediatek86.controleur
             }
             return false;
         }
+
         /// <summary>
         /// Crée une commande (livre, dvd ou revue) dans la bdd
         /// </summary>
-        /// <param name="document"></param>
+        /// <param name="commande"></param>
         public bool CreerCommande(Commande commande)
         {
 
@@ -228,13 +229,38 @@ namespace Mediatek86.controleur
             }
             if (commande is Abonnement)
             {
-                
+
             }
             return false;
         }
 
+        /// <summary>
+        /// Modifie l'étape de suivi une commande (livre, dvd) dans la bdd
+        /// </summary>
+        /// <param name="commandedocument"></param>
+        public bool ModifierSuivi(CommandeDocument commandedocument)
+        {
+            return Dao.ModifierSuivi(commandedocument);
 
+        }
 
+        /// <summary>
+        /// Supprime une commande (livre, dvd ou revue) dans la bdd
+        /// </summary>
+        /// <param name="commande"></param>
+        public bool SupprimerCommande(Commande commande)
+        {
+
+            if (commande is CommandeDocument commandedocument)
+            {
+                return Dao.SupprimerCommandeDocument(commandedocument);
+            }
+            if (commande is Abonnement)
+            {
+
+            }
+            return false;
+        }
     }
 }
 
