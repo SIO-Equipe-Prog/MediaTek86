@@ -2468,11 +2468,11 @@ namespace Mediatek86.vue
                 if (livre != null)
                 {
                     AfficheCommandeLivresInfos(livre);
-                    if (controle.GetCommandesDocument(livre.Id).Count != 0)
-                    {
-                        lesCommandesDocument = controle.GetCommandesDocument(livre.Id);
-                        RemplirCommandesLivresListe(lesCommandesDocument);
-                    }
+                    grpNouvelleCommandeLivre.Visible = true;
+                    nudCommandesLivresNbExemplaire.Visible = true;
+                    txbCommandesLivresMontant.Visible = true;
+                    lesCommandesDocument = controle.GetCommandesDocument(livre.Id);
+                    RemplirCommandesLivresListe(lesCommandesDocument);
                 }
                 else
                 {
@@ -2522,7 +2522,6 @@ namespace Mediatek86.vue
                 {
                     RemplirComboSuivi(controle.GetAllSuivis(), bdgSuivis, cbxLivresSuivis);
                     VisibleBoutonsCommande();
-
                 }
                 catch
                 {
@@ -2544,9 +2543,6 @@ namespace Mediatek86.vue
         {
             cbxLivresSuivis.Visible = true;
             btnCommandesLivreAjout.Visible = true;
-            grpNouvelleCommandeLivre.Visible = true;
-            nudCommandesLivresNbExemplaire.Visible = true;
-            txbCommandesLivresMontant.Visible = true;
             btnLivresSuivisModifier.Visible = true;
             btnCommandesLivreSupprimer.Visible = true;
         }
