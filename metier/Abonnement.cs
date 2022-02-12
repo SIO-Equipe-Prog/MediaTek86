@@ -12,8 +12,8 @@ namespace Mediatek86.metier
         private readonly DateTime dateFinAbonnement;
         private readonly string idRevue;
 
-        public Abonnement(string id, DateTime dateFinAbonnement, DateTime datecommande, double montant, string idRevue)
-            :base(id, datecommande, montant)
+        public Abonnement(string id, DateTime dateFinAbonnement, DateTime dateCommande, double montant, string idRevue)
+            : base(id, dateCommande, montant)
         {
             this.dateFinAbonnement = dateFinAbonnement;
             this.idRevue = idRevue;

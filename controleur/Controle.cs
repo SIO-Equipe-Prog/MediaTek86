@@ -14,7 +14,8 @@ namespace Mediatek86.controleur
         private readonly List<Categorie> lesRayons;
         private readonly List<Categorie> lesPublics;
         private readonly List<Categorie> lesGenres;
-
+        private readonly List<Suivi> lesSuivis;
+        private readonly List<CommandeDocument> lesCommandesDocuments;
         /// <summary>
         /// Ouverture de la fenêtre
         /// </summary>
@@ -26,6 +27,8 @@ namespace Mediatek86.controleur
             lesGenres = Dao.GetAllGenres();
             lesRayons = Dao.GetAllRayons();
             lesPublics = Dao.GetAllPublics();
+            lesSuivis = Dao.GetAllSuivis();
+            lesCommandesDocuments = Dao.GetAllCommandesDocument();
             FrmMediatek frmMediatek = new FrmMediatek(this);
             frmMediatek.ShowDialog();
         }
@@ -83,7 +86,22 @@ namespace Mediatek86.controleur
         {
             return lesPublics;
         }
-
+        /// <summary>
+        /// getter sur les étapes de suivi
+        /// </summary>
+        /// <returns>Collection d'objets Suivi</returns>
+        public List<Suivi> GetAllSuivis()
+        {
+            return lesSuivis;
+        }
+        /// <summary>
+        /// getter sur les commandes de livre ou dvd
+        /// </summary>
+        /// <returns>Collection d'objets Suivi</returns>
+        public List<CommandeDocument> GetAllCommandesDocuments()
+        {
+            return lesCommandesDocuments;
+        }
         /// <summary>
         /// récupère les exemplaires d'une revue
         /// </summary>
@@ -172,6 +190,7 @@ namespace Mediatek86.controleur
             return false;
         }
 
+
         /// <summary>
         /// Supprime un document (livre, dvd ou revue) de la bdd
         /// </summary>
@@ -197,9 +216,51 @@ namespace Mediatek86.controleur
             return false;
         }
 
-        
+        /// <summary>
+        /// Crée une commande (livre, dvd ou revue) dans la bdd
+        /// </summary>
+        /// <param name="commande"></param>
+        public bool CreerCommande(Commande commande)
+        {
 
-        
+            if (commande is CommandeDocument commandedocument)
+            {
+                return Dao.CreerCommandeDocument(commandedocument);
+            }
+            if (commande is Abonnement)
+            {
+
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Modifie l'étape de suivi une commande (livre, dvd) dans la bdd
+        /// </summary>
+        /// <param name="commandedocument"></param>
+        public bool ModifierSuivi(CommandeDocument commandedocument)
+        {
+            return Dao.ModifierSuivi(commandedocument);
+
+        }
+
+        /// <summary>
+        /// Supprime une commande (livre, dvd ou revue) dans la bdd
+        /// </summary>
+        /// <param name="commande"></param>
+        public bool SupprimerCommande(Commande commande)
+        {
+
+            if (commande is CommandeDocument commandedocument)
+            {
+                return Dao.SupprimerCommandeDocument(commandedocument);
+            }
+            if (commande is Abonnement)
+            {
+
+            }
+            return false;
+        }
     }
 }
 
