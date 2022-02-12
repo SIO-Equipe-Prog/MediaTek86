@@ -2069,6 +2069,7 @@ namespace Mediatek86.vue
             this.grpNouvelleCommandeLivre.TabIndex = 7;
             this.grpNouvelleCommandeLivre.TabStop = false;
             this.grpNouvelleCommandeLivre.Text = "NouvelleCommandeLivre";
+            this.grpNouvelleCommandeLivre.Visible = false;
             // 
             // nudCommandesLivresNbExemplaire
             // 

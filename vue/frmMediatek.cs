@@ -2544,6 +2544,9 @@ namespace Mediatek86.vue
         {
             cbxLivresSuivis.Visible = true;
             btnCommandesLivreAjout.Visible = true;
+            grpNouvelleCommandeLivre.Visible = true;
+            nudCommandesLivresNbExemplaire.Visible = true;
+            txbCommandesLivresMontant.Visible = true;
             btnLivresSuivisModifier.Visible = true;
             btnCommandesLivreSupprimer.Visible = true;
         }
@@ -2555,6 +2558,9 @@ namespace Mediatek86.vue
         {
             cbxLivresSuivis.Visible = false;
             btnCommandesLivreAjout.Visible = false;
+            grpNouvelleCommandeLivre.Visible = false;
+            nudCommandesLivresNbExemplaire.Visible = false;
+            txbCommandesLivresMontant.Visible = false;
             btnLivresSuivisModifier.Visible = false;
             btnCommandesLivreSupprimer.Visible = false;
         }
