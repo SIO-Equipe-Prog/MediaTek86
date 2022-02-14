@@ -21,6 +21,14 @@ namespace Mediatek86.metier
 
         public DateTime DateFinAbonnement { get => dateFinAbonnement; }
         public string IdRevue { get => idRevue; }
-       
+        public bool ParutionDansAbonnement(DateTime dateCommande, DateTime dateParution, DateTime dateFinAbonnement)
+        {
+            if (dateCommande <= dateParution && dateParution <= dateFinAbonnement)
+            {
+                return true;
+            }
+            return false;
+        }
+
     }
 }

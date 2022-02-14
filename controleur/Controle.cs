@@ -16,6 +16,7 @@ namespace Mediatek86.controleur
         private readonly List<Categorie> lesGenres;
         private readonly List<Suivi> lesSuivis;
         private readonly List<CommandeDocument> lesCommandesDocuments;
+        private readonly List<Abonnement> lesAbonnements;
         /// <summary>
         /// Ouverture de la fenêtre
         /// </summary>
@@ -29,6 +30,7 @@ namespace Mediatek86.controleur
             lesPublics = Dao.GetAllPublics();
             lesSuivis = Dao.GetAllSuivis();
             lesCommandesDocuments = Dao.GetAllCommandesDocument();
+            lesAbonnements = Dao.GetAllAbonnements();
             FrmMediatek frmMediatek = new FrmMediatek(this);
             frmMediatek.ShowDialog();
         }
@@ -110,7 +112,14 @@ namespace Mediatek86.controleur
         {
             return Dao.GetExemplairesRevue(idDocument);
         }
-
+        /// <summary>
+        /// getters ur les abonnements
+        /// </summary>
+        /// <returns>Collection d'objets Abonnement</returns>
+        public List<Abonnement> GetAllAbonnements()
+        {
+            return Dao.GetAllAbonnements();
+        }
         /// <summary>
         /// récupère les exemplaires d'une revue
         /// </summary>
@@ -227,9 +236,9 @@ namespace Mediatek86.controleur
             {
                 return Dao.CreerCommandeDocument(commandedocument);
             }
-            if (commande is Abonnement)
+            if (commande is Abonnement abonnement)
             {
-
+                return Dao.CreerAbonnement(abonnement);
             }
             return false;
         }
@@ -255,9 +264,9 @@ namespace Mediatek86.controleur
             {
                 return Dao.SupprimerCommandeDocument(commandedocument);
             }
-            if (commande is Abonnement)
+            if (commande is Abonnement abonnement)
             {
-
+                return Dao.SupprimerAbonnement(abonnement);
             }
             return false;
         }
