@@ -2714,7 +2714,7 @@ namespace Mediatek86.vue
 
         /// <summary>
         /// Ouverture de l'onglet CommandeLivres : 
-        /// appel des méthodes pour récupérer la liste des livres et la liste des commandes
+        /// appel des méthodes pour récupérer la liste des livres
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3210,6 +3210,52 @@ namespace Mediatek86.vue
                 {
                     MiseAJourAbonnement(txbCommandeRevueNumero.Text);
                 }
+            }
+        }
+        #endregion
+
+        #region CommandeRevues
+
+        //-----------------------------------------------------------
+        // ONGLET "COMMANDEREVUES"
+        //-----------------------------------------------------------
+
+        /// <summary>
+        /// Ouverture de l'onglet CommandeRevues : 
+        /// appel des méthodes pour récupérer la liste des revues
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tabCommandesRevues_Enter(object sender, EventArgs e)
+        {
+            lesRevues = controle.GetAllRevues();
+        }
+
+
+
+        /// <summary>
+        /// Affichage des informations de la revue sélectionné
+        /// </summary>
+        /// <param name="revue"></param>
+        private void AfficheRevueInfos(Revue revue)
+        {
+            txbRevuePeriodicite.Text = revue.Periodicite;
+            chkRevueEmpruntable.Checked = revue.Empruntable;
+            txbRevueImage.Text = revue.Image;
+            txbRevueDateMiseADispo.Text = revue.DelaiMiseADispo.ToString();
+            txbRevueNumero.Text = revue.Id;
+            txbRevueGenre.Text = revue.Genre;
+            txbRevuePublic.Text = revue.Public;
+            txbRevueRayon.Text = revue.Rayon;
+            txbRevueTitre.Text = revue.Titre;
+            string image = revue.Image;
+            try
+            {
+                pcbRevuesImage.Image = Image.FromFile(image);
+            }
+            catch
+            {
+                pcbRevuesImage.Image = null;
             }
         }
 

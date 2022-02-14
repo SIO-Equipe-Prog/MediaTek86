@@ -100,7 +100,14 @@ namespace Mediatek86.controleur
         {
             return Dao.GetExemplairesRevue(idDocument);
         }
-
+        /// <summary>
+        /// getters ur les abonnements
+        /// </summary>
+        /// <returns>Collection d'objets Abonnement</returns>
+        public List<Abonnement> GetAllAbonnements()
+        {
+            return Dao.GetAllAbonnements();
+        }
         /// <summary>
         /// getters ur les abonnements
         /// </summary>
