@@ -2855,20 +2855,22 @@ namespace Mediatek86.vue
                     {
                         RemplirAbonnementsListe(lesAbonnements);
                     }
+                    else
+                    {
+                        dgvAbonnementsListe.DataSource = null;
+                    }
                 }
                 else
                 {
                     MessageBox.Show("numéro introuvable");
-                    VideCommandesRevuesZones();
-                    VideCommandesRevuesInfos();
+                    
                     dgvAbonnementsListe.DataSource = null;
                     InvisibleBoutonsCommandeRevue();
                 }
             }
             else
             {
-                VideCommandesRevuesZones();
-                VideCommandesRevuesInfos();
+               
                 dgvAbonnementsListe.DataSource = null;
                 InvisibleBoutonsCommandeRevue();
             }
@@ -2939,7 +2941,7 @@ namespace Mediatek86.vue
             if (abonnement != null)
             {
                 DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer l'abonnement n° '" + abonnement.Id + "' ?", "Confirmation", MessageBoxButtons.YesNo);
-                if (reponse == DialogResult.Yes && ExemplairesDateJuste(abonnement, lesExemplaires))
+                if (reponse == DialogResult.Yes && !ExemplairesDateJuste(abonnement, lesExemplaires))
                 {
                     controle.SupprimerCommande(abonnement);
                     miseajourAbonnement(txbRevueNumero.Text);
@@ -2951,9 +2953,12 @@ namespace Mediatek86.vue
         {
             foreach (Exemplaire exemplaire in lesexemplaires)
             {
-                
+                if (abonnement.ParutionDansAbonnement(abonnement.DateCommande, exemplaire.DateAchat, abonnement.DateFinAbonnement)) 
+                {
+                    return true;
+                }
             }
-            return true;
+            return false;
         }
         
         #endregion

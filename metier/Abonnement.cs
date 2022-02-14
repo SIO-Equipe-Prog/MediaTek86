@@ -25,9 +25,9 @@ namespace Mediatek86.metier
         {
             if (dateCommande <= dateParution && dateParution <= dateFinAbonnement)
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
     }
