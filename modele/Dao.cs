@@ -98,23 +98,6 @@ namespace Mediatek86.modele
             return lesSuivis;
         }
 
-        public static List<Commande> GetAllCommandes()
-        {
-            List<Commande> lesCommandes = new List<Commande>();
-            string req = "Select * from commande order by id";
-
-            BddMySql curs = BddMySql.GetInstance(connectionString);
-            curs.ReqSelect(req, null);
-
-            while (curs.Read())
-            {
-                Commande laCommande = new Commande((string)curs.Field("id"), (DateTime)curs.Field("datecommande"), (double)curs.Field("montant"));
-                lesCommandes.Add(laCommande);
-            }
-            curs.Close();
-            return lesCommandes;
-        }
-
         /// <summary>
         /// Retourne toutes les livres à partir de la BDD
         /// </summary>

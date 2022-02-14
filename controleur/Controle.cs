@@ -100,7 +100,7 @@ namespace Mediatek86.controleur
         /// <returns>Collection d'objets Suivi</returns>
         public List<CommandeDocument> GetAllCommandesDocuments()
         {
-            return lesCommandesDocuments;
+            return Dao.GetAllCommandesDocument();
         }
         /// <summary>
         /// récupère les exemplaires d'une revue
