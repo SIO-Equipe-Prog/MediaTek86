@@ -15,8 +15,7 @@ namespace Mediatek86.controleur
         private readonly List<Categorie> lesPublics;
         private readonly List<Categorie> lesGenres;
         private readonly List<Suivi> lesSuivis;
-        private readonly List<Commande> lesCommandes;
-
+        private readonly List<CommandeDocument> lesCommandesDocuments;
         /// <summary>
         /// Ouverture de la fenêtre
         /// </summary>
@@ -29,7 +28,7 @@ namespace Mediatek86.controleur
             lesRayons = Dao.GetAllRayons();
             lesPublics = Dao.GetAllPublics();
             lesSuivis = Dao.GetAllSuivis();
-            lesCommandes = Dao.GetAllCommandes();
+            lesCommandesDocuments = Dao.GetAllCommandesDocument();
             FrmMediatek frmMediatek = new FrmMediatek(this);
             frmMediatek.ShowDialog();
         }
@@ -87,17 +86,22 @@ namespace Mediatek86.controleur
         {
             return lesPublics;
         }
-
+        /// <summary>
+        /// getter sur les étapes de suivi
+        /// </summary>
+        /// <returns>Collection d'objets Suivi</returns>
         public List<Suivi> GetAllSuivis()
         {
             return lesSuivis;
         }
-
-        public List<Commande> GetAllCommandes()
+        /// <summary>
+        /// getter sur les commandes de livre ou dvd
+        /// </summary>
+        /// <returns>Collection d'objets Suivi</returns>
+        public List<CommandeDocument> GetAllCommandesDocuments()
         {
-            return lesCommandes;
+            return lesCommandesDocuments;
         }
-
         /// <summary>
         /// récupère les exemplaires d'une revue
         /// </summary>
@@ -186,6 +190,7 @@ namespace Mediatek86.controleur
             return false;
         }
 
+
         /// <summary>
         /// Supprime un document (livre, dvd ou revue) de la bdd
         /// </summary>
@@ -239,6 +244,10 @@ namespace Mediatek86.controleur
             return Dao.ModifierCommandeDocument(commande);
         }
 
+        /// <summary>
+        /// Supprime une commande (livre, dvd ou revue) dans la bdd
+        /// </summary>
+        /// <param name="commande"></param>
         public bool SupprimerCommande(Commande commande)
         {
             if (commande is CommandeDocument commandeDocument)

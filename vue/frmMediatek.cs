@@ -22,10 +22,11 @@ namespace Mediatek86.vue
         private readonly BindingSource bdgGenres = new BindingSource();
         private readonly BindingSource bdgPublics = new BindingSource();
         private readonly BindingSource bdgRayons = new BindingSource();
+        private readonly BindingSource bdgSuivis = new BindingSource();
         private readonly BindingSource bdgRevuesListe = new BindingSource();
         private readonly BindingSource bdgExemplairesListe = new BindingSource();
         private readonly BindingSource bdgCommandesDvdListe = new BindingSource();
-        private readonly BindingSource bdgSuivis = new BindingSource();
+        private readonly BindingSource bdgCommandesDocumentsListe = new BindingSource();
         private List<Livre> lesLivres = new List<Livre>();
         private List<Categorie> lesGenres = new List<Categorie>();
         private List<Categorie> lesPublics = new List<Categorie>();
@@ -1188,7 +1189,7 @@ namespace Mediatek86.vue
             Livre leLivre = lesLivres.Find(x => x.Id == idLivre);
             if (leLivre != null && controle.GetCommandesDocument(idLivre).Count == 0 && controle.GetExemplairesRevue(idLivre).Count == 0)
             {
-                DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer le revue '" + leLivre.Titre + "' ?", "Confirmation", MessageBoxButtons.YesNo);
+                DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer le livre '" + leLivre.Titre + "' ?", "Confirmation", MessageBoxButtons.YesNo);
                 if (reponse == DialogResult.Yes)
                 {
                     return controle.SupprimerDocument(leLivre);
@@ -2378,9 +2379,9 @@ namespace Mediatek86.vue
         /// <param name="e"></param>
         private void btnCommandeDvdAfficher_Click(object sender, EventArgs e)
         {
-            if (!txbCommandeDvdSelectionNumero.Text.Equals(""))
+            if (!txbCommandeDvdNumero.Text.Equals(""))
             {
-                Dvd leDvd = lesDvd.Find(dvd => dvd.Id == txbCommandeDvdSelectionNumero.Text);
+                Dvd leDvd = lesDvd.Find(dvd => dvd.Id == txbCommandeDvdNumero.Text);
                 if (leDvd != null)
                 {
                     AfficheCommandeDvdInfos(leDvd);
@@ -2442,7 +2443,6 @@ namespace Mediatek86.vue
             txbCommandeDvdSynopsis.Text = dvd.Synopsis;
             txbCommandeDvdImage.Text = dvd.Image;
             txbCommandeDvdDuree.Text = dvd.Duree.ToString();
-            txbCommandeDvdNumero.Text = dvd.Id;
             txbCommandeDvdGenre.Text = dvd.Genre;
             txbCommandeDvdPublic.Text = dvd.Public;
             txbCommandeDvdRayon.Text = dvd.Rayon;
@@ -2468,7 +2468,6 @@ namespace Mediatek86.vue
             txbCommandeDvdSynopsis.Text = "";
             txbCommandeDvdImage.Text = "";
             txbCommandeDvdDuree.Text = "";
-            txbCommandeDvdNumero.Text = "";
             txbCommandeDvdGenre.Text = "";
             txbCommandeDvdPublic.Text = "";
             txbCommandeDvdRayon.Text = "";
@@ -2486,7 +2485,7 @@ namespace Mediatek86.vue
         {
             if (AjoutCommandeDvd())
             {
-                lesCommandesDocument = controle.GetCommandesDocument(txbCommandeDvdSelectionNumero.Text);
+                lesCommandesDocument = controle.GetCommandesDocument(txbCommandeDvdNumero.Text);
                 RemplirCommandeDvdListe(lesCommandesDocument);
             }
         }
@@ -2502,7 +2501,7 @@ namespace Mediatek86.vue
                 CommandeDocument nouvelleCommande = null;
                 try
                 {
-                    string id = AutoIncrementCommandeId(controle.GetAllCommandes());
+                    string id = AutoIncrementCommandeId(controle.GetAllCommandesDocuments());
                     decimal nbExemplaires = nudCommandeDvdAjoutNbExemplaires.Value;
                     double montant = double.Parse(txbCommandeDvdAjoutMontant.Text);
                     string idLivreDvd = txbCommandeDvdNumero.Text;
@@ -2523,14 +2522,363 @@ namespace Mediatek86.vue
             }
         }
 
+        #endregion
+
+        #region CommandeLivres
+
+        //-----------------------------------------------------------
+        // ONGLET "COMMANDELIVRES"
+        //-----------------------------------------------------------
+
+        /// <summary>
+        /// Ouverture de l'onglet CommandeLivres : 
+        /// appel des méthodes pour récupérer la liste des livres et la liste des commandes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TabCommmandeLivres_Enter(object sender, EventArgs e)
+        {
+            lesLivres = controle.GetAllLivres();
+        }
+
+        /// <summary>
+        /// Affichage des informations du livre sélectionné
+        /// </summary>
+        /// <param name="livre"></param>
+        private void AfficheCommandeLivresInfos(Livre livre)
+        {
+            txbLivreAuteur.Text = livre.Auteur;
+            txbLivreCollection.Text = livre.Collection;
+            txbLivreImage.Text = livre.Image;
+            txbLivreIsbn.Text = livre.Isbn;
+            txbLivreNumero.Text = livre.Id;
+            txbLivreGenre.Text = livre.Genre;
+            txbLivrePublic.Text = livre.Public;
+            txbLivreRayon.Text = livre.Rayon;
+            txbLivreTitre.Text = livre.Titre;
+            string image = livre.Image;
+            try
+            {
+                pcbLivresImage.Image = Image.FromFile(image);
+            }
+            catch
+            {
+                pcbLivresImage.Image = null;
+            }
+
+        }
+
+        /// <summary>
+        /// Vide les zones d'affichage des informations du livre
+        /// </summary>
+        private void VideCommandesLivresInfos()
+        {
+            txbLivreAuteur.Text = "";
+            txbLivreCollection.Text = "";
+            txbLivreImage.Text = "";
+            txbLivreIsbn.Text = "";
+            txbLivreNumero.Text = "";
+            txbLivreGenre.Text = "";
+            txbLivrePublic.Text = "";
+            txbLivreRayon.Text = "";
+            txbLivreTitre.Text = "";
+            pcbLivreImage.Image = null;
+        }
+
+        /// <summary>
+        /// vide les zones de recherche et de filtre
+        /// </summary>
+        private void VideCommandesLivresZones()
+        {
+            txbCommandesLivresNumRecherche.Text = "";
+        }
+
+        /// <summary>
+        /// Remplit le dategrid avec la liste reçue en paramètre
+        /// </summary>
+        private void RemplirCommandesLivresListe(List<CommandeDocument> commandesDocuments)
+        {
+            bdgCommandesDocumentsListe.DataSource = commandesDocuments;
+            dgvCommandesLivreListe.DataSource = bdgCommandesDocumentsListe;
+            dgvCommandesLivreListe.Columns["id"].Visible = false;
+            dgvCommandesLivreListe.Columns["idLivreDvd"].Visible = false;
+            dgvCommandesLivreListe.Columns["idSuivi"].Visible = false;
+            dgvCommandesLivreListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvCommandesLivreListe.Columns["dateCommande"].DisplayIndex = 0;
+            dgvCommandesLivreListe.Columns["montant"].DisplayIndex = 1;
+        }
+
+        /// <summary>
+        /// Vérifie que les informations indiquées sont valides
+        /// </summary>
+        /// <returns>true si les informations sont valides</returns>
+        private bool InfosCommandesDocumentValides()
+        {
+
+            if (nudCommandesLivresNbExemplaire.Value == 0)
+            {
+                return false;
+            }
+            if (!double.TryParse(txbCommandesLivresMontant.Text, out _))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private void Miseajour(string idDocument)
+        {
+            lesCommandesDocument = controle.GetCommandesDocument(idDocument);
+            RemplirCommandesLivresListe(lesCommandesDocument);
+        }
+        /// <summary>
+        /// Vérifie que les informations détaillées pour la commande de livre sont
+        /// correctes et ajoute ou modifie une commande de livre 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCommandesLivreAjout_Click(object sender, EventArgs e)
+        {
+            if (InfosCommandesDocumentValides())
+            {
+                try
+                {
+                    string id = AutoIncrementCommandesLivreId(txbLivreNumero.Text);
+                    decimal nbExemplaire = nudCommandesLivresNbExemplaire.Value;
+                    DateTime dateCommande = DateTime.Now;
+                    double montant = double.Parse(txbCommandesLivresMontant.Text);
+                    string idLivreDvd = txbLivreNumero.Text;
+                    Suivi suivi = (Suivi)controle.GetAllSuivis().Find(x => x.Id.Equals(SUIVIENCOURS));
+                    CommandeDocument commandedocument = new CommandeDocument(id, nbExemplaire, dateCommande, montant, idLivreDvd, suivi.Id, suivi.Libelle);
+                    controle.CreerCommande(commandedocument);
+                    Miseajour(idLivreDvd);
+                }
+                catch
+                {
+                    MessageBox.Show("Certaines des informations indiquées sont invalides.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Un nombre d'exemplaires et un montant doivent être précisés");
+            }
+        }
+
+        /// <summary>
+        /// Ajoute 1 à l'id de la dernière commande (livre ou dvd)
+        /// </summary>
+        /// <returns>L'id suivant l'id le plus élevé</returns>
+        private string AutoIncrementCommandesLivreId(string idDocument)
+        {
+            lesCommandesDocument = controle.GetCommandesDocument(idDocument);
+            List<CommandeDocument> commandesDocumentTries = lesCommandesDocument.OrderBy(o => o.Id).ToList();
+            string nouvelId = null;
+            if (commandesDocumentTries.Count == 0)
+            {
+                nouvelId = "00001";
+            }
+            else
+            {
+                string dernierId = commandesDocumentTries[commandesDocumentTries.Count - 1].Id;
+                int idmath = int.Parse(dernierId) + 1;
+                nouvelId = idmath.ToString();
+                while (nouvelId.Length < 5)
+                {
+                    nouvelId = "0" + nouvelId;
+                }
+            }
+            return nouvelId;
+
+        }
+
+        /// <summary>
+        /// Recherche et affichage des commandes du livre dont on a saisi le numéro.
+        /// Si non trouvé, affichage d'un MessageBox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCommandesLivresNumRecherche_Click(object sender, EventArgs e)
+        {
+
+            if (!txbCommandesLivresNumRecherche.Text.Equals(""))
+            {
+                Livre livre = lesLivres.Find(x => x.Id.Equals(txbCommandesLivresNumRecherche.Text));
+                if (livre != null)
+                {
+                    AfficheCommandeLivresInfos(livre);
+                    grpNouvelleCommandeLivre.Visible = true;
+                    nudCommandesLivresNbExemplaire.Visible = true;
+                    txbCommandesLivresMontant.Visible = true;
+                    lesCommandesDocument = controle.GetCommandesDocument(livre.Id);
+                    RemplirCommandesLivresListe(lesCommandesDocument);
+                }
+                else
+                {
+                    MessageBox.Show("numéro introuvable");
+                    VideCommandesLivresZones();
+                    VideCommandesLivresInfos();
+                    dgvCommandesLivreListe.DataSource = null;
+                    InvisibleBoutonsCommande();
+                }
+            }
+            else
+            {
+                VideCommandesLivresZones();
+                VideCommandesLivresInfos();
+                dgvCommandesLivreListe.DataSource = null;
+                InvisibleBoutonsCommande();
+            }
+        }
+
+        /// <summary>
+        /// Sur la sélection d'une ligne ou cellule dans le grid
+        /// affichage du combobox des suivis et boutons modifier étape de suivi et supprimer commande
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgvCommandesLivreListe_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvLivresListe.CurrentCell != null)
+            {
+                try
+                {
+                    RemplirComboSuivi(controle.GetAllSuivis(), bdgSuivis, cbxLivresSuivis);
+                    VisibleBoutonsCommande();
+                }
+                catch
+                {
+                    InvisibleBoutonsCommande();
+                    VideCommandesLivresZones();
+                }
+            }
+            else
+            {
+                InvisibleBoutonsCommande();
+                VideCommandesLivresInfos();
+            }
+        }
+
+        /// <summary>
+        /// Rend visible le combobox des suivis et les boutons ajouter, modifier et supprimer des commandes
+        /// </summary>
+        private void VisibleBoutonsCommande()
+        {
+            cbxLivresSuivis.Visible = true;
+            btnCommandesLivreAjout.Visible = true;
+            btnLivresSuivisModifier.Visible = true;
+            btnCommandesLivreSupprimer.Visible = true;
+        }
+
+        /// <summary>
+        /// Rend inivisble le combobox des suivis et les boutons ajouter, modifier et supprimer des commandes
+        /// </summary>
+        private void InvisibleBoutonsCommande()
+        {
+            cbxLivresSuivis.Visible = false;
+            btnCommandesLivreAjout.Visible = false;
+            grpNouvelleCommandeLivre.Visible = false;
+            nudCommandesLivresNbExemplaire.Visible = false;
+            txbCommandesLivresMontant.Visible = false;
+            btnLivresSuivisModifier.Visible = false;
+            btnCommandesLivreSupprimer.Visible = false;
+        }
+        /// <summary>
+        /// Modifie l'étape de suivi d'une commande
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnLivresSuivis_Click(object sender, EventArgs e)
+        {
+            if (cbxLivresSuivis.SelectedIndex >= 0)
+            {
+                CommandeDocument commandedocument = (CommandeDocument)bdgCommandesDocumentsListe.List[bdgCommandesDocumentsListe.Position];
+                Suivi leSuivi = (Suivi)cbxLivresSuivis.SelectedItem;
+                string id = commandedocument.Id;
+                decimal nbExemplaire = commandedocument.NbExemplaire;
+                DateTime dateCommande = commandedocument.DateCommande;
+                double montant = commandedocument.Montant;
+                string idLivreDvd = commandedocument.IdLivreDvd;
+                string idSuivi = leSuivi.Id;
+                string suivi = leSuivi.Libelle;
+                CommandeDocument nouveaucommandedocument = new CommandeDocument(id, nbExemplaire, dateCommande, montant, idLivreDvd, idSuivi, suivi);
+                if (suivimodif())
+                {
+                    controle.ModifierCommande(nouveaucommandedocument);
+                    Miseajour(idLivreDvd);
+                }
+            }
+            else
+            {
+                MessageBox.Show("veuillez sélectionner un élément de la liste");
+            }
+        }
+
+        /// <summary>
+        /// Vérifie que les modifications d'étape de suivi sont valides
+        /// </summary>
+        /// <returns>true si les modifications d'étape de suivi sont valides</returns>
+        private bool suivimodif()
+        {
+            Suivi leSuivi = (Suivi)cbxLivresSuivis.SelectedItem;
+            CommandeDocument commandedocument = (CommandeDocument)bdgCommandesDocumentsListe.List[bdgCommandesDocumentsListe.Position];
+            string suivi = leSuivi.Libelle;
+            if (suivi.Equals("en cours") || suivi.Equals("relancée"))
+            {
+                if (commandedocument.Suivi.Equals("livrée") || commandedocument.Suivi.Equals("réglée"))
+                {
+                    MessageBox.Show("impossible de revenir à une étape précédente");
+                    return false;
+                }
+            }
+            if (suivi.Equals("réglée") && !commandedocument.Suivi.Equals("livrée"))
+            {
+                MessageBox.Show("une commande ne peut être réglée que si elle est livrée");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Vérifie que la suppression de la commande est valide
+        /// </summary>
+        /// <returns>true si la suppression de la commande est valide</returns>
+        private bool paslivree()
+        {
+            CommandeDocument commandedocument = (CommandeDocument)bdgCommandesDocumentsListe.List[bdgCommandesDocumentsListe.Position];
+            if (commandedocument.Suivi.Equals("livrée") || commandedocument.Suivi.Equals("réglée"))
+            {
+                MessageBox.Show("une commande ne peut être supprimée uniquement si elle n'est pas encore livrée");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Supprime une commande (livre ou dvd)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCommandesLivreSupprimer_Click(object sender, EventArgs e)
+        {
+            CommandeDocument commandedocument = (CommandeDocument)bdgCommandesDocumentsListe.List[bdgCommandesDocumentsListe.Position];
+            if (commandedocument != null)
+            {
+                DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer la commande n° '" + commandedocument.Id + "' ?", "Confirmation", MessageBoxButtons.YesNo);
+                if (reponse == DialogResult.Yes && paslivree())
+                {
+                     controle.SupprimerCommande(commandedocument);
+                     Miseajour(txbLivreNumero.Text);
+                }
+            }
+        }
         /// <summary>
         /// Récupère l'id de la dernière commande et y ajoute 1
         /// </summary>
         /// <param name="commandes"></param>
         /// <returns></returns>
-        private string AutoIncrementCommandeId(List<Commande> commandes)
+        private string AutoIncrementCommandeId(List<CommandeDocument> commandes)
         {
-            List<Commande> commandesTriees = commandes.OrderBy(o => o.Id).ToList();
+            List<CommandeDocument> commandesTriees = commandes.OrderBy(o => o.Id).ToList();
             string dernierId;
             if (commandesTriees.Count > 0)
             {
@@ -2623,9 +2971,10 @@ namespace Mediatek86.vue
             {
                 CommandeDocument commande = (CommandeDocument)bdgCommandesDvdListe.List[bdgCommandesDvdListe.Position];
                 DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer la commande suivante ?" + Environment.NewLine + 
-                                                       "Date commande : " + commande.DateCommande.ToString("dd MMM yyyy") + Environment.NewLine +
+                                                       "DVD commandé : " + txbCommandeDvdTitre.Text + Environment.NewLine +
+                                                       "Date de la commande : " + commande.DateCommande.ToString("dd MMM yyyy") + Environment.NewLine +
                                                        "Nombre d'exemplaires : " + commande.NbExemplaire + Environment.NewLine +
-                                                       "Montant : " + commande.Montant, "Confirmation", MessageBoxButtons.YesNo);
+                                                       "Montant : " + commande.Montant + "€", "Confirmation", MessageBoxButtons.YesNo);
                 if (reponse == DialogResult.Yes && controle.SupprimerCommande(commande))
                 {
                     lesCommandesDocument.Remove(commande);
@@ -2635,4 +2984,8 @@ namespace Mediatek86.vue
         }
         #endregion
     }
+
 }
+
+
+
