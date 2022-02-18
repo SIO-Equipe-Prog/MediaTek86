@@ -233,7 +233,13 @@ namespace Mediatek86.vue
             this.txbCommandeLivreCollection = new System.Windows.Forms.TextBox();
             this.label63 = new System.Windows.Forms.Label();
             this.tabCommandesDvd = new System.Windows.Forms.TabPage();
-            this.grpCommandeDvdModifier = new System.Windows.Forms.GroupBox();
+            this.grpCommandesDvdRecherche = new System.Windows.Forms.GroupBox();
+            this.btnCommandesDvdSupprimer = new System.Windows.Forms.Button();
+            this.label90 = new System.Windows.Forms.Label();
+            this.label88 = new System.Windows.Forms.Label();
+            this.label83 = new System.Windows.Forms.Label();
+            this.label87 = new System.Windows.Forms.Label();
+            this.txbDvdsDuree = new System.Windows.Forms.TextBox();
             this.label81 = new System.Windows.Forms.Label();
             this.btnCommandeDvdSupprimer = new System.Windows.Forms.Button();
             this.btnCommandeDvdModifier = new System.Windows.Forms.Button();
@@ -2498,6 +2504,62 @@ namespace Mediatek86.vue
             this.grpCommandeDvdModifier.TabStop = false;
             this.grpCommandeDvdModifier.Text = "Modification de la commande sélectionnée";
             // 
+            // btnCommandesDvdSupprimer
+            // 
+            this.btnCommandesDvdSupprimer.Location = new System.Drawing.Point(676, 412);
+            this.btnCommandesDvdSupprimer.Name = "btnCommandesDvdSupprimer";
+            this.btnCommandesDvdSupprimer.Size = new System.Drawing.Size(95, 23);
+            this.btnCommandesDvdSupprimer.TabIndex = 38;
+            this.btnCommandesDvdSupprimer.Text = "Supprimer";
+            this.btnCommandesDvdSupprimer.UseVisualStyleBackColor = true;
+            // 
+            // label90
+            // 
+            this.label90.AutoSize = true;
+            this.label90.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label90.Location = new System.Drawing.Point(13, 135);
+            this.label90.Name = "label90";
+            this.label90.Size = new System.Drawing.Size(65, 13);
+            this.label90.TabIndex = 37;
+            this.label90.Text = "Synopsis :";
+            // 
+            // label88
+            // 
+            this.label88.AutoSize = true;
+            this.label88.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label88.Location = new System.Drawing.Point(13, 106);
+            this.label88.Name = "label88";
+            this.label88.Size = new System.Drawing.Size(112, 13);
+            this.label88.TabIndex = 36;
+            this.label88.Text = "Réalisateur(trice) :";
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label83.Location = new System.Drawing.Point(12, 80);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(41, 13);
+            this.label83.TabIndex = 35;
+            this.label83.Text = "Titre :";
+            // 
+            // label87
+            // 
+            this.label87.AutoSize = true;
+            this.label87.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label87.Location = new System.Drawing.Point(308, 37);
+            this.label87.Name = "label87";
+            this.label87.Size = new System.Drawing.Size(49, 13);
+            this.label87.TabIndex = 34;
+            this.label87.Text = "Durée :";
+            // 
+            // txbDvdsDuree
+            // 
+            this.txbDvdsDuree.Location = new System.Drawing.Point(376, 34);
+            this.txbDvdsDuree.Name = "txbDvdsDuree";
+            this.txbDvdsDuree.Size = new System.Drawing.Size(100, 20);
+            this.txbDvdsDuree.TabIndex = 33;
+            // 
             // label81
             // 
             this.label81.AutoSize = true;
@@ -3317,7 +3379,7 @@ namespace Mediatek86.vue
             // 
             this.label74.AutoSize = true;
             this.label74.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label74.Location = new System.Drawing.Point(25, 317);
+            this.label74.Location = new System.Drawing.Point(25, 326);
             this.label74.Name = "label74";
             this.label74.Size = new System.Drawing.Size(91, 13);
             this.label74.TabIndex = 33;
@@ -3368,11 +3430,12 @@ namespace Mediatek86.vue
             this.dgvAbonnementsListe.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAbonnementsListe.Size = new System.Drawing.Size(418, 138);
             this.dgvAbonnementsListe.TabIndex = 22;
+            this.dgvAbonnementsListe.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAbonnementsListe_ColumnHeaderMouseClick);
             this.dgvAbonnementsListe.SelectionChanged += new System.EventHandler(this.dgvAbonnementsListe_SelectionChanged);
             // 
             // txbRevueImage
             // 
-            this.txbRevueImage.Location = new System.Drawing.Point(181, 260);
+            this.txbRevueImage.Location = new System.Drawing.Point(170, 260);
             this.txbRevueImage.Name = "txbRevueImage";
             this.txbRevueImage.Size = new System.Drawing.Size(207, 20);
             this.txbRevueImage.TabIndex = 31;
@@ -3398,23 +3461,23 @@ namespace Mediatek86.vue
             // 
             // txbCommandesRevuesNumRecherche
             // 
-            this.txbCommandesRevuesNumRecherche.Location = new System.Drawing.Point(155, 28);
+            this.txbCommandesRevuesNumRecherche.Location = new System.Drawing.Point(170, 28);
             this.txbCommandesRevuesNumRecherche.Name = "txbCommandesRevuesNumRecherche";
-            this.txbCommandesRevuesNumRecherche.Size = new System.Drawing.Size(119, 20);
+            this.txbCommandesRevuesNumRecherche.Size = new System.Drawing.Size(104, 20);
             this.txbCommandesRevuesNumRecherche.TabIndex = 1;
             // 
             // txbRevueRayon
             // 
-            this.txbRevueRayon.Location = new System.Drawing.Point(170, 228);
+            this.txbRevueRayon.Location = new System.Drawing.Point(170, 224);
             this.txbRevueRayon.Name = "txbRevueRayon";
-            this.txbRevueRayon.Size = new System.Drawing.Size(207, 20);
+            this.txbRevueRayon.Size = new System.Drawing.Size(144, 20);
             this.txbRevueRayon.TabIndex = 30;
             // 
             // label68
             // 
             this.label68.AutoSize = true;
             this.label68.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label68.Location = new System.Drawing.Point(37, 31);
+            this.label68.Location = new System.Drawing.Point(21, 35);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(112, 13);
             this.label68.TabIndex = 0;
@@ -3424,14 +3487,14 @@ namespace Mediatek86.vue
             // 
             this.txbRevuePublic.Location = new System.Drawing.Point(170, 183);
             this.txbRevuePublic.Name = "txbRevuePublic";
-            this.txbRevuePublic.Size = new System.Drawing.Size(207, 20);
+            this.txbRevuePublic.Size = new System.Drawing.Size(144, 20);
             this.txbRevuePublic.TabIndex = 29;
             // 
             // label76
             // 
             this.label76.AutoSize = true;
             this.label76.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label76.Location = new System.Drawing.Point(51, 263);
+            this.label76.Location = new System.Drawing.Point(22, 267);
             this.label76.Name = "label76";
             this.label76.Size = new System.Drawing.Size(117, 13);
             this.label76.TabIndex = 6;
@@ -3439,16 +3502,16 @@ namespace Mediatek86.vue
             // 
             // txbRevueTitre
             // 
-            this.txbRevueTitre.Location = new System.Drawing.Point(170, 68);
+            this.txbRevueTitre.Location = new System.Drawing.Point(170, 71);
             this.txbRevueTitre.Name = "txbRevueTitre";
-            this.txbRevueTitre.Size = new System.Drawing.Size(100, 20);
+            this.txbRevueTitre.Size = new System.Drawing.Size(104, 20);
             this.txbRevueTitre.TabIndex = 24;
             // 
             // label72
             // 
             this.label72.AutoSize = true;
             this.label72.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label72.Location = new System.Drawing.Point(84, 231);
+            this.label72.Location = new System.Drawing.Point(25, 231);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(51, 13);
             this.label72.TabIndex = 17;
@@ -3458,14 +3521,14 @@ namespace Mediatek86.vue
             // 
             this.txbRevueGenre.Location = new System.Drawing.Point(170, 152);
             this.txbRevueGenre.Name = "txbRevueGenre";
-            this.txbRevueGenre.Size = new System.Drawing.Size(207, 20);
+            this.txbRevueGenre.Size = new System.Drawing.Size(144, 20);
             this.txbRevueGenre.TabIndex = 28;
             // 
             // label73
             // 
             this.label73.AutoSize = true;
             this.label73.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label73.Location = new System.Drawing.Point(84, 68);
+            this.label73.Location = new System.Drawing.Point(25, 78);
             this.label73.Name = "label73";
             this.label73.Size = new System.Drawing.Size(41, 13);
             this.label73.TabIndex = 8;
@@ -3475,7 +3538,7 @@ namespace Mediatek86.vue
             // 
             this.label70.AutoSize = true;
             this.label70.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label70.Location = new System.Drawing.Point(84, 190);
+            this.label70.Location = new System.Drawing.Point(27, 190);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(50, 13);
             this.label70.TabIndex = 19;
@@ -3485,14 +3548,14 @@ namespace Mediatek86.vue
             // 
             this.txbRevueDateMiseADispo.Location = new System.Drawing.Point(170, 126);
             this.txbRevueDateMiseADispo.Name = "txbRevueDateMiseADispo";
-            this.txbRevueDateMiseADispo.Size = new System.Drawing.Size(100, 20);
+            this.txbRevueDateMiseADispo.Size = new System.Drawing.Size(104, 20);
             this.txbRevueDateMiseADispo.TabIndex = 27;
             // 
             // label69
             // 
             this.label69.AutoSize = true;
             this.label69.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label69.Location = new System.Drawing.Point(84, 152);
+            this.label69.Location = new System.Drawing.Point(27, 159);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(49, 13);
             this.label69.TabIndex = 22;
@@ -3502,14 +3565,14 @@ namespace Mediatek86.vue
             // 
             this.txbRevuePeriodicite.Location = new System.Drawing.Point(170, 97);
             this.txbRevuePeriodicite.Name = "txbRevuePeriodicite";
-            this.txbRevuePeriodicite.Size = new System.Drawing.Size(100, 20);
+            this.txbRevuePeriodicite.Size = new System.Drawing.Size(104, 20);
             this.txbRevuePeriodicite.TabIndex = 26;
             // 
             // label75
             // 
             this.label75.AutoSize = true;
             this.label75.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label75.Location = new System.Drawing.Point(74, 97);
+            this.label75.Location = new System.Drawing.Point(25, 104);
             this.label75.Name = "label75";
             this.label75.Size = new System.Drawing.Size(75, 13);
             this.label75.TabIndex = 9;
@@ -3519,137 +3582,11 @@ namespace Mediatek86.vue
             // 
             this.label77.AutoSize = true;
             this.label77.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label77.Location = new System.Drawing.Point(50, 126);
+            this.label77.Location = new System.Drawing.Point(22, 133);
             this.label77.Name = "label77";
             this.label77.Size = new System.Drawing.Size(118, 13);
             this.label77.TabIndex = 10;
             this.label77.Text = "Délai mise à dispo :";
-            // 
-            // txbDvdsDuree
-            // 
-            this.txbDvdsDuree.Location = new System.Drawing.Point(389, 27);
-            this.txbDvdsDuree.Name = "txbDvdsDuree";
-            this.txbDvdsDuree.Size = new System.Drawing.Size(100, 20);
-            this.txbDvdsDuree.TabIndex = 33;
-            // 
-            // label87
-            // 
-            this.label87.AutoSize = true;
-            this.label87.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label87.Location = new System.Drawing.Point(321, 30);
-            this.label87.Name = "label87";
-            this.label87.Size = new System.Drawing.Size(49, 13);
-            this.label87.TabIndex = 34;
-            this.label87.Text = "Durée :";
-            // 
-            // label83
-            // 
-            this.label83.AutoSize = true;
-            this.label83.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label83.Location = new System.Drawing.Point(79, 72);
-            this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(41, 13);
-            this.label83.TabIndex = 35;
-            this.label83.Text = "Titre :";
-            // 
-            // label88
-            // 
-            this.label88.AutoSize = true;
-            this.label88.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label88.Location = new System.Drawing.Point(27, 99);
-            this.label88.Name = "label88";
-            this.label88.Size = new System.Drawing.Size(112, 13);
-            this.label88.TabIndex = 36;
-            this.label88.Text = "Réalisateur(trice) :";
-            // 
-            // label90
-            // 
-            this.label90.AutoSize = true;
-            this.label90.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label90.Location = new System.Drawing.Point(55, 128);
-            this.label90.Name = "label90";
-            this.label90.Size = new System.Drawing.Size(65, 13);
-            this.label90.TabIndex = 37;
-            this.label90.Text = "Synopsis :";
-            // 
-            // grpNouvelleCommandeDvd
-            // 
-            this.grpNouvelleCommandeDvd.Controls.Add(this.nudCommandesDvdNbExemplaire);
-            this.grpNouvelleCommandeDvd.Controls.Add(this.label91);
-            this.grpNouvelleCommandeDvd.Controls.Add(this.txbCommandesDvdMontant);
-            this.grpNouvelleCommandeDvd.Controls.Add(this.btnCommandesDvdAjout);
-            this.grpNouvelleCommandeDvd.Controls.Add(this.label92);
-            this.grpNouvelleCommandeDvd.Location = new System.Drawing.Point(17, 537);
-            this.grpNouvelleCommandeDvd.Name = "grpNouvelleCommandeDvd";
-            this.grpNouvelleCommandeDvd.Size = new System.Drawing.Size(772, 143);
-            this.grpNouvelleCommandeDvd.TabIndex = 8;
-            this.grpNouvelleCommandeDvd.TabStop = false;
-            this.grpNouvelleCommandeDvd.Text = "NouvelleCommandeDvd";
-            this.grpNouvelleCommandeDvd.Visible = false;
-            // 
-            // nudCommandesDvdNbExemplaire
-            // 
-            this.nudCommandesDvdNbExemplaire.Location = new System.Drawing.Point(155, 38);
-            this.nudCommandesDvdNbExemplaire.Name = "nudCommandesDvdNbExemplaire";
-            this.nudCommandesDvdNbExemplaire.Size = new System.Drawing.Size(120, 20);
-            this.nudCommandesDvdNbExemplaire.TabIndex = 11;
-            this.nudCommandesDvdNbExemplaire.Visible = false;
-            // 
-            // label91
-            // 
-            this.label91.AutoSize = true;
-            this.label91.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label91.Location = new System.Drawing.Point(42, 79);
-            this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(60, 13);
-            this.label91.TabIndex = 10;
-            this.label91.Text = "montant :";
-            // 
-            // txbCommandesDvdMontant
-            // 
-            this.txbCommandesDvdMontant.Location = new System.Drawing.Point(155, 74);
-            this.txbCommandesDvdMontant.Name = "txbCommandesDvdMontant";
-            this.txbCommandesDvdMontant.Size = new System.Drawing.Size(100, 20);
-            this.txbCommandesDvdMontant.TabIndex = 9;
-            this.txbCommandesDvdMontant.Visible = false;
-            // 
-            // btnCommandesDvdAjout
-            // 
-            this.btnCommandesDvdAjout.Location = new System.Drawing.Point(67, 105);
-            this.btnCommandesDvdAjout.Name = "btnCommandesDvdAjout";
-            this.btnCommandesDvdAjout.Size = new System.Drawing.Size(521, 23);
-            this.btnCommandesDvdAjout.TabIndex = 6;
-            this.btnCommandesDvdAjout.Text = "Ajouter";
-            this.btnCommandesDvdAjout.UseVisualStyleBackColor = true;
-            this.btnCommandesDvdAjout.Visible = false;
-            // 
-            // label92
-            // 
-            this.label92.AutoSize = true;
-            this.label92.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label92.Location = new System.Drawing.Point(25, 40);
-            this.label92.Name = "label92";
-            this.label92.Size = new System.Drawing.Size(90, 13);
-            this.label92.TabIndex = 1;
-            this.label92.Text = "nbExemplaire :";
-            // 
-            // btnCommandesLivresSupprimer
-            // 
-            this.btnCommandesLivresSupprimer.Location = new System.Drawing.Point(692, 418);
-            this.btnCommandesLivresSupprimer.Name = "btnCommandesLivresSupprimer";
-            this.btnCommandesLivresSupprimer.Size = new System.Drawing.Size(95, 23);
-            this.btnCommandesLivresSupprimer.TabIndex = 22;
-            this.btnCommandesLivresSupprimer.Text = "Supprimer";
-            this.btnCommandesLivresSupprimer.UseVisualStyleBackColor = true;
-            // 
-            // btnCommandesDvdSupprimer
-            // 
-            this.btnCommandesDvdSupprimer.Location = new System.Drawing.Point(676, 412);
-            this.btnCommandesDvdSupprimer.Name = "btnCommandesDvdSupprimer";
-            this.btnCommandesDvdSupprimer.Size = new System.Drawing.Size(95, 23);
-            this.btnCommandesDvdSupprimer.TabIndex = 38;
-            this.btnCommandesDvdSupprimer.Text = "Supprimer";
-            this.btnCommandesDvdSupprimer.UseVisualStyleBackColor = true;
             // 
             // FrmMediatek
             // 

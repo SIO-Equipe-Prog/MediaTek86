@@ -3225,10 +3225,13 @@ namespace Mediatek86.vue
             }
             else
             {
-                btnCommandeRevueSupprimer.Enabled = false;
+                InvisibleBoutonsCommande();
+                VideCommandesRevuesInfos();
             }
         }
 
+        
+       
         /// <summary>
         /// Tri sur les colonnes
         /// </summary>
@@ -3236,8 +3239,8 @@ namespace Mediatek86.vue
         /// <param name="e"></param>
         private void dgvAbonnementsListe_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            VideRevuesZones();
             string titreColonne = dgvAbonnementsListe.Columns[e.ColumnIndex].HeaderText;
+            lesAbonnements = controle.GetAbonnements(txbCommandesRevuesNumRecherche.Text);
             List<Abonnement> sortedList = new List<Abonnement>();
             switch (titreColonne)
             {
