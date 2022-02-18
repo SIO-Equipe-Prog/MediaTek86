@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Mediatek86.bdd;
 using System;
-using System.Windows.Forms;
 
 namespace Mediatek86.modele
 {
@@ -327,12 +326,37 @@ namespace Mediatek86.modele
         /// Retourne les commandes pour livre ou d'un dvd
         /// </summary>
         /// <returns>Liste d'objets CommandeDocument</returns>
-        public static List<CommandeDocument> GetAllCommandesDocument()
+        public static List<Commande> GetAllCommandes()
         {
-            List<CommandeDocument> lesCommandes = new List<CommandeDocument>();
-            string req = "Select cd.id, cd.nbexemplaire, cd.idlivredvd, cd.idsuivi, s.libelle as suivi, c.datecommande, c.montant ";
-            req += "from commandedocument cd join commande c on cd.id=c.id ";
-            req += "join suivi s on cd.idsuivi = s.id ";
+            List<Commande> lesCommandes = new List<Commande>();
+            string req = "Select id, datecommande, montant ";
+            req += "from commande ";
+            req += "order by datecommande DESC";
+            BddMySql curs = BddMySql.GetInstance(connectionString);
+            curs.ReqSelect(req, null);
+
+            while (curs.Read())
+            {
+                string id = (string)curs.Field("id");
+                DateTime dateCommande = (DateTime)curs.Field("dateCommande");
+                double montant = (double)curs.Field("montant");
+                Commande commande = new Commande(id, dateCommande, montant);
+                lesCommandes.Add(commande);
+            }
+            curs.Close();
+
+            return lesCommandes;
+        }
+
+        /// <summary>
+        /// Retourne les abonnements
+        /// </summary>
+        /// <returns>Liste d'objets Abonnement</returns>
+        public static List<Abonnement> GetAllAbonnements()
+        {
+            List<Abonnement> lesAbonnements = new List<Abonnement>();
+            string req = "Select a.id, a.datefinabonnement, a.idrevue, c.datecommande, c.montant ";
+            req += "from abonnement a join commande c on a.id=c.id ";
             req += "order by c.datecommande DESC";
             BddMySql curs = BddMySql.GetInstance(connectionString);
             curs.ReqSelect(req, null);
@@ -340,19 +364,18 @@ namespace Mediatek86.modele
             while (curs.Read())
             {
                 string idCommande = (string)curs.Field("id");
-                int nbExemplaire = (int)curs.Field("nbExemplaire");
+                DateTime dateFinAbonnement = (DateTime)curs.Field("dateFinAbonnement");
                 DateTime dateCommande = (DateTime)curs.Field("dateCommande");
                 double montant = (double)curs.Field("montant");
-                string idLivreDvd = (string)curs.Field("idLivreDvd");
-                string idSuivi = (string)curs.Field("idSuivi");
-                string suivi = (string)curs.Field("suivi");
-                CommandeDocument commandeDocument = new CommandeDocument(idCommande, nbExemplaire, dateCommande, montant, idLivreDvd, idSuivi, suivi);
-                lesCommandes.Add(commandeDocument);
+                string idRevue = (string)curs.Field("idRevue");
+                Abonnement abonnement = new Abonnement(idCommande, dateFinAbonnement, dateCommande, montant, idRevue);
+                lesAbonnements.Add(abonnement);
             }
             curs.Close();
 
-            return lesCommandes;
+            return lesAbonnements;
         }
+
         /// <summary>
         /// Retourne les abonnements pour revue
         /// </summary>
@@ -564,6 +587,47 @@ namespace Mediatek86.modele
                 return false;
             }
         }
+
+        /// <summary>
+        /// Écriture d'un abonnement en base de données
+        /// </summary>
+        /// <param name="abonnement"></param>
+        /// <returns>true si l'opération a réussi</returns>
+        public static bool CreerAbonnement(Abonnement abonnement)
+        {
+            try
+            {
+                List<string> allReq = new List<string>
+                {
+                    "insert into commande values (@id,@dateCommande,@montant);",
+                    "insert into abonnement values (@id, @dateFinAbonnement, @idRevue);",
+                };
+                List<Dictionary<string, object>> allParameters = new List<Dictionary<string, object>>();
+                allParameters.Add(new Dictionary<string, object>
+                {
+                    {"@id", abonnement.Id },
+                    { "@dateCommande", abonnement.DateCommande},
+                    { "@montant", abonnement.Montant}
+
+                });
+                allParameters.Add(new Dictionary<string, object>
+                {
+                    {"@id", abonnement.Id },
+                    { "@dateFinAbonnement", abonnement.DateFinAbonnement},
+                    { "@idRevue", abonnement.IdRevue}
+                });
+
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdateTransaction(allReq, allParameters);
+                curs.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Modification d'un dvd dans la base de données
         /// </summary>
@@ -653,28 +717,21 @@ namespace Mediatek86.modele
         }
 
         /// <summary>
-        /// Modification de l'étape de suivi d'une commande de livreo ou dvd dans la base de données
+        /// Modifie l'étape de suivi pour un livre ou un dvd dans la base de données
         /// </summary>
-        /// <param name="commandedocument"></param>
-        /// <returns>true si l'opération a réussi</returns>
-        public static bool ModifierSuivi(CommandeDocument commandedocument)
+        /// <param name="commandeDocument"></param>
+        /// <returns></returns>
+        public static bool ModifierSuivi(CommandeDocument commandeDocument)
         {
             try
             {
-
-                string req = "update commandedocument set idSuivi=@idSuivi where id=@id";
-
-
-
+                string req = "update commandedocument set idsuivi=@idSuivi ";
+                req += "where id=@id";
                 Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-                    {"@id", commandedocument.Id },
-                    { "@idSuivi", commandedocument.IdSuivi}
-
-
-
+                    { "@idSuivi", commandeDocument.IdSuivi},
+                    { "@id", commandeDocument.Id}
                 };
-
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqUpdate(req, parameters);
                 curs.Close();
@@ -855,33 +912,6 @@ namespace Mediatek86.modele
         }
 
         /// <summary>
-        /// Modifie l'étape de suivi pour un livre ou un dvd dans la base de données
-        /// </summary>
-        /// <param name="commandeDocument"></param>
-        /// <returns></returns>
-        public static bool ModifierCommandeDocument(CommandeDocument commandeDocument)
-        {
-            try
-            {
-                string req = "update commandedocument set idsuivi=@idSuivi ";
-                req += "where id=@id";
-                Dictionary<string, object> parameters = new Dictionary<string, object>
-                {
-                    { "@idSuivi", commandeDocument.IdSuivi},
-                    { "@id", commandeDocument.Id}
-                };
-                BddMySql curs = BddMySql.GetInstance(connectionString);
-                curs.ReqUpdate(req, parameters);
-                curs.Close();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
         /// Suppression d'une commande (livre ou dvd)  dans la base de données
         /// </summary>
         /// <param name="commandedocument"></param>
@@ -914,6 +944,69 @@ namespace Mediatek86.modele
             catch
             {
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Suppression d'un abonnement  dans la base de données
+        /// </summary>
+        /// <param name="abonnement"></param>
+        /// <returns>true si l'opération a réussi</returns>
+        public static bool SupprimerAbonnement(Abonnement abonnement)
+        {
+            try
+            {
+
+                List<string> allReq = new List<string>
+                {
+                    "delete from abonnement "
+                        + "where id=@id",
+                    "delete from commande "
+                        + "where id=@id"
+                };
+                List<Dictionary<string, object>> allParameters = new List<Dictionary<string, object>>();
+                allParameters.Add(new Dictionary<string, object>
+                {
+                    {"@id", abonnement.Id },
+                });
+                allParameters.Add(new Dictionary<string, object>
+                {
+                    {"@id", abonnement.Id },
+                });
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqUpdateTransaction(allReq, allParameters);
+                curs.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Execution d'une procédure stockée sur les abonnements
+        /// </summary>
+        /// <returns>true si l'opération a réussi</returns>
+        public static string RevueAbonnementsLimite()
+        {
+            try
+            {
+                string liste = null;
+                BddMySql curs = BddMySql.GetInstance(connectionString);
+                curs.ReqProcedure("revueabonnements");
+                while (curs.Read())
+                {
+                    string titre = (string)curs.Field("titre");
+                    DateTime dateFinAbonnement = (DateTime)curs.Field("dateFinAbonnement");
+                    liste += titre + " : " + dateFinAbonnement.ToShortDateString() + Environment.NewLine;
+                }
+                curs.Close();
+                return liste;
+            }
+            catch
+            {
+                return "";
             }
         }
     }

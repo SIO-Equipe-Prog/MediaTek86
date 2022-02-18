@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace Mediatek86.bdd
 {
@@ -190,6 +191,31 @@ namespace Mediatek86.bdd
             catch (MySqlException e)
             {
                 transaction.Rollback();
+                Console.WriteLine(e.Message);
+                throw;
+            }
+            catch (InvalidOperationException e)
+            {
+                ErreurGraveBddNonAccessible(e);
+            }
+        }
+
+        /// <summary>
+        /// Exécution d'une procédure stockée
+        /// </summary>
+        /// <param name="stringQuery">requête autre que select</param>
+        public void ReqProcedure(string stringQuery)
+        {
+            MySqlCommand command;
+            try
+            {
+                command = new MySqlCommand(stringQuery, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Prepare();
+                reader = command.ExecuteReader();
+            }
+            catch (MySqlException e)
+            {
                 Console.WriteLine(e.Message);
                 throw;
             }

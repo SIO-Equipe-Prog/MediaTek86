@@ -2,7 +2,7 @@
 using Mediatek86.modele;
 using Mediatek86.metier;
 using Mediatek86.vue;
-
+using System.Threading;
 
 namespace Mediatek86.controleur
 {
@@ -15,7 +15,6 @@ namespace Mediatek86.controleur
         private readonly List<Categorie> lesPublics;
         private readonly List<Categorie> lesGenres;
         private readonly List<Suivi> lesSuivis;
-        private readonly List<CommandeDocument> lesCommandesDocuments;
         /// <summary>
         /// Ouverture de la fenêtre
         /// </summary>
@@ -28,7 +27,6 @@ namespace Mediatek86.controleur
             lesRayons = Dao.GetAllRayons();
             lesPublics = Dao.GetAllPublics();
             lesSuivis = Dao.GetAllSuivis();
-            lesCommandesDocuments = Dao.GetAllCommandesDocument();
             FrmMediatek frmMediatek = new FrmMediatek(this);
             frmMediatek.ShowDialog();
         }
@@ -95,20 +93,30 @@ namespace Mediatek86.controleur
             return lesSuivis;
         }
         /// <summary>
-        /// getter sur les commandes de livre ou dvd
-        /// </summary>
-        /// <returns>Collection d'objets Suivi</returns>
-        public List<CommandeDocument> GetAllCommandesDocuments()
-        {
-            return Dao.GetAllCommandesDocument();
-        }
-        /// <summary>
         /// récupère les exemplaires d'une revue
         /// </summary>
         /// <returns>Collection d'objets Exemplaire</returns>
         public List<Exemplaire> GetExemplairesRevue(string idDocument)
         {
             return Dao.GetExemplairesRevue(idDocument);
+        }
+
+        /// <summary>
+        /// getters ur les abonnements
+        /// </summary>
+        /// <returns>Collection d'objets Abonnement</returns>
+        public List<Abonnement> GetAllAbonnements()
+        {
+            return Dao.GetAllAbonnements();
+        }
+
+        /// <summary>
+        /// getters ur les abonnements
+        /// </summary>
+        /// <returns>Collection d'objets Abonnement</returns>
+        public List<Commande> GetAllCommandes()
+        {
+            return Dao.GetAllCommandes();
         }
 
         /// <summary>
@@ -229,7 +237,7 @@ namespace Mediatek86.controleur
             }
             if (commande is Abonnement abonnement)
             {
-                // TODO: permettre l'ajout d'abonnements (revues)
+                return Dao.CreerAbonnement(abonnement);
             }
             return false;
         }
@@ -239,9 +247,9 @@ namespace Mediatek86.controleur
         /// </summary>
         /// <param name="commande"></param>
         /// <returns>True si la création a pu se faire</returns>
-        public bool ModifierCommande(CommandeDocument commande)
+        public bool ModifierSuivi(CommandeDocument commande)
         {
-            return Dao.ModifierCommandeDocument(commande);
+            return Dao.ModifierSuivi(commande);
         }
 
         /// <summary>
@@ -256,9 +264,14 @@ namespace Mediatek86.controleur
             }
             if (commande is Abonnement abonnement)
             {
-                // TODO: permettre la suppression d'abonnements (revues)
+                return Dao.SupprimerAbonnement(abonnement);
             }
             return false;
+        }
+
+        public string ShowAbonnementsLimite()
+        {
+            return Dao.RevueAbonnementsLimite();
         }
     }
 }
