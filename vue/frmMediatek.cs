@@ -2488,7 +2488,7 @@ namespace Mediatek86.vue
                     VideCommandesLivresZones();
                     VideCommandesLivresInfos();
                     dgvCommandesLivreListe.DataSource = null;
-                    InvisibleBoutonsCommande();
+           
                 }
             }
             else
@@ -2496,7 +2496,7 @@ namespace Mediatek86.vue
                 VideCommandesLivresZones();
                 VideCommandesLivresInfos();
                 dgvCommandesLivreListe.DataSource = null;
-                InvisibleBoutonsCommande();
+           
             }
         }
 
@@ -2529,20 +2529,23 @@ namespace Mediatek86.vue
                 try
                 {
                     RemplirComboSuivi(controle.GetAllSuivis(), bdgSuivis, cbxLivresSuivis);
-                    VisibleBoutonsCommande();
+                  
                 }
                 catch
                 {
-                    InvisibleBoutonsCommande();
+                
                     VideCommandesLivresZones();
                 }
             }
             else
             {
-                InvisibleBoutonsCommande();
+          
                 VideCommandesLivresInfos();
             }
         }
+        
+     
+
         /// <summary>
         /// Tri sur les colonnes
         /// </summary>
@@ -2550,7 +2553,6 @@ namespace Mediatek86.vue
         /// <param name="e"></param>
         private void dgvCommandesLivreListe_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            
             string titreColonne = dgvCommandesLivreListe.Columns[e.ColumnIndex].HeaderText;
             List<CommandeDocument> sortedList = new List<CommandeDocument>();
             lesCommandesDocument = controle.GetCommandesDocument(txbCommandesLivresNumRecherche.Text);
@@ -2571,30 +2573,9 @@ namespace Mediatek86.vue
             }
             RemplirCommandesLivresListe(sortedList);
         }
-        /// <summary>
-        /// Rend visible le combobox des suivis et les boutons ajouter, modifier et supprimer des commandes
-        /// </summary>
-        private void VisibleBoutonsCommande()
-        {
-            cbxLivresSuivis.Visible = true;
-            btnCommandesLivreAjout.Visible = true;
-            btnLivresSuivisModifier.Visible = true;
-            btnCommandesLivresSupprimer.Visible = true;
-        }
 
-        /// <summary>
-        /// Rend inivisble le combobox des suivis et les boutons ajouter, modifier et supprimer des commandes
-        /// </summary>
-        private void InvisibleBoutonsCommande()
-        {
-            cbxLivresSuivis.Visible = false;
-            btnCommandesLivreAjout.Visible = false;
-            grpNouvelleCommandeLivre.Visible = false;
-            nudCommandesLivresNbExemplaire.Visible = false;
-            txbCommandesLivresMontant.Visible = false;
-            btnLivresSuivisModifier.Visible = false;
-            btnCommandesLivresSupprimer.Visible = false;
-        }
+        
+       
         /// <summary>
         /// Modifie l'étape de suivi d'une commande
         /// </summary>
@@ -2837,7 +2818,7 @@ namespace Mediatek86.vue
                     VideCommandesDvdZones();
                     VideCommandesDvdInfos();
                     dgvCommandesDvdListe.DataSource = null;
-                    InvisibleBoutonsCommande();
+                  
                 }
             }
             else
@@ -2845,7 +2826,7 @@ namespace Mediatek86.vue
                 VideCommandesDvdZones();
                 VideCommandesDvdInfos();
                 dgvCommandesDvdListe.DataSource = null;
-                InvisibleBoutonsCommande();
+          
             }
         }
 
@@ -2885,9 +2866,9 @@ namespace Mediatek86.vue
         /// <param name="e"></param>
         private void dgvCommandesDvdListe_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            VideCommandesDvdZones();
             string titreColonne = dgvCommandesDvdListe.Columns[e.ColumnIndex].HeaderText;
             List<CommandeDocument> sortedList = new List<CommandeDocument>();
+            lesCommandesDocument = controle.GetCommandesDocument(txbCommandesLivresNumRecherche.Text);
             switch (titreColonne)
             {
                 case "DateCommande":
@@ -3116,7 +3097,6 @@ namespace Mediatek86.vue
                     Abonnement abonnement = new Abonnement(id, dateFinAbonnement, dateCommande, montant, idRevue);
                     controle.CreerCommande(abonnement);
                     miseajourAbonnement(idRevue);
-                
                 }
                 catch
                 {
@@ -3170,10 +3150,6 @@ namespace Mediatek86.vue
                 if (revue != null)
                 {
                     AfficheRevueInfos(revue);
-                    grpCommandeRevueAjout.Visible = true;
-                    dtpRevueAbonnementDateFin.Visible = true;
-                    txbCommandeRevueMontant.Visible = true;
-                    btnCommandesRevuesAjouter.Visible = true;
                     lesAbonnements = controle.GetAbonnements(revue.Id);
                     if (lesAbonnements.Count > 0)
                     {
@@ -3189,14 +3165,14 @@ namespace Mediatek86.vue
                     MessageBox.Show("numéro introuvable");
                     
                     dgvAbonnementsListe.DataSource = null;
-                    InvisibleBoutonsCommandeRevue();
+                   
                 }
             }
             else
             {
                
                 dgvAbonnementsListe.DataSource = null;
-                InvisibleBoutonsCommandeRevue();
+                
             }
         }
 
@@ -3213,21 +3189,21 @@ namespace Mediatek86.vue
             {
                 try
                 {
-                    VisibleBoutonsCommandeRevue();
+                    
                 }
                 catch
                 {
-                    InvisibleBoutonsCommandeRevue();
                     VideCommandesRevuesZones();
                 }
             }
             else
             {
-                InvisibleBoutonsCommande();
                 VideCommandesRevuesInfos();
             }
         }
 
+        
+       
         /// <summary>
         /// Tri sur les colonnes
         /// </summary>
@@ -3235,8 +3211,8 @@ namespace Mediatek86.vue
         /// <param name="e"></param>
         private void dgvAbonnementsListe_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            VideRevuesZones();
             string titreColonne = dgvAbonnementsListe.Columns[e.ColumnIndex].HeaderText;
+            lesAbonnements = controle.GetAbonnements(txbCommandesRevuesNumRecherche.Text);
             List<Abonnement> sortedList = new List<Abonnement>();
             switch (titreColonne)
             {
@@ -3252,31 +3228,7 @@ namespace Mediatek86.vue
             }
             RemplirAbonnementsListe(sortedList);
         }
-        /// <summary>
-        /// Rend visible les boutons ajouter et supprimer l'abonnement
-        /// </summary>
-        private void VisibleBoutonsCommandeRevue()
-        {
-            btnCommandesRevuesAjouter.Visible = true;
-            btnCommandesRevuesSupprimer.Visible = true;
-            grpCommandeRevueAjout.Visible = true;
-            dtpRevueAbonnementDateFin.Visible = true;
-            txbCommandeRevueMontant.Visible = true;
-        }
-
-        /// <summary>
-        /// Rend invisible les boutons ajouter et supprimer l'abonnement
-        /// </summary>
-        private void InvisibleBoutonsCommandeRevue()
-        {
-
-            btnCommandesRevuesAjouter.Visible = false;
-            btnCommandesRevuesSupprimer.Visible = false;
-            grpCommandeRevueAjout.Visible = false;
-            dtpRevueAbonnementDateFin.Visible = false;
-            txbCommandeRevueMontant.Visible = false;
-           
-        }
+        
              
         /// <summary>
         /// Supprime un abonnement
@@ -3311,8 +3263,11 @@ namespace Mediatek86.vue
         }
 
 
+
+
         #endregion
 
+        
     }
 
 }
