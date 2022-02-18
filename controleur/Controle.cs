@@ -16,12 +16,14 @@ namespace Mediatek86.controleur
         private readonly List<Categorie> lesGenres;
         private readonly List<Suivi> lesSuivis;
         private readonly List<CommandeDocument> lesCommandesDocuments;
+        private readonly List<Commande> lesCommandes;
         private readonly List<Abonnement> lesAbonnements;
         /// <summary>
         /// Ouverture de la fenêtre
         /// </summary>
         public Controle()
         {
+            Dao.RevueAbonnements();
             lesLivres = Dao.GetAllLivres();
             lesDvd = Dao.GetAllDvd();
             lesRevues = Dao.GetAllRevues();
@@ -30,6 +32,7 @@ namespace Mediatek86.controleur
             lesPublics = Dao.GetAllPublics();
             lesSuivis = Dao.GetAllSuivis();
             lesCommandesDocuments = Dao.GetAllCommandesDocument();
+            lesCommandes = Dao.GetAllCommandes();
             lesAbonnements = Dao.GetAllAbonnements();
             FrmMediatek frmMediatek = new FrmMediatek(this);
             frmMediatek.ShowDialog();
@@ -119,6 +122,15 @@ namespace Mediatek86.controleur
         public List<Abonnement> GetAllAbonnements()
         {
             return Dao.GetAllAbonnements();
+        }
+
+        /// <summary>
+        /// getters ur les abonnements
+        /// </summary>
+        /// <returns>Collection d'objets Abonnement</returns>
+        public List<Commande> GetAllCommandes()
+        {
+            return Dao.GetAllCommandes();
         }
         /// <summary>
         /// récupère les exemplaires d'une revue
