@@ -2459,7 +2459,17 @@ namespace Mediatek86.vue
         /// <param name="e"></param>
         private void btnCommandeDvdAfficher_Click(object sender, EventArgs e)
         {
-            if (!txbCommandeDvdNumero.Text.Equals(""))
+            txbLivreAuteur.Text = livre.Auteur;
+            txbLivreCollection.Text = livre.Collection;
+            txbLivreImage.Text = livre.Image;
+            txbLivreIsbn.Text = livre.Isbn;
+            txbLivreNumero.Text = livre.Id;
+            txbLivreGenre.Text = livre.Genre;
+            txbLivrePublic.Text = livre.Public;
+            txbLivreRayon.Text = livre.Rayon;
+            txbLivreTitre.Text = livre.Titre;
+            string image = livre.Image;
+            try
             {
                 Dvd leDvd = lesDvd.Find(dvd => dvd.Id == txbCommandeDvdNumero.Text);
                 if (leDvd != null)
@@ -2636,8 +2646,8 @@ namespace Mediatek86.vue
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void dgvCommandesDvdListe_SelectionChanged(object sender, EventArgs e)
-        {
             if (dgvCommandeDvdListe.CurrentCell != null)
+            if (commandesDocumentTries.Count == 0)
             {
                 try
                 {
@@ -2839,7 +2849,34 @@ namespace Mediatek86.vue
                 MessageBox.Show("Un nombre d'exemplaires et un montant doivent être précisés");
             }
         }
-
+        /// <summary>
+        /// Tri sur les colonnes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgvCommandesLivreListe_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            
+            string titreColonne = dgvCommandesLivreListe.Columns[e.ColumnIndex].HeaderText;
+            List<CommandeDocument> sortedList = new List<CommandeDocument>();
+            lesCommandesDocument = controle.GetCommandesDocument(txbCommandesLivresNumRecherche.Text);
+            switch (titreColonne)
+            {
+                case "DateCommande":
+                    sortedList = lesCommandesDocument.OrderBy(o => o.DateCommande).ToList();
+                    break;
+                case "montant":
+                    sortedList = lesCommandesDocument.OrderBy(o => o.Montant).ToList();
+                    break;
+                case "NbExemplaire":
+                    sortedList = lesCommandesDocument.OrderBy(o => o.NbExemplaire).ToList();
+                    break;
+                case "Suivi":
+                    sortedList = lesCommandesDocument.OrderBy(o => o.Suivi).ToList();
+                    break;
+            }
+            RemplirCommandesLivresListe(sortedList);
+        }
         /// <summary>
         /// Recherche et affichage des commandes du livre dont on a saisi le numéro.
         /// Si non trouvé, affichage d'un MessageBox.
@@ -2946,7 +2983,7 @@ namespace Mediatek86.vue
         }
 
         /// <summary>
-        /// Supprime une commande (livre ou dvd)
+        /// Supprime une commande de livre
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3190,6 +3227,31 @@ namespace Mediatek86.vue
             {
                 btnCommandeRevueSupprimer.Enabled = false;
             }
+        }
+
+        /// <summary>
+        /// Tri sur les colonnes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgvAbonnementsListe_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            VideRevuesZones();
+            string titreColonne = dgvAbonnementsListe.Columns[e.ColumnIndex].HeaderText;
+            List<Abonnement> sortedList = new List<Abonnement>();
+            switch (titreColonne)
+            {
+                case "DateCommande":
+                    sortedList = lesAbonnements.OrderBy(o => o.DateCommande).ToList();
+                    break;
+                case "Montant":
+                    sortedList = lesAbonnements.OrderBy(o => o.Montant).ToList();
+                    break;
+                case "DateFinAbonnement":
+                    sortedList = lesAbonnements.OrderBy(o => o.DateFinAbonnement).ToList();
+                    break;
+            }
+            RemplirAbonnementsListe(sortedList);
         }
 
         /// <summary>

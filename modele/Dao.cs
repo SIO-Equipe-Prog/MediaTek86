@@ -321,7 +321,31 @@ namespace Mediatek86.modele
 
             return lesCommandes;
         }
+        /// <summary>
+        /// Retourne les commandes pour livre ou d'un dvd
+        /// </summary>
+        /// <returns>Liste d'objets CommandeDocument</returns>
+        public static List<Commande> GetAllCommandes()
+        {
+            List<Commande> lesCommandes = new List<Commande>();
+            string req = "Select id, datecommande, montant ";
+            req += "from commande ";
+            req += "order by datecommande DESC";
+            BddMySql curs = BddMySql.GetInstance(connectionString);
+            curs.ReqSelect(req, null);
 
+            while (curs.Read())
+            {
+                string id = (string)curs.Field("id");
+                DateTime dateCommande = (DateTime)curs.Field("dateCommande");
+                double montant = (double)curs.Field("montant");
+                Commande commande= new Commande(id, dateCommande, montant);
+                lesCommandes.Add(commande);
+            }
+            curs.Close();
+
+            return lesCommandes;
+        }
         /// <summary>
         /// Retourne les commandes pour livre ou d'un dvd
         /// </summary>
