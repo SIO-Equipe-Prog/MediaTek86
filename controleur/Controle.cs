@@ -275,7 +275,7 @@ namespace Mediatek86.controleur
             }
             if (commande is Abonnement abonnement)
             {
-                return Dao.SupprimerAbonnement(abonnement);
+                return Dao.SupprimerAbonnement(abonnement); 
             }
             return false;
         }
