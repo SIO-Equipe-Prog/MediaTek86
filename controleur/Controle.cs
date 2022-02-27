@@ -22,6 +22,7 @@ namespace Mediatek86.controleur
         /// </summary>
         public Controle()
         {
+            Dao.RevueAbonnements();
             lesLivres = Dao.GetAllLivres();
             lesDvd = Dao.GetAllDvd();
             lesRevues = Dao.GetAllRevues();

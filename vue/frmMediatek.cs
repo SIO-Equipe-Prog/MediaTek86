@@ -3207,7 +3207,7 @@ namespace Mediatek86.vue
 
         /// <summary>
         /// Ouverture de l'onglet CommandeLivres : 
-        /// appel des méthodes pour récupérer la liste des livres et la liste des commandes
+        /// appel des méthodes pour récupérer la liste des livres
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3538,27 +3538,22 @@ namespace Mediatek86.vue
             dgvAbonnementsListe.DataSource = null;
             btnCommandeRevueSupprimer.Enabled = false;
         }
+        
+     
 
         /// <summary>
         /// Vérifie que les informations indiquées sont valides
         /// </summary>
-        /// <returns>true si les informations sont valides</returns>
-        private bool IsInfosCommandesRevueValides()
+        private void VisibleBoutonsCommande()
         {
-            if (!double.TryParse(txbCommandeRevueMontant.Text, out _))
-            {
-                return false;
-            }
-            if (DateTime.TryParse(dtpCommandeRevueAbonnementDateFin.Text, out DateTime date))
-            {
-                return (date >= DateTime.Now);
-            }
-            else
-            {
-                return false;
-            }
+            cbxLivresSuivis.Visible = true;
+            btnCommandesLivreAjout.Visible = true;
+            btnLivresSuivisModifier.Visible = true;
+            btnCommandesLivreSupprimer.Visible = true;
         }
 
+        
+       
         /// <summary>
         /// met à jour la liste des abonnements
         /// </summary>
@@ -3658,8 +3653,7 @@ namespace Mediatek86.vue
         }
 
         /// <summary>
-        /// Sur la sélection d'une ligne ou cellule dans le grid
-        /// affichage du combobox des suivis et boutons modifier étape de suivi et supprimer commande
+        /// Supprime une commande (livre ou dvd)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3688,6 +3682,7 @@ namespace Mediatek86.vue
             {
                 btnCommandeRevueSupprimer.Enabled = false;
             }
+            return false;
         }
 
         /// <summary>
