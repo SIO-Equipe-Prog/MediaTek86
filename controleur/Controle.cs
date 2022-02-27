@@ -22,7 +22,6 @@ namespace Mediatek86.controleur
         /// </summary>
         public Controle()
         {
-            Dao.RevueAbonnements();
             lesLivres = Dao.GetAllLivres();
             lesDvd = Dao.GetAllDvd();
             lesRevues = Dao.GetAllRevues();
@@ -129,7 +128,7 @@ namespace Mediatek86.controleur
         {
             return Dao.GetAllCommandes();
         }
-        
+
 
         /// <summary>
         /// récupère les exemplaires d'une revue

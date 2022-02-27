@@ -342,18 +342,6 @@ namespace Mediatek86.modele
 
             return lesCommandes;
         }
-            while (curs.Read())
-            {
-                string id = (string)curs.Field("id");
-                DateTime dateCommande = (DateTime)curs.Field("dateCommande");
-                double montant = (double)curs.Field("montant");
-                Commande commande= new Commande(id, dateCommande, montant);
-                lesCommandes.Add(commande);
-            }
-            curs.Close();
-
-            return lesCommandes;
-        }
         /// <summary>
         /// Retourne les commandes pour livre ou d'un dvd
         /// </summary>
@@ -372,14 +360,14 @@ namespace Mediatek86.modele
                 string id = (string)curs.Field("id");
                 DateTime dateCommande = (DateTime)curs.Field("dateCommande");
                 double montant = (double)curs.Field("montant");
-                Commande commande= new Commande(id, dateCommande, montant);
+                Commande commande = new Commande(id, dateCommande, montant);
                 lesCommandes.Add(commande);
             }
             curs.Close();
 
             return lesCommandes;
         }
-      
+
 
         /// <summary>
         /// Retourne les abonnements
@@ -409,34 +397,7 @@ namespace Mediatek86.modele
             return lesAbonnements;
         }
 
-       
-        /// <summary>
-        /// Retourne les abonnements
-        /// </summary>
-        /// <returns>Liste d'objets Abonnement</returns>
-        public static List<Abonnement> GetAllAbonnements()
-        {
-            List<Abonnement> lesAbonnements = new List<Abonnement>();
-            string req = "Select a.id, a.datefinabonnement, a.idrevue, c.datecommande, c.montant ";
-            req += "from abonnement a join commande c on a.id=c.id ";
-            req += "order by c.datecommande DESC";
-            BddMySql curs = BddMySql.GetInstance(connectionString);
-            curs.ReqSelect(req, null);
 
-            while (curs.Read())
-            {
-                string idCommande = (string)curs.Field("id");
-                DateTime dateFinAbonnement = (DateTime)curs.Field("dateFinAbonnement");
-                DateTime dateCommande = (DateTime)curs.Field("dateCommande");
-                double montant = (double)curs.Field("montant");
-                string idRevue = (string)curs.Field("idRevue"); 
-                Abonnement abonnement = new Abonnement(idCommande, dateFinAbonnement, dateCommande, montant, idRevue);
-                lesAbonnements.Add(abonnement);
-            }
-            curs.Close();
-
-            return lesAbonnements;
-        }
         /// <summary>
         /// Retourne les abonnements pour revue
         /// </summary>
@@ -689,47 +650,7 @@ namespace Mediatek86.modele
             }
         }
 
-        /// <summary>
-        /// Écriture d'un abonnement en base de données
-        /// </summary>
-        /// <param name="abonnement"></param>
-        /// <returns>true si l'opération a réussi</returns>
-        public static bool CreerAbonnement(Abonnement abonnement)
-        {
-            try
-            {
-                List<string> allReq = new List<string>
-                {
-                    "insert into commande values (@id,@dateCommande,@montant);",
-                    "insert into abonnement values (@id, @dateFinAbonnement, @idRevue);",
-                };
-                List<Dictionary<string, object>> allParameters = new List<Dictionary<string, object>>();
-                allParameters.Add(new Dictionary<string, object>
-                {
-                    {"@id", abonnement.Id },
-                    { "@dateCommande", abonnement.DateCommande},
-                    { "@montant", abonnement.Montant}
 
-                });
-                allParameters.Add(new Dictionary<string, object>
-                {
-                    {"@id", abonnement.Id },
-                    { "@dateFinAbonnement", abonnement.DateFinAbonnement},
-                    { "@idRevue", abonnement.IdRevue}
-                });
-
-                BddMySql curs = BddMySql.GetInstance(connectionString);
-                curs.ReqUpdateTransaction(allReq, allParameters);
-                curs.Close();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-       
 
         /// <summary>
         /// Modification d'un dvd dans la base de données

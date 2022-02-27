@@ -1257,7 +1257,7 @@ namespace Mediatek86.vue
             }
             RemplirLivresListe(sortedList);
         }
-        
+
         /// <summary>
         /// Vérifie que les informations détaillées pour le livre sont
         /// correctes et ajoute ou modifie un livre
@@ -2115,9 +2115,9 @@ namespace Mediatek86.vue
             }
             RemplirDvdListe(sortedList);
         }
-        
 
-       
+
+
         /// <summary>
         /// Vérifie que les informations détaillées pour le dvd sont
         /// correctes et ajoute ou modifie un dvd
@@ -2900,22 +2900,22 @@ namespace Mediatek86.vue
                 try
                 {
                     pcbReceptionExemplaireRevueImage.Image = Image.FromFile(image);
-                    
+
                 }
                 catch
                 {
                     pcbReceptionExemplaireRevueImage.Image = null;
-                    
+
                 }
             }
             else
             {
                 pcbReceptionExemplaireRevueImage.Image = null;
-              
+
             }
         }
-        
-        
+
+
         #endregion
 
 
@@ -3207,7 +3207,7 @@ namespace Mediatek86.vue
 
         /// <summary>
         /// Ouverture de l'onglet CommandeLivres : 
-        /// appel des méthodes pour récupérer la liste des livres
+        /// appel des méthodes pour récupérer la liste des livres et la liste des commandes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3538,22 +3538,27 @@ namespace Mediatek86.vue
             dgvAbonnementsListe.DataSource = null;
             btnCommandeRevueSupprimer.Enabled = false;
         }
-        
-     
 
         /// <summary>
         /// Vérifie que les informations indiquées sont valides
         /// </summary>
-        private void VisibleBoutonsCommande()
+        /// <returns>true si les informations sont valides</returns>
+        private bool IsInfosCommandesRevueValides()
         {
-            cbxLivresSuivis.Visible = true;
-            btnCommandesLivreAjout.Visible = true;
-            btnLivresSuivisModifier.Visible = true;
-            btnCommandesLivreSupprimer.Visible = true;
+            if (!double.TryParse(txbCommandeRevueMontant.Text, out _))
+            {
+                return false;
+            }
+            if (DateTime.TryParse(dtpCommandeRevueAbonnementDateFin.Text, out DateTime date))
+            {
+                return (date >= DateTime.Now);
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        
-       
         /// <summary>
         /// met à jour la liste des abonnements
         /// </summary>
@@ -3653,7 +3658,8 @@ namespace Mediatek86.vue
         }
 
         /// <summary>
-        /// Supprime une commande (livre ou dvd)
+        /// Sur la sélection d'une ligne ou cellule dans le grid
+        /// affichage du combobox des suivis et boutons modifier étape de suivi et supprimer commande
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3682,7 +3688,6 @@ namespace Mediatek86.vue
             {
                 btnCommandeRevueSupprimer.Enabled = false;
             }
-            return false;
         }
 
         /// <summary>
@@ -3734,6 +3739,6 @@ namespace Mediatek86.vue
 
         #endregion
 
-        
+
     }
 }
