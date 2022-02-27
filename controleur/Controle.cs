@@ -15,12 +15,13 @@ namespace Mediatek86.controleur
         private readonly List<Categorie> lesPublics;
         private readonly List<Categorie> lesGenres;
         private readonly List<Suivi> lesSuivis;
+        private readonly List<Etat> lesEtats;
+
         /// <summary>
         /// Ouverture de la fenêtre
         /// </summary>
         public Controle()
         {
-            Dao.RevueAbonnements();
             lesLivres = Dao.GetAllLivres();
             lesDvd = Dao.GetAllDvd();
             lesRevues = Dao.GetAllRevues();
@@ -28,6 +29,7 @@ namespace Mediatek86.controleur
             lesRayons = Dao.GetAllRayons();
             lesPublics = Dao.GetAllPublics();
             lesSuivis = Dao.GetAllSuivis();
+            lesEtats = Dao.GetAllEtats();
             FrmMediatek frmMediatek = new FrmMediatek(this);
             frmMediatek.ShowDialog();
         }
@@ -94,6 +96,14 @@ namespace Mediatek86.controleur
             return lesSuivis;
         }
         /// <summary>
+        /// getter sur les états d'exemplaire
+        /// </summary>
+        /// <returns>Collection d'objets Etat</returns>
+        public List<Etat> GetAllEtats()
+        {
+            return lesEtats;
+        }
+        /// <summary>
         /// récupère les exemplaires d'une revue
         /// </summary>
         /// <returns>Collection d'objets Exemplaire</returns>
@@ -118,23 +128,7 @@ namespace Mediatek86.controleur
         {
             return Dao.GetAllCommandes();
         }
-        /// <summary>
-        /// getters ur les abonnements
-        /// </summary>
-        /// <returns>Collection d'objets Abonnement</returns>
-        public List<Abonnement> GetAllAbonnements()
-        {
-            return Dao.GetAllAbonnements();
-        }
-
-        /// <summary>
-        /// getters ur les abonnements
-        /// </summary>
-        /// <returns>Collection d'objets Abonnement</returns>
-        public List<Commande> GetAllCommandes()
-        {
-            return Dao.GetAllCommandes();
-        }
+        
 
         /// <summary>
         /// récupère les exemplaires d'une revue
@@ -289,6 +283,25 @@ namespace Mediatek86.controleur
         public string ShowAbonnementsLimite()
         {
             return Dao.RevueAbonnementsLimite();
+        }
+
+        /// <summary>
+        /// Modifie l'état de l'exemplaire pour un livre, un dvd ou une revue
+        /// </summary>
+        /// <param name="exemplaire"></param>
+        /// <returns>True si la création a pu se faire</returns>
+        public bool ModifierExemplaire(Exemplaire exemplaire)
+        {
+            return Dao.ModifierExemplaire(exemplaire);
+        }
+
+        /// <summary>
+        /// Supprime un exemplaire (livre, dvd ou revue) dans la bdd
+        /// </summary>
+        /// <param name="exemplaire"></param>
+        public bool SupprimerExemplaire(Exemplaire exemplaire)
+        {
+            return Dao.SupprimerExemplaire(exemplaire);
         }
     }
 }

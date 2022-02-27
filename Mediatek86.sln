@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediatek86", "Mediatek86.csproj", "{810296AE-B290-4E67-A945-19806086CAFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediatek86Tests", "..\Mediatek86Tests\Mediatek86Tests.csproj", "{6A0169B5-288B-4DC4-B21A-4DB135096812}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediatek86Tests", "Mediatek86Tests\Mediatek86Tests.csproj", "{6A0169B5-288B-4DC4-B21A-4DB135096812}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

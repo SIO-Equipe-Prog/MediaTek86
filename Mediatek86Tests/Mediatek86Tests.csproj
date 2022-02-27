@@ -56,7 +56,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mediatek86gestion\Mediatek86.csproj">
+    <ProjectReference Include="..\Mediatek86.csproj">
       <Project>{810296AE-B290-4E67-A945-19806086CAFE}</Project>
       <Name>Mediatek86</Name>
     </ProjectReference>
