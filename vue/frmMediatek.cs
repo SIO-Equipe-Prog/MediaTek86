@@ -50,8 +50,12 @@ namespace Mediatek86.vue
         {
             InitializeComponent();
             this.controle = controle;
-            MessageBox.Show("Attention, les abonnements pour ces revues se terminent dans moins de 30 jours : " + Environment.NewLine +
-                            controle.ShowAbonnementsLimite(), "Alerte abonnements");
+            string abonnementsLimite = controle.ShowAbonnementsLimite();
+            if (abonnementsLimite != "")
+            {
+                MessageBox.Show("Attention, les abonnements pour ces revues se terminent dans moins de 30 jours : " + Environment.NewLine +
+                                controle.ShowAbonnementsLimite(), "Alerte abonnements");
+            }
         }
 
 
@@ -2674,6 +2678,7 @@ namespace Mediatek86.vue
             dgvReceptionExemplairesListe.DataSource = bdgExemplairesListe;
             dgvReceptionExemplairesListe.Columns["idEtat"].Visible = false;
             dgvReceptionExemplairesListe.Columns["idDocument"].Visible = false;
+            dgvReceptionExemplairesListe.Columns["photo"].Visible = false;
             dgvReceptionExemplairesListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvReceptionExemplairesListe.Columns["numero"].DisplayIndex = 0;
             dgvReceptionExemplairesListe.Columns["dateAchat"].DisplayIndex = 1;
