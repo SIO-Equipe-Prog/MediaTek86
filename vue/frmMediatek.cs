@@ -51,7 +51,7 @@ namespace Mediatek86.vue
             InitializeComponent();
             this.controle = controle;
             string abonnementsLimite = controle.ShowAbonnementsLimite();
-            if (abonnementsLimite != "")
+            if (abonnementsLimite != null)
             {
                 MessageBox.Show("Attention, les abonnements pour ces revues se terminent dans moins de 30 jours : " + Environment.NewLine +
                                 controle.ShowAbonnementsLimite(), "Alerte abonnements");
@@ -189,6 +189,11 @@ namespace Mediatek86.vue
             return nouvelId;
         }
 
+        /// <summary>
+        /// Modifie l'étape de suivi d'un livre ou d'un dvd
+        /// </summary>
+        /// <param name="commande"></param>
+        /// <returns>True si l'opération a réussi</returns>
         public bool ModifierCommandeDocument(CommandeDocument commande)
         {
             Suivi suivi = (Suivi)bdgSuivis.List[bdgSuivis.Position];
@@ -208,6 +213,11 @@ namespace Mediatek86.vue
             return false;
         }
 
+        /// <summary>
+        /// Supprime l'étape de suivi d'un livre ou d'un dvd
+        /// </summary>
+        /// <param name="commande"></param>
+        /// <returns>True si l'opération a réussi</returns>
         public bool SupprimerCommandeDocument(CommandeDocument commande)
         {
             DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer la commande suivante ?" + Environment.NewLine +
@@ -224,6 +234,11 @@ namespace Mediatek86.vue
             }
         }
 
+        /// <summary>
+        /// Modifie l'état d'un exemplaire
+        /// </summary>
+        /// <param name="exemplaire"></param>
+        /// <returns>True si l'opération a réussi</returns>
         public bool ModifierExemplaire(Exemplaire exemplaire)
         {
             Etat etat = (Etat)bdgEtats.List[bdgEtats.Position];
@@ -243,6 +258,11 @@ namespace Mediatek86.vue
             return false;
         }
 
+        /// <summary>
+        /// Supprime un exemplaire
+        /// </summary>
+        /// <param name="exemplaire"></param>
+        /// <returns>True si l'opération a réussi</returns>
         public bool SupprimerExemplaire(Exemplaire exemplaire)
         {
             DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer l'exemplaire suivant ?" + Environment.NewLine +
@@ -678,12 +698,25 @@ namespace Mediatek86.vue
         {
             string idRevue = txbRevuesNumero.Text;
             Revue leRevue = lesRevues.Find(x => x.Id == idRevue);
-            if (leRevue != null && controle.GetCommandesDocument(idRevue).Count == 0 && controle.GetExemplairesRevue(idRevue).Count == 0)
+            int nbCommandes = controle.GetCommandesDocument(idRevue).Count;
+            int nbExemplaires = controle.GetExemplaires(idRevue).Count;
+            if (leRevue != null && nbCommandes == 0 && nbExemplaires == 0)
             {
                 DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer la revue '" + leRevue.Titre + "' ?", "Confirmation", MessageBoxButtons.YesNo);
                 if (reponse == DialogResult.Yes)
                 {
                     return controle.SupprimerDocument(leRevue);
+                }
+            }
+            else
+            {
+                if (nbCommandes == 0)
+                {
+                    MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas de commandes associées.");
+                }
+                if (nbExemplaires == 0)
+                {
+                    MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas d'exemplaires.");
                 }
             }
             return false;
@@ -1348,12 +1381,25 @@ namespace Mediatek86.vue
         {
             string idLivre = txbLivresNumero.Text;
             Livre leLivre = lesLivres.Find(x => x.Id == idLivre);
-            if (leLivre != null && controle.GetCommandesDocument(idLivre).Count == 0 && controle.GetExemplairesRevue(idLivre).Count == 0)
+            int nbCommandes = controle.GetCommandesDocument(idLivre).Count;
+            int nbExemplaires = controle.GetExemplaires(idLivre).Count;
+            if (leLivre != null && nbCommandes == 0 && nbExemplaires == 0)
             {
                 DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer le livre '" + leLivre.Titre + "' ?", "Confirmation", MessageBoxButtons.YesNo);
                 if (reponse == DialogResult.Yes)
                 {
                     return controle.SupprimerDocument(leLivre);
+                }
+            }
+            else
+            {
+                if (nbCommandes == 0)
+                {
+                    MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas de commandes associées.");
+                }
+                if (nbExemplaires == 0)
+                {
+                    MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas d'exemplaires.");
                 }
             }
             return false;
@@ -1613,7 +1659,7 @@ namespace Mediatek86.vue
         {
             string titreColonne = dgvLivreExemplairesListe.Columns[e.ColumnIndex].HeaderText;
             List<Exemplaire> sortedList = new List<Exemplaire>();
-            lesExemplaires = controle.GetExemplairesRevue(txbLivresNumero.Text);
+            lesExemplaires = controle.GetExemplaires(txbLivresNumero.Text);
             switch (titreColonne)
             {
                 case "Numero":
@@ -1674,7 +1720,7 @@ namespace Mediatek86.vue
         /// <param name="idDocument"></param>
         private void MiseAJourLivreExemplaire(string idDocument)
         {
-            lesExemplaires = controle.GetExemplairesRevue(idDocument);
+            lesExemplaires = controle.GetExemplaires(idDocument);
             RemplirLivreExemplairesListe(lesExemplaires);
         }
 
@@ -1705,10 +1751,7 @@ namespace Mediatek86.vue
             if (dgvLivreExemplairesListe.CurrentCell != null)
             {
                 Exemplaire exemplaire = (Exemplaire)bdgLivreExemplairesListe.List[bdgLivreExemplairesListe.Position];
-                DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer l'exemplaire numéro " + exemplaire.Numero + " du livre n° " + exemplaire.IdDocument + " ?" + Environment.NewLine +
-                                                       "Date d'achat de l'exemplaire : " + exemplaire.DateAchat.ToShortDateString() + Environment.NewLine +
-                                                       "Etat de l'exemplaire : " + exemplaire.Etat, "Confirmation", MessageBoxButtons.YesNo);
-                if (reponse == DialogResult.Yes && SupprimerExemplaire(exemplaire))
+                if (SupprimerExemplaire(exemplaire))
                 {
                     MiseAJourLivreExemplaire(exemplaire.IdDocument);
                 }
@@ -2208,12 +2251,25 @@ namespace Mediatek86.vue
         {
             string idDvd = txbDvdNumero.Text;
             Dvd leDvd = lesDvd.Find(x => x.Id == idDvd);
-            if (leDvd != null && controle.GetCommandesDocument(idDvd).Count == 0 && controle.GetExemplairesRevue(idDvd).Count == 0)
+            int nbCommandes = controle.GetCommandesDocument(idDvd).Count;
+            int nbExemplaires = controle.GetExemplaires(idDvd).Count;
+            if (leDvd != null && nbCommandes == 0 && nbExemplaires == 0)
             {
                 DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer le dvd '" + leDvd.Titre + "' ?", "Confirmation", MessageBoxButtons.YesNo);
                 if (reponse == DialogResult.Yes)
                 {
                     return controle.SupprimerDocument(leDvd);
+                }
+            }
+            else
+            {
+                if (nbCommandes == 0)
+                {
+                    MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas de commandes associées.");
+                }
+                if (nbExemplaires == 0)
+                {
+                    MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas d'exemplaires.");
                 }
             }
             return false;
@@ -2499,7 +2555,7 @@ namespace Mediatek86.vue
         /// <param name="idDocument"></param>
         private void MiseAJourDvdExemplaire(string idDocument)
         {
-            lesExemplaires = controle.GetExemplairesRevue(idDocument);
+            lesExemplaires = controle.GetExemplaires(idDocument);
             RemplirDvdExemplairesListe(lesExemplaires);
         }
 
@@ -2562,10 +2618,7 @@ namespace Mediatek86.vue
             if (dgvDvdExemplairesListe.CurrentCell != null)
             {
                 Exemplaire exemplaire = (Exemplaire)bdgDvdExemplairesListe.List[bdgDvdExemplairesListe.Position];
-                DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer l'exemplaire numéro " + exemplaire.Numero + " du dvd n° " + exemplaire.IdDocument + " ?" + Environment.NewLine +
-                                                       "Date d'achat de l'exemplaire : " + exemplaire.DateAchat.ToShortDateString() + Environment.NewLine +
-                                                       "Etat de l'exemplaire : " + exemplaire.Etat, "Confirmation", MessageBoxButtons.YesNo);
-                if (reponse == DialogResult.Yes && SupprimerExemplaire(exemplaire))
+                if (SupprimerExemplaire(exemplaire))
                 {
                     MiseAJourDvdExemplaire(exemplaire.IdDocument);
                 }
@@ -2581,7 +2634,7 @@ namespace Mediatek86.vue
         {
             string titreColonne = dgvDvdExemplairesListe.Columns[e.ColumnIndex].HeaderText;
             List<Exemplaire> sortedList = new List<Exemplaire>();
-            lesExemplaires = controle.GetExemplairesRevue(txbDvdNumero.Text);
+            lesExemplaires = controle.GetExemplaires(txbDvdNumero.Text);
             switch (titreColonne)
             {
                 case "Numero":
@@ -2667,6 +2720,7 @@ namespace Mediatek86.vue
         {
             lesRevues = controle.GetAllRevues();
             accesReceptionExemplaireGroupBox(false);
+            RemplirComboEtat(lesEtats, bdgEtats, cbxRevueExemplaireEtatModifier);
         }
 
         /// <summary>
@@ -2682,6 +2736,10 @@ namespace Mediatek86.vue
             dgvReceptionExemplairesListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvReceptionExemplairesListe.Columns["numero"].DisplayIndex = 0;
             dgvReceptionExemplairesListe.Columns["dateAchat"].DisplayIndex = 1;
+            if (exemplaires.Count > 0)
+            {
+                grpReceptionExemplaireModifier.Enabled = true;
+            }
         }
 
         /// <summary>
@@ -2756,7 +2814,7 @@ namespace Mediatek86.vue
         private void afficheReceptionExemplairesRevue()
         {
             string idDocuement = txbReceptionRevueNumero.Text;
-            lesExemplaires = controle.GetExemplairesRevue(idDocuement);
+            lesExemplaires = controle.GetExemplaires(idDocuement);
             RemplirReceptionExemplairesListe(lesExemplaires);
         }
 
@@ -2905,21 +2963,58 @@ namespace Mediatek86.vue
                 try
                 {
                     pcbReceptionExemplaireRevueImage.Image = Image.FromFile(image);
-
                 }
                 catch
                 {
                     pcbReceptionExemplaireRevueImage.Image = null;
-
                 }
             }
             else
             {
                 pcbReceptionExemplaireRevueImage.Image = null;
-
+                grpReceptionExemplaireModifier.Enabled = false;
             }
         }
 
+        /// <summary>
+        /// Modification de l'état de l'exemplaire sélectionné
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnRevueExemplaireModifier_Click(object sender, EventArgs e)
+        {
+            if (dgvReceptionExemplairesListe.CurrentCell != null)
+            {
+                Exemplaire exemplaire = (Exemplaire)bdgExemplairesListe.List[bdgExemplairesListe.Position];
+                if (ModifierExemplaire(exemplaire))
+                {
+                    MiseAJourRevueExemplaire(exemplaire.IdDocument);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Suppression de l'exemplaire sélectionné
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnRevueExemplaireSupprimer_Click(object sender, EventArgs e)
+        {
+            if (dgvReceptionExemplairesListe.CurrentCell != null)
+            {
+                Exemplaire exemplaire = (Exemplaire)bdgExemplairesListe.List[bdgExemplairesListe.Position];
+                if (SupprimerExemplaire(exemplaire))
+                {
+                    MiseAJourRevueExemplaire(exemplaire.IdDocument);
+                }
+            }
+        }
+
+        private void MiseAJourRevueExemplaire(string idDocument)
+        {
+            lesExemplaires = controle.GetExemplaires(idDocument);
+            RemplirReceptionExemplairesListe(lesExemplaires);
+        }
 
         #endregion
 
@@ -3703,7 +3798,7 @@ namespace Mediatek86.vue
         private void btnCommandeRevueSupprimer_Click(object sender, EventArgs e)
         {
             Abonnement abonnement = (Abonnement)bdgAbonnementsListe.List[bdgAbonnementsListe.Position];
-            lesExemplaires = controle.GetExemplairesRevue(txbCommandeRevueNumero.Text);
+            lesExemplaires = controle.GetExemplaires(txbCommandeRevueNumero.Text);
             if (abonnement != null)
             {
                 DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer l'abonnement n° " + abonnement.Id + " ?" + Environment.NewLine +
@@ -3742,8 +3837,7 @@ namespace Mediatek86.vue
 
 
 
+
         #endregion
-
-
     }
 }
