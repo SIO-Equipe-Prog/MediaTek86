@@ -332,6 +332,11 @@
             this.txbCommandeRevueDelaiMiseADispo = new System.Windows.Forms.TextBox();
             this.txbCommandeRevuePeriodicite = new System.Windows.Forms.TextBox();
             this.label69 = new System.Windows.Forms.Label();
+            this.grpReceptionExemplaireModifier = new System.Windows.Forms.GroupBox();
+            this.label108 = new System.Windows.Forms.Label();
+            this.btnRevueExemplaireSupprimer = new System.Windows.Forms.Button();
+            this.btnRevueExemplaireModifier = new System.Windows.Forms.Button();
+            this.cbxRevueExemplaireEtatModifier = new System.Windows.Forms.ComboBox();
             this.tabOngletsApplication.SuspendLayout();
             this.tabLivres.SuspendLayout();
             this.grpLivreExemplaire.SuspendLayout();
@@ -383,6 +388,7 @@
             this.grpCommandeRevue.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAbonnementsListe)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcbCommandeRevueImage)).BeginInit();
+            this.grpReceptionExemplaireModifier.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabOngletsApplication
@@ -2130,6 +2136,7 @@
             // 
             // tabReceptionRevue
             // 
+            this.tabReceptionRevue.Controls.Add(this.grpReceptionExemplaireModifier);
             this.tabReceptionRevue.Controls.Add(this.grpReceptionExemplaire);
             this.tabReceptionRevue.Controls.Add(this.grpReceptionRevue);
             this.tabReceptionRevue.Location = new System.Drawing.Point(4, 22);
@@ -3632,6 +3639,60 @@
             this.label69.TabIndex = 36;
             this.label69.Text = "Nb d\'exemplaires :";
             // 
+            // grpReceptionExemplaireModifier
+            // 
+            this.grpReceptionExemplaireModifier.Controls.Add(this.label108);
+            this.grpReceptionExemplaireModifier.Controls.Add(this.btnRevueExemplaireSupprimer);
+            this.grpReceptionExemplaireModifier.Controls.Add(this.btnRevueExemplaireModifier);
+            this.grpReceptionExemplaireModifier.Controls.Add(this.cbxRevueExemplaireEtatModifier);
+            this.grpReceptionExemplaireModifier.Enabled = false;
+            this.grpReceptionExemplaireModifier.Location = new System.Drawing.Point(476, 630);
+            this.grpReceptionExemplaireModifier.Name = "grpReceptionExemplaireModifier";
+            this.grpReceptionExemplaireModifier.Size = new System.Drawing.Size(391, 123);
+            this.grpReceptionExemplaireModifier.TabIndex = 17;
+            this.grpReceptionExemplaireModifier.TabStop = false;
+            this.grpReceptionExemplaireModifier.Text = "Modification de la parution sélectionnée";
+            // 
+            // label108
+            // 
+            this.label108.AutoSize = true;
+            this.label108.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label108.Location = new System.Drawing.Point(6, 25);
+            this.label108.Name = "label108";
+            this.label108.Size = new System.Drawing.Size(94, 13);
+            this.label108.TabIndex = 42;
+            this.label108.Text = "Changer l\'état :";
+            // 
+            // btnRevueExemplaireSupprimer
+            // 
+            this.btnRevueExemplaireSupprimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRevueExemplaireSupprimer.Location = new System.Drawing.Point(212, 95);
+            this.btnRevueExemplaireSupprimer.Name = "btnRevueExemplaireSupprimer";
+            this.btnRevueExemplaireSupprimer.Size = new System.Drawing.Size(166, 22);
+            this.btnRevueExemplaireSupprimer.TabIndex = 7;
+            this.btnRevueExemplaireSupprimer.Text = "Supprimer la parution";
+            this.btnRevueExemplaireSupprimer.UseVisualStyleBackColor = true;
+            this.btnRevueExemplaireSupprimer.Click += new System.EventHandler(this.btnRevueExemplaireSupprimer_Click);
+            // 
+            // btnRevueExemplaireModifier
+            // 
+            this.btnRevueExemplaireModifier.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRevueExemplaireModifier.Location = new System.Drawing.Point(212, 20);
+            this.btnRevueExemplaireModifier.Name = "btnRevueExemplaireModifier";
+            this.btnRevueExemplaireModifier.Size = new System.Drawing.Size(166, 22);
+            this.btnRevueExemplaireModifier.TabIndex = 6;
+            this.btnRevueExemplaireModifier.Text = "Modifier la parution";
+            this.btnRevueExemplaireModifier.UseVisualStyleBackColor = true;
+            this.btnRevueExemplaireModifier.Click += new System.EventHandler(this.btnRevueExemplaireModifier_Click);
+            // 
+            // cbxRevueExemplaireEtatModifier
+            // 
+            this.cbxRevueExemplaireEtatModifier.FormattingEnabled = true;
+            this.cbxRevueExemplaireEtatModifier.Location = new System.Drawing.Point(106, 20);
+            this.cbxRevueExemplaireEtatModifier.Name = "cbxRevueExemplaireEtatModifier";
+            this.cbxRevueExemplaireEtatModifier.Size = new System.Drawing.Size(100, 21);
+            this.cbxRevueExemplaireEtatModifier.TabIndex = 5;
+            // 
             // FrmMediatek
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3712,6 +3773,8 @@
             this.grpCommandeRevue.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAbonnementsListe)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcbCommandeRevueImage)).EndInit();
+            this.grpReceptionExemplaireModifier.ResumeLayout(false);
+            this.grpReceptionExemplaireModifier.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -4022,5 +4085,10 @@
         private System.Windows.Forms.Label label104;
         private System.Windows.Forms.Button btnDvdExemplaireAjouter;
         private System.Windows.Forms.Button btnDvdExemplaireImage;
+        private System.Windows.Forms.GroupBox grpReceptionExemplaireModifier;
+        private System.Windows.Forms.Label label108;
+        private System.Windows.Forms.Button btnRevueExemplaireSupprimer;
+        private System.Windows.Forms.Button btnRevueExemplaireModifier;
+        private System.Windows.Forms.ComboBox cbxRevueExemplaireEtatModifier;
     }
 }

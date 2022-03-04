@@ -104,12 +104,12 @@ namespace Mediatek86.controleur
             return lesEtats;
         }
         /// <summary>
-        /// récupère les exemplaires d'une revue
+        /// récupère les exemplaires d'un document
         /// </summary>
         /// <returns>Collection d'objets Exemplaire</returns>
-        public List<Exemplaire> GetExemplairesRevue(string idDocument)
+        public List<Exemplaire> GetExemplaires(string idDocument)
         {
-            return Dao.GetExemplairesRevue(idDocument);
+            return Dao.GetExemplaires(idDocument);
         }
         /// <summary>
         /// getters ur les abonnements
@@ -275,7 +275,7 @@ namespace Mediatek86.controleur
             }
             if (commande is Abonnement abonnement)
             {
-                return Dao.SupprimerAbonnement(abonnement);
+                return Dao.SupprimerAbonnement(abonnement); 
             }
             return false;
         }

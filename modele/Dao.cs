@@ -240,10 +240,10 @@ namespace Mediatek86.modele
         }
 
         /// <summary>
-        /// Retourne les exemplaires d'une revue
+        /// Retourne les exemplaires d'un document
         /// </summary>
         /// <returns>Liste d'objets Exemplaire</returns>
-        public static List<Exemplaire> GetExemplairesRevue(string idDocument)
+        public static List<Exemplaire> GetExemplaires(string idDocument)
         {
             List<Exemplaire> lesExemplaires = new List<Exemplaire>();
             string req = "Select e.id, e.numero, e.dateAchat, e.photo, e.idEtat, t.libelle as etat ";
