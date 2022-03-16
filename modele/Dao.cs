@@ -1085,5 +1085,34 @@ namespace Mediatek86.modele
                 return "";
             }
         }
+
+        /// <summary>
+        /// Vérifie si l'utilisateur connecté est l'administrateur ou un employé du service administratif
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="pwd"></param>
+        /// <returns>True si l'opération a réussi</returns>
+        public static bool AdminAuthentification(string login, string pwd)
+        {
+            string req = "Select * from utilisateur u join service s on u.idservice = s.id ";
+            req += "where u.login=@login and pwd=SHA2(@pwd, 256) and (s.libelle='admin' or s.libelle='administratif')";
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    { "@login", login},
+                    { "@pwd", pwd}
+                };
+            BddMySql curs = BddMySql.GetInstance(connectionString);
+            curs.ReqSelect(req, parameters);
+            if (curs.Read())
+            {
+                curs.Close();
+                return true;
+            }
+            else
+            {
+                curs.Close();
+                return false;
+            }
+        }
     }
 }

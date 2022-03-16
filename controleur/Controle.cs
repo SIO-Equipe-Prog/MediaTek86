@@ -6,8 +6,9 @@ using System.Threading;
 
 namespace Mediatek86.controleur
 {
-    internal class Controle
+    public class Controle
     {
+        private readonly FrmAuthentification frmAuthentification;
         private readonly List<Livre> lesLivres;
         private readonly List<Dvd> lesDvd;
         private readonly List<Revue> lesRevues;
@@ -30,8 +31,29 @@ namespace Mediatek86.controleur
             lesPublics = Dao.GetAllPublics();
             lesSuivis = Dao.GetAllSuivis();
             lesEtats = Dao.GetAllEtats();
-            FrmMediatek frmMediatek = new FrmMediatek(this);
-            frmMediatek.ShowDialog();
+            frmAuthentification = new FrmAuthentification(this);
+            frmAuthentification.ShowDialog();
+        }
+
+        /// <summary>
+        /// Vérifie si l'utilisateur connecté est l'administrateur ou un employé du service administratif
+        /// et ouvre la fenêtre principale si la vérification est correcte
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="pwd"></param>
+        /// <returns>True si la création a pu se faire</returns>
+        public bool AdminAuthentification(string login, string pwd)
+        {
+            if (Dao.AdminAuthentification(login, pwd))
+            {
+                frmAuthentification.Hide();
+                (new FrmMediatek(this)).ShowDialog();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
