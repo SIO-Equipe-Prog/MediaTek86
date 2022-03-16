@@ -1100,7 +1100,6 @@ namespace Mediatek86.modele
                 {
                     { "@login", login},
                     { "@pwd", pwd}
-
                 };
             BddMySql curs = BddMySql.GetInstance(connectionString);
             curs.ReqSelect(req, parameters);

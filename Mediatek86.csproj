@@ -24,7 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>.sonarlint\mediatek86csharp.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Mediatek86.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>.sonarlint\mediatek86csharp.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Mediatek86.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
@@ -142,6 +142,7 @@
       <DependentUpon>FrmMediatek.cs</DependentUpon>
     </EmbeddedResource>
     <None Include=".sonarlint\mediatek86csharp.ruleset" />
+    <None Include="Mediatek86.ruleset" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
