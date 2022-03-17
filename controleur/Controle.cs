@@ -36,24 +36,27 @@ namespace Mediatek86.controleur
         }
 
         /// <summary>
-        /// Vérifie si l'utilisateur connecté est l'administrateur ou un employé du service administratif
-        /// et ouvre la fenêtre principale si la vérification est correcte
+        /// Tente d'authentifier l'utilisateur avec les identifiants 
+        /// passés en paramètre
         /// </summary>
         /// <param name="login"></param>
         /// <param name="pwd"></param>
         /// <returns>True si la création a pu se faire</returns>
-        public bool AdminAuthentification(string login, string pwd)
+        public string Authentification(string login, string pwd)
         {
-            if (Dao.AdminAuthentification(login, pwd))
+            if (Dao.CultureAuthentification(login, pwd))
             {
-                frmAuthentification.Hide();
-                (new FrmMediatek(this)).ShowDialog();
-                return true;
+                return "culture";
             }
-            else
+            else if (Dao.PretAuthentification(login, pwd))
             {
-                return false;
+                return "prêts";
             }
+            else if (Dao.AdminAuthentification(login, pwd))
+            {
+                return "admin";
+            }
+            return "";
         }
 
         /// <summary>

@@ -44,7 +44,7 @@
             this.label98 = new System.Windows.Forms.Label();
             this.dgvLivreExemplairesListe = new System.Windows.Forms.DataGridView();
             this.cbxLivreExemplaireEtatModifier = new System.Windows.Forms.ComboBox();
-            this.label100 = new System.Windows.Forms.Label();
+            this.lblLivreExemplaires = new System.Windows.Forms.Label();
             this.btnLivreExemplaireModifier = new System.Windows.Forms.Button();
             this.grpLivreGestion = new System.Windows.Forms.GroupBox();
             this.btnLivreConfirmer = new System.Windows.Forms.Button();
@@ -98,7 +98,7 @@
             this.txbDvdExemplaireNumero = new System.Windows.Forms.TextBox();
             this.label105 = new System.Windows.Forms.Label();
             this.pcbDvdExemplaireImage = new System.Windows.Forms.PictureBox();
-            this.label104 = new System.Windows.Forms.Label();
+            this.lblDvdExemplaires = new System.Windows.Forms.Label();
             this.btnDvdExemplaireAjouter = new System.Windows.Forms.Button();
             this.label99 = new System.Windows.Forms.Label();
             this.btnDvdExemplaireSupprimer = new System.Windows.Forms.Button();
@@ -191,6 +191,11 @@
             this.label34 = new System.Windows.Forms.Label();
             this.txbRevuesTitreRecherche = new System.Windows.Forms.TextBox();
             this.tabReceptionRevue = new System.Windows.Forms.TabPage();
+            this.grpReceptionExemplaireModifier = new System.Windows.Forms.GroupBox();
+            this.label108 = new System.Windows.Forms.Label();
+            this.btnRevueExemplaireSupprimer = new System.Windows.Forms.Button();
+            this.btnRevueExemplaireModifier = new System.Windows.Forms.Button();
+            this.cbxRevueExemplaireEtatModifier = new System.Windows.Forms.ComboBox();
             this.grpReceptionExemplaire = new System.Windows.Forms.GroupBox();
             this.btnReceptionExemplaireImage = new System.Windows.Forms.Button();
             this.pcbReceptionExemplaireImage = new System.Windows.Forms.PictureBox();
@@ -332,11 +337,6 @@
             this.txbCommandeRevueDelaiMiseADispo = new System.Windows.Forms.TextBox();
             this.txbCommandeRevuePeriodicite = new System.Windows.Forms.TextBox();
             this.label69 = new System.Windows.Forms.Label();
-            this.grpReceptionExemplaireModifier = new System.Windows.Forms.GroupBox();
-            this.label108 = new System.Windows.Forms.Label();
-            this.btnRevueExemplaireSupprimer = new System.Windows.Forms.Button();
-            this.btnRevueExemplaireModifier = new System.Windows.Forms.Button();
-            this.cbxRevueExemplaireEtatModifier = new System.Windows.Forms.ComboBox();
             this.tabOngletsApplication.SuspendLayout();
             this.tabLivres.SuspendLayout();
             this.grpLivreExemplaire.SuspendLayout();
@@ -363,6 +363,7 @@
             this.grpRevuesRecherche.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRevuesListe)).BeginInit();
             this.tabReceptionRevue.SuspendLayout();
+            this.grpReceptionExemplaireModifier.SuspendLayout();
             this.grpReceptionExemplaire.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbReceptionExemplaireImage)).BeginInit();
             this.grpReceptionRevue.SuspendLayout();
@@ -388,7 +389,6 @@
             this.grpCommandeRevue.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAbonnementsListe)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcbCommandeRevueImage)).BeginInit();
-            this.grpReceptionExemplaireModifier.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabOngletsApplication
@@ -437,7 +437,7 @@
             this.grpLivreExemplaire.Controls.Add(this.label98);
             this.grpLivreExemplaire.Controls.Add(this.dgvLivreExemplairesListe);
             this.grpLivreExemplaire.Controls.Add(this.cbxLivreExemplaireEtatModifier);
-            this.grpLivreExemplaire.Controls.Add(this.label100);
+            this.grpLivreExemplaire.Controls.Add(this.lblLivreExemplaires);
             this.grpLivreExemplaire.Controls.Add(this.btnLivreExemplaireModifier);
             this.grpLivreExemplaire.Location = new System.Drawing.Point(8, 681);
             this.grpLivreExemplaire.Name = "grpLivreExemplaire";
@@ -478,7 +478,7 @@
             // 
             // pcbLivreExemplaireImage
             // 
-            this.pcbLivreExemplaireImage.Location = new System.Drawing.Point(560, 130);
+            this.pcbLivreExemplaireImage.Location = new System.Drawing.Point(560, 19);
             this.pcbLivreExemplaireImage.Name = "pcbLivreExemplaireImage";
             this.pcbLivreExemplaireImage.Size = new System.Drawing.Size(284, 210);
             this.pcbLivreExemplaireImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -535,7 +535,7 @@
             // 
             this.btnLivreExemplaireSupprimer.Enabled = false;
             this.btnLivreExemplaireSupprimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLivreExemplaireSupprimer.Location = new System.Drawing.Point(693, 95);
+            this.btnLivreExemplaireSupprimer.Location = new System.Drawing.Point(693, 318);
             this.btnLivreExemplaireSupprimer.Name = "btnLivreExemplaireSupprimer";
             this.btnLivreExemplaireSupprimer.Size = new System.Drawing.Size(151, 22);
             this.btnLivreExemplaireSupprimer.TabIndex = 40;
@@ -547,7 +547,7 @@
             // 
             this.label98.AutoSize = true;
             this.label98.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label98.Location = new System.Drawing.Point(547, 16);
+            this.label98.Location = new System.Drawing.Point(557, 242);
             this.label98.Name = "label98";
             this.label98.Size = new System.Drawing.Size(182, 13);
             this.label98.TabIndex = 41;
@@ -556,7 +556,7 @@
             // dgvLivreExemplairesListe
             // 
             this.dgvLivreExemplairesListe.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLivreExemplairesListe.Location = new System.Drawing.Point(150, 16);
+            this.dgvLivreExemplairesListe.Location = new System.Drawing.Point(150, 19);
             this.dgvLivreExemplairesListe.Name = "dgvLivreExemplairesListe";
             this.dgvLivreExemplairesListe.Size = new System.Drawing.Size(391, 134);
             this.dgvLivreExemplairesListe.TabIndex = 23;
@@ -566,26 +566,26 @@
             // cbxLivreExemplaireEtatModifier
             // 
             this.cbxLivreExemplaireEtatModifier.FormattingEnabled = true;
-            this.cbxLivreExemplaireEtatModifier.Location = new System.Drawing.Point(744, 16);
+            this.cbxLivreExemplaireEtatModifier.Location = new System.Drawing.Point(744, 239);
             this.cbxLivreExemplaireEtatModifier.Name = "cbxLivreExemplaireEtatModifier";
             this.cbxLivreExemplaireEtatModifier.Size = new System.Drawing.Size(100, 21);
             this.cbxLivreExemplaireEtatModifier.TabIndex = 0;
             // 
-            // label100
+            // lblLivreExemplaires
             // 
-            this.label100.AutoSize = true;
-            this.label100.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label100.Location = new System.Drawing.Point(6, 100);
-            this.label100.Name = "label100";
-            this.label100.Size = new System.Drawing.Size(82, 13);
-            this.label100.TabIndex = 28;
-            this.label100.Text = "Exemplaires :";
+            this.lblLivreExemplaires.AutoSize = true;
+            this.lblLivreExemplaires.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLivreExemplaires.Location = new System.Drawing.Point(6, 74);
+            this.lblLivreExemplaires.Name = "lblLivreExemplaires";
+            this.lblLivreExemplaires.Size = new System.Drawing.Size(82, 13);
+            this.lblLivreExemplaires.TabIndex = 28;
+            this.lblLivreExemplaires.Text = "Exemplaires :";
             // 
             // btnLivreExemplaireModifier
             // 
             this.btnLivreExemplaireModifier.Enabled = false;
             this.btnLivreExemplaireModifier.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLivreExemplaireModifier.Location = new System.Drawing.Point(693, 54);
+            this.btnLivreExemplaireModifier.Location = new System.Drawing.Point(693, 266);
             this.btnLivreExemplaireModifier.Name = "btnLivreExemplaireModifier";
             this.btnLivreExemplaireModifier.Size = new System.Drawing.Size(151, 22);
             this.btnLivreExemplaireModifier.TabIndex = 40;
@@ -1063,16 +1063,16 @@
             this.grpDvdExemplaire.Controls.Add(this.txbDvdExemplaireNumero);
             this.grpDvdExemplaire.Controls.Add(this.label105);
             this.grpDvdExemplaire.Controls.Add(this.pcbDvdExemplaireImage);
-            this.grpDvdExemplaire.Controls.Add(this.label104);
+            this.grpDvdExemplaire.Controls.Add(this.lblDvdExemplaires);
             this.grpDvdExemplaire.Controls.Add(this.btnDvdExemplaireAjouter);
             this.grpDvdExemplaire.Controls.Add(this.label99);
             this.grpDvdExemplaire.Controls.Add(this.btnDvdExemplaireSupprimer);
             this.grpDvdExemplaire.Controls.Add(this.btnDvdExemplaireModifier);
             this.grpDvdExemplaire.Controls.Add(this.dgvDvdExemplairesListe);
             this.grpDvdExemplaire.Controls.Add(this.cbxDvdExemplaireEtatModifier);
-            this.grpDvdExemplaire.Location = new System.Drawing.Point(3, 681);
+            this.grpDvdExemplaire.Location = new System.Drawing.Point(8, 681);
             this.grpDvdExemplaire.Name = "grpDvdExemplaire";
-            this.grpDvdExemplaire.Size = new System.Drawing.Size(864, 350);
+            this.grpDvdExemplaire.Size = new System.Drawing.Size(859, 350);
             this.grpDvdExemplaire.TabIndex = 28;
             this.grpDvdExemplaire.TabStop = false;
             this.grpDvdExemplaire.Text = "Exemplaires";
@@ -1143,22 +1143,22 @@
             // 
             // pcbDvdExemplaireImage
             // 
-            this.pcbDvdExemplaireImage.Location = new System.Drawing.Point(560, 130);
+            this.pcbDvdExemplaireImage.Location = new System.Drawing.Point(560, 19);
             this.pcbDvdExemplaireImage.Name = "pcbDvdExemplaireImage";
             this.pcbDvdExemplaireImage.Size = new System.Drawing.Size(284, 210);
             this.pcbDvdExemplaireImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pcbDvdExemplaireImage.TabIndex = 49;
             this.pcbDvdExemplaireImage.TabStop = false;
             // 
-            // label104
+            // lblDvdExemplaires
             // 
-            this.label104.AutoSize = true;
-            this.label104.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label104.Location = new System.Drawing.Point(6, 83);
-            this.label104.Name = "label104";
-            this.label104.Size = new System.Drawing.Size(82, 13);
-            this.label104.TabIndex = 48;
-            this.label104.Text = "Exemplaires :";
+            this.lblDvdExemplaires.AutoSize = true;
+            this.lblDvdExemplaires.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDvdExemplaires.Location = new System.Drawing.Point(6, 74);
+            this.lblDvdExemplaires.Name = "lblDvdExemplaires";
+            this.lblDvdExemplaires.Size = new System.Drawing.Size(82, 13);
+            this.lblDvdExemplaires.TabIndex = 48;
+            this.lblDvdExemplaires.Text = "Exemplaires :";
             // 
             // btnDvdExemplaireAjouter
             // 
@@ -1176,7 +1176,7 @@
             // 
             this.label99.AutoSize = true;
             this.label99.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label99.Location = new System.Drawing.Point(547, 27);
+            this.label99.Location = new System.Drawing.Point(557, 242);
             this.label99.Name = "label99";
             this.label99.Size = new System.Drawing.Size(182, 13);
             this.label99.TabIndex = 41;
@@ -1186,7 +1186,7 @@
             // 
             this.btnDvdExemplaireSupprimer.Enabled = false;
             this.btnDvdExemplaireSupprimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDvdExemplaireSupprimer.Location = new System.Drawing.Point(678, 102);
+            this.btnDvdExemplaireSupprimer.Location = new System.Drawing.Point(678, 322);
             this.btnDvdExemplaireSupprimer.Name = "btnDvdExemplaireSupprimer";
             this.btnDvdExemplaireSupprimer.Size = new System.Drawing.Size(166, 22);
             this.btnDvdExemplaireSupprimer.TabIndex = 40;
@@ -1198,7 +1198,7 @@
             // 
             this.btnDvdExemplaireModifier.Enabled = false;
             this.btnDvdExemplaireModifier.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDvdExemplaireModifier.Location = new System.Drawing.Point(678, 57);
+            this.btnDvdExemplaireModifier.Location = new System.Drawing.Point(678, 266);
             this.btnDvdExemplaireModifier.Name = "btnDvdExemplaireModifier";
             this.btnDvdExemplaireModifier.Size = new System.Drawing.Size(166, 22);
             this.btnDvdExemplaireModifier.TabIndex = 40;
@@ -1219,7 +1219,7 @@
             // cbxDvdExemplaireEtatModifier
             // 
             this.cbxDvdExemplaireEtatModifier.FormattingEnabled = true;
-            this.cbxDvdExemplaireEtatModifier.Location = new System.Drawing.Point(744, 27);
+            this.cbxDvdExemplaireEtatModifier.Location = new System.Drawing.Point(744, 239);
             this.cbxDvdExemplaireEtatModifier.Name = "cbxDvdExemplaireEtatModifier";
             this.cbxDvdExemplaireEtatModifier.Size = new System.Drawing.Size(100, 21);
             this.cbxDvdExemplaireEtatModifier.TabIndex = 0;
@@ -1681,7 +1681,7 @@
             this.tabRevues.Location = new System.Drawing.Point(4, 22);
             this.tabRevues.Name = "tabRevues";
             this.tabRevues.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRevues.Size = new System.Drawing.Size(885, 1035);
+            this.tabRevues.Size = new System.Drawing.Size(885, 959);
             this.tabRevues.TabIndex = 1;
             this.tabRevues.Text = "Revues";
             this.tabRevues.UseVisualStyleBackColor = true;
@@ -2141,11 +2141,65 @@
             this.tabReceptionRevue.Controls.Add(this.grpReceptionRevue);
             this.tabReceptionRevue.Location = new System.Drawing.Point(4, 22);
             this.tabReceptionRevue.Name = "tabReceptionRevue";
-            this.tabReceptionRevue.Size = new System.Drawing.Size(885, 1035);
+            this.tabReceptionRevue.Size = new System.Drawing.Size(885, 959);
             this.tabReceptionRevue.TabIndex = 4;
             this.tabReceptionRevue.Text = "Parutions des revues";
             this.tabReceptionRevue.UseVisualStyleBackColor = true;
             this.tabReceptionRevue.Enter += new System.EventHandler(this.tabReceptionRevue_Enter);
+            // 
+            // grpReceptionExemplaireModifier
+            // 
+            this.grpReceptionExemplaireModifier.Controls.Add(this.label108);
+            this.grpReceptionExemplaireModifier.Controls.Add(this.btnRevueExemplaireSupprimer);
+            this.grpReceptionExemplaireModifier.Controls.Add(this.btnRevueExemplaireModifier);
+            this.grpReceptionExemplaireModifier.Controls.Add(this.cbxRevueExemplaireEtatModifier);
+            this.grpReceptionExemplaireModifier.Enabled = false;
+            this.grpReceptionExemplaireModifier.Location = new System.Drawing.Point(476, 630);
+            this.grpReceptionExemplaireModifier.Name = "grpReceptionExemplaireModifier";
+            this.grpReceptionExemplaireModifier.Size = new System.Drawing.Size(391, 123);
+            this.grpReceptionExemplaireModifier.TabIndex = 17;
+            this.grpReceptionExemplaireModifier.TabStop = false;
+            this.grpReceptionExemplaireModifier.Text = "Modification de la parution sélectionnée";
+            // 
+            // label108
+            // 
+            this.label108.AutoSize = true;
+            this.label108.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label108.Location = new System.Drawing.Point(6, 25);
+            this.label108.Name = "label108";
+            this.label108.Size = new System.Drawing.Size(94, 13);
+            this.label108.TabIndex = 42;
+            this.label108.Text = "Changer l\'état :";
+            // 
+            // btnRevueExemplaireSupprimer
+            // 
+            this.btnRevueExemplaireSupprimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRevueExemplaireSupprimer.Location = new System.Drawing.Point(212, 95);
+            this.btnRevueExemplaireSupprimer.Name = "btnRevueExemplaireSupprimer";
+            this.btnRevueExemplaireSupprimer.Size = new System.Drawing.Size(166, 22);
+            this.btnRevueExemplaireSupprimer.TabIndex = 7;
+            this.btnRevueExemplaireSupprimer.Text = "Supprimer la parution";
+            this.btnRevueExemplaireSupprimer.UseVisualStyleBackColor = true;
+            this.btnRevueExemplaireSupprimer.Click += new System.EventHandler(this.btnRevueExemplaireSupprimer_Click);
+            // 
+            // btnRevueExemplaireModifier
+            // 
+            this.btnRevueExemplaireModifier.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRevueExemplaireModifier.Location = new System.Drawing.Point(212, 20);
+            this.btnRevueExemplaireModifier.Name = "btnRevueExemplaireModifier";
+            this.btnRevueExemplaireModifier.Size = new System.Drawing.Size(166, 22);
+            this.btnRevueExemplaireModifier.TabIndex = 6;
+            this.btnRevueExemplaireModifier.Text = "Modifier la parution";
+            this.btnRevueExemplaireModifier.UseVisualStyleBackColor = true;
+            this.btnRevueExemplaireModifier.Click += new System.EventHandler(this.btnRevueExemplaireModifier_Click);
+            // 
+            // cbxRevueExemplaireEtatModifier
+            // 
+            this.cbxRevueExemplaireEtatModifier.FormattingEnabled = true;
+            this.cbxRevueExemplaireEtatModifier.Location = new System.Drawing.Point(106, 20);
+            this.cbxRevueExemplaireEtatModifier.Name = "cbxRevueExemplaireEtatModifier";
+            this.cbxRevueExemplaireEtatModifier.Size = new System.Drawing.Size(100, 21);
+            this.cbxRevueExemplaireEtatModifier.TabIndex = 5;
             // 
             // grpReceptionExemplaire
             // 
@@ -3639,60 +3693,6 @@
             this.label69.TabIndex = 36;
             this.label69.Text = "Nb d\'exemplaires :";
             // 
-            // grpReceptionExemplaireModifier
-            // 
-            this.grpReceptionExemplaireModifier.Controls.Add(this.label108);
-            this.grpReceptionExemplaireModifier.Controls.Add(this.btnRevueExemplaireSupprimer);
-            this.grpReceptionExemplaireModifier.Controls.Add(this.btnRevueExemplaireModifier);
-            this.grpReceptionExemplaireModifier.Controls.Add(this.cbxRevueExemplaireEtatModifier);
-            this.grpReceptionExemplaireModifier.Enabled = false;
-            this.grpReceptionExemplaireModifier.Location = new System.Drawing.Point(476, 630);
-            this.grpReceptionExemplaireModifier.Name = "grpReceptionExemplaireModifier";
-            this.grpReceptionExemplaireModifier.Size = new System.Drawing.Size(391, 123);
-            this.grpReceptionExemplaireModifier.TabIndex = 17;
-            this.grpReceptionExemplaireModifier.TabStop = false;
-            this.grpReceptionExemplaireModifier.Text = "Modification de la parution sélectionnée";
-            // 
-            // label108
-            // 
-            this.label108.AutoSize = true;
-            this.label108.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label108.Location = new System.Drawing.Point(6, 25);
-            this.label108.Name = "label108";
-            this.label108.Size = new System.Drawing.Size(94, 13);
-            this.label108.TabIndex = 42;
-            this.label108.Text = "Changer l\'état :";
-            // 
-            // btnRevueExemplaireSupprimer
-            // 
-            this.btnRevueExemplaireSupprimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRevueExemplaireSupprimer.Location = new System.Drawing.Point(212, 95);
-            this.btnRevueExemplaireSupprimer.Name = "btnRevueExemplaireSupprimer";
-            this.btnRevueExemplaireSupprimer.Size = new System.Drawing.Size(166, 22);
-            this.btnRevueExemplaireSupprimer.TabIndex = 7;
-            this.btnRevueExemplaireSupprimer.Text = "Supprimer la parution";
-            this.btnRevueExemplaireSupprimer.UseVisualStyleBackColor = true;
-            this.btnRevueExemplaireSupprimer.Click += new System.EventHandler(this.btnRevueExemplaireSupprimer_Click);
-            // 
-            // btnRevueExemplaireModifier
-            // 
-            this.btnRevueExemplaireModifier.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRevueExemplaireModifier.Location = new System.Drawing.Point(212, 20);
-            this.btnRevueExemplaireModifier.Name = "btnRevueExemplaireModifier";
-            this.btnRevueExemplaireModifier.Size = new System.Drawing.Size(166, 22);
-            this.btnRevueExemplaireModifier.TabIndex = 6;
-            this.btnRevueExemplaireModifier.Text = "Modifier la parution";
-            this.btnRevueExemplaireModifier.UseVisualStyleBackColor = true;
-            this.btnRevueExemplaireModifier.Click += new System.EventHandler(this.btnRevueExemplaireModifier_Click);
-            // 
-            // cbxRevueExemplaireEtatModifier
-            // 
-            this.cbxRevueExemplaireEtatModifier.FormattingEnabled = true;
-            this.cbxRevueExemplaireEtatModifier.Location = new System.Drawing.Point(106, 20);
-            this.cbxRevueExemplaireEtatModifier.Name = "cbxRevueExemplaireEtatModifier";
-            this.cbxRevueExemplaireEtatModifier.Size = new System.Drawing.Size(100, 21);
-            this.cbxRevueExemplaireEtatModifier.TabIndex = 5;
-            // 
             // FrmMediatek
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3738,6 +3738,8 @@
             this.grpRevuesRecherche.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRevuesListe)).EndInit();
             this.tabReceptionRevue.ResumeLayout(false);
+            this.grpReceptionExemplaireModifier.ResumeLayout(false);
+            this.grpReceptionExemplaireModifier.PerformLayout();
             this.grpReceptionExemplaire.ResumeLayout(false);
             this.grpReceptionExemplaire.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbReceptionExemplaireImage)).EndInit();
@@ -3773,8 +3775,6 @@
             this.grpCommandeRevue.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAbonnementsListe)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcbCommandeRevueImage)).EndInit();
-            this.grpReceptionExemplaireModifier.ResumeLayout(false);
-            this.grpReceptionExemplaireModifier.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -4065,7 +4065,7 @@
         private System.Windows.Forms.Button btnDvdExemplaireSupprimer;
         private System.Windows.Forms.Button btnDvdExemplaireModifier;
         private System.Windows.Forms.ComboBox cbxDvdExemplaireEtatModifier;
-        private System.Windows.Forms.Label label100;
+        private System.Windows.Forms.Label lblLivreExemplaires;
         private System.Windows.Forms.PictureBox pcbLivreExemplaireImage;
         private System.Windows.Forms.Button btnLivreExemplaireAjouter;
         private System.Windows.Forms.Button btnLivreExemplaireImage;
@@ -4082,7 +4082,7 @@
         private System.Windows.Forms.TextBox txbDvdExemplaireNumero;
         private System.Windows.Forms.Label label105;
         private System.Windows.Forms.PictureBox pcbDvdExemplaireImage;
-        private System.Windows.Forms.Label label104;
+        private System.Windows.Forms.Label lblDvdExemplaires;
         private System.Windows.Forms.Button btnDvdExemplaireAjouter;
         private System.Windows.Forms.Button btnDvdExemplaireImage;
         private System.Windows.Forms.GroupBox grpReceptionExemplaireModifier;

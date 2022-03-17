@@ -14,6 +14,7 @@ namespace Mediatek86.vue
         #region Variables globales
 
         private readonly Controle controle;
+        private readonly string role;
         const string ETATNEUF = "00001";
         const string SUIVIENCOURS = "00001";
         private readonly BindingSource bdgLivresListe = new BindingSource();
@@ -46,15 +47,65 @@ namespace Mediatek86.vue
         #endregion
 
 
-        internal FrmMediatek(Controle controle)
+        internal FrmMediatek(Controle controle, string role)
         {
             InitializeComponent();
             this.controle = controle;
+            this.role = role;
+            if (role != "admin")
+            {
+                AffichageApplication(role);
+            }
             string abonnementsLimite = controle.ShowAbonnementsLimite();
-            if (abonnementsLimite != null)
+            if (abonnementsLimite != null && role == "admin")
             {
                 MessageBox.Show("Attention, les abonnements pour ces revues se terminent dans moins de 30 jours : " + Environment.NewLine +
                                 controle.ShowAbonnementsLimite(), "Alerte abonnements");
+            }
+        }
+
+        public void AffichageApplication(string role)
+        {
+            if (role == "prêts")
+            {
+                // retire les onglets de gestion
+                while (tabOngletsApplication.TabCount > 3)
+                {
+                    tabOngletsApplication.TabPages.RemoveAt(3);
+                }
+                // impossible de gérer le catalogue
+                grpLivreGestion.Visible = false;
+                grpDvdGestion.Visible = false;
+                string[] controlesLectureExemplaires = { dgvLivreExemplairesListe.Name, lblLivreExemplaires.Name, pcbLivreExemplaireImage.Name, 
+                                                         dgvDvdExemplairesListe.Name, lblDvdExemplaires.Name, pcbDvdExemplaireImage.Name };
+                CacheControle(grpLivreExemplaire, controlesLectureExemplaires);
+                CacheControle(grpDvdExemplaire, controlesLectureExemplaires);
+                grpRevueGestion.Visible = false;
+                // remise en place des groupes affichant les exemplaires en conséquence
+                grpLivreExemplaire.Location = new Point(grpLivreExemplaire.Location.X, grpLivreExemplaire.Location.Y - (grpLivreGestion.Height + 6));
+                grpDvdExemplaire.Location = new Point(grpDvdExemplaire.Location.X, grpDvdExemplaire.Location.Y - (grpDvdGestion.Height + 6));
+                // réduction de la taille de la fenêtre principale de l'application
+                int reductionHauteur = 110;
+                grpDvdExemplaire.Size = new Size(grpDvdExemplaire.Width, grpDvdExemplaire.Height - reductionHauteur);
+                grpLivreExemplaire.Size = new Size(grpLivreExemplaire.Width, grpLivreExemplaire.Height - reductionHauteur);
+                this.Size = new Size(this.Width, 936);
+            }
+        }
+
+        /// <summary>
+        /// Cache tous les controles du groupe passé en paramètre, à part
+        /// les controles dont le nom est présent dans les exceptions
+        /// </summary>
+        /// <param name="controles"></param>
+        /// <param name="exceptions"></param>
+        public void CacheControle(GroupBox groupBox, string[] exceptions)
+        {
+            foreach (Control control in groupBox.Controls)
+            {
+                if (!exceptions.Contains(control.Name))
+                {
+                    control.Visible = false;
+                }
             }
         }
 
