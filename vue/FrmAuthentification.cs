@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Mediatek86.controleur;
 
@@ -33,9 +26,20 @@ namespace Mediatek86.vue
         {
             if (!txtLogin.Text.Equals("") && !txtPwd.Text.Equals(""))
             {
-                if (!controle.AdminAuthentification(txtLogin.Text, txtPwd.Text))
+                string role = controle.Authentification(txtLogin.Text, txtPwd.Text);
+                if (role == "culture")
                 {
-                    MessageBox.Show("Authentification incorrecte ou vous n'êtes pas admin", "Alerte");
+                    MessageBox.Show("Vous n'avez pas les droits pour accéder à l'application.");
+                    Application.Exit();
+                }
+                else if (role != "")
+                {
+                    this.Hide();
+                    new FrmMediatek(this.controle, role).ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("Identifiants incorrects", "Alerte");
                     txtLogin.Text = "";
                     txtPwd.Text = "";
                     txtLogin.Focus();
