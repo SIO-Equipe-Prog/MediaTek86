@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Mediatek86.bdd;
 using System;
+using System.Text;
 
 namespace Mediatek86.modele
 {
@@ -1068,17 +1069,17 @@ namespace Mediatek86.modele
         {
             try
             {
-                string liste = null;
+                StringBuilder sb = new StringBuilder(null);
                 BddMySql curs = BddMySql.GetInstance(connectionString);
                 curs.ReqProcedure("revueabonnements");
                 while (curs.Read())
                 {
                     string titre = (string)curs.Field("titre");
                     DateTime dateFinAbonnement = (DateTime)curs.Field("dateFinAbonnement");
-                    liste += titre + " : " + dateFinAbonnement.ToShortDateString() + Environment.NewLine;
+                    sb = sb.AppendLine(titre + " : " + dateFinAbonnement.ToShortDateString());
                 }
                 curs.Close();
-                return liste;
+                return sb.ToString();
             }
             catch
             {

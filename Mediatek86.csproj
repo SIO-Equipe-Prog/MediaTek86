@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="controleur\Controle.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="metier\Abonnement.cs" />
     <Compile Include="metier\Commande.cs" />
     <Compile Include="metier\CommandeDocument.cs" />

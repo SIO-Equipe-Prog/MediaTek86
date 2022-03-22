@@ -14,7 +14,6 @@ namespace Mediatek86.vue
         #region Variables globales
 
         private readonly Controle controle;
-        private readonly string role;
         const string ETATNEUF = "00001";
         const string SUIVIENCOURS = "00001";
         private readonly BindingSource bdgLivresListe = new BindingSource();
@@ -51,16 +50,18 @@ namespace Mediatek86.vue
         {
             InitializeComponent();
             this.controle = controle;
-            this.role = role;
             if (role != "admin")
             {
                 AffichageApplication(role);
             }
-            string abonnementsLimite = controle.ShowAbonnementsLimite();
-            if (abonnementsLimite != null && role == "admin")
+            else
             {
-                MessageBox.Show("Attention, les abonnements pour ces revues se terminent dans moins de 30 jours : " + Environment.NewLine +
-                                controle.ShowAbonnementsLimite(), "Alerte abonnements");
+                string abonnementsLimite = controle.ShowAbonnementsLimite();
+                if (abonnementsLimite != null)
+                {
+                    MessageBox.Show("Attention, les abonnements pour ces revues se terminent dans moins de 30 jours : " + Environment.NewLine +
+                                    controle.ShowAbonnementsLimite(), "Alerte abonnements");
+                }
             }
         }
 
@@ -2864,8 +2865,8 @@ namespace Mediatek86.vue
 
         private void afficheReceptionExemplairesRevue()
         {
-            string idDocuement = txbReceptionRevueNumero.Text;
-            lesExemplaires = controle.GetExemplaires(idDocuement);
+            string idDocument = txbReceptionRevueNumero.Text;
+            lesExemplaires = controle.GetExemplaires(idDocument);
             RemplirReceptionExemplairesListe(lesExemplaires);
         }
 
@@ -3664,12 +3665,15 @@ namespace Mediatek86.vue
             dgvAbonnementsListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvAbonnementsListe.Columns["dateCommande"].DisplayIndex = 0;
             dgvAbonnementsListe.Columns["montant"].DisplayIndex = 1;
-            if (abonnements.Count > 0)
+            if (abonnements.Count > 0 && dgvAbonnementsListe.DataSource == null)
             {
                 btnCommandeRevueSupprimer.Enabled = true;
             }
         }
 
+        /// <summary>
+        /// Vide l'affichage des infos pour la revue sélectionnée
+        /// </summary>
         private void VideCommandeRevuesInfos()
         {
             txbCommandeRevueDelaiMiseADispo.Text = "";
@@ -3766,6 +3770,7 @@ namespace Mediatek86.vue
                 Revue revue = lesRevues.Find(x => x.Id.Equals(txbCommandeRevueNumero.Text));
                 if (revue != null)
                 {
+                    lesExemplaires = controle.GetExemplaires(revue.Id);
                     AfficheCommandeRevueInfos(revue);
                     MiseAJourAbonnement(revue.Id);
                 }
@@ -3862,33 +3867,16 @@ namespace Mediatek86.vue
             }
         }
 
+        /// <summary>
+        /// Vérifie si l'abonnement a des exemplaires associés
+        /// </summary>
+        /// <param name="abonnement"></param>
+        /// <param name="lesexemplaires"></param>
+        /// <returns></returns>
         private bool HasExemplairesDansAbonnement(Abonnement abonnement, List<Exemplaire> lesexemplaires)
         {
-            foreach (Exemplaire exemplaire in lesexemplaires)
-            {
-                if (abonnement.ParutionDansAbonnement(abonnement.DateCommande, exemplaire.DateAchat, abonnement.DateFinAbonnement))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return lesexemplaires.Any(x => abonnement.ParutionDansAbonnement(abonnement.DateCommande, x.DateAchat, abonnement.DateFinAbonnement));
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         #endregion
     }
 }

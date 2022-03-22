@@ -2,13 +2,11 @@
 using Mediatek86.modele;
 using Mediatek86.metier;
 using Mediatek86.vue;
-using System.Threading;
 
 namespace Mediatek86.controleur
 {
     public class Controle
     {
-        private readonly FrmAuthentification frmAuthentification;
         private readonly List<Livre> lesLivres;
         private readonly List<Dvd> lesDvd;
         private readonly List<Revue> lesRevues;
@@ -31,7 +29,7 @@ namespace Mediatek86.controleur
             lesPublics = Dao.GetAllPublics();
             lesSuivis = Dao.GetAllSuivis();
             lesEtats = Dao.GetAllEtats();
-            frmAuthentification = new FrmAuthentification(this);
+            FrmAuthentification frmAuthentification = new FrmAuthentification(this);
             frmAuthentification.ShowDialog();
         }
 
