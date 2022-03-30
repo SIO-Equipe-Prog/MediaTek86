@@ -62,6 +62,7 @@ namespace Mediatek86.vue
                 MessageBox.Show("Attention, les abonnements pour ces revues se terminent dans moins de 30 jours : " + Environment.NewLine +
                                 controle.ShowAbonnementsLimite(), "Alerte abonnements");
             }
+            
         }
 
         public void AffichageApplication(string role)
@@ -1134,7 +1135,7 @@ namespace Mediatek86.vue
             {
                 pcbLivresImage.Image = Image.FromFile(image);
             }
-            catch
+            catch 
             {
                 pcbLivresImage.Image = null;
             }
@@ -1240,7 +1241,7 @@ namespace Mediatek86.vue
                         rdbLivreVisionnage.Checked = true;
                     }
                 }
-                catch
+                catch 
                 {
                     VideLivresZones();
                     VideLivreExemplairesListe();
@@ -1405,6 +1406,8 @@ namespace Mediatek86.vue
             catch
             {
                 MessageBox.Show("Certaines des informations indiquées sont invalides.");
+
+
             }
             if (nouveauLivre != null)
             {
@@ -1877,6 +1880,7 @@ namespace Mediatek86.vue
             catch
             {
                 pcbLivreExemplaireImage.Image = null;
+  
             }
         }
         #endregion
@@ -2852,7 +2856,7 @@ namespace Mediatek86.vue
             {
                 pcbReceptionRevueImage.Image = Image.FromFile(image);
             }
-            catch
+            catch 
             {
                 pcbReceptionRevueImage.Image = null;
             }
@@ -3015,7 +3019,7 @@ namespace Mediatek86.vue
                 {
                     pcbReceptionExemplaireRevueImage.Image = Image.FromFile(image);
                 }
-                catch
+                catch 
                 {
                     pcbReceptionExemplaireRevueImage.Image = null;
                 }
@@ -3205,7 +3209,7 @@ namespace Mediatek86.vue
             {
                 pcbCommandeDvdImage.Image = Image.FromFile(image);
             }
-            catch
+            catch 
             {
                 pcbCommandeDvdImage.Image = null;
             }
@@ -3299,7 +3303,7 @@ namespace Mediatek86.vue
                         btnCommandeDvdSupprimer.Enabled = false;
                     }
                 }
-                catch
+                catch 
                 {
                     VideCommandeDvdListe();
                 }
@@ -3387,7 +3391,7 @@ namespace Mediatek86.vue
             {
                 pcbLivresImage.Image = Image.FromFile(image);
             }
-            catch
+            catch 
             {
                 pcbLivresImage.Image = null;
             }
@@ -3563,7 +3567,7 @@ namespace Mediatek86.vue
                         btnCommandeLivreSupprimer.Enabled = false;
                     }
                 }
-                catch
+                catch 
                 {
                     VideCommandesLivresListe();
                 }
@@ -3645,7 +3649,7 @@ namespace Mediatek86.vue
             {
                 pcbRevuesImage.Image = Image.FromFile(image);
             }
-            catch
+            catch 
             {
                 pcbRevuesImage.Image = null;
             }
@@ -3830,7 +3834,7 @@ namespace Mediatek86.vue
                         btnCommandeRevueSupprimer.Enabled = false;
                     }
                 }
-                catch
+                catch 
                 {
                     VideAbonnementsListe();
                 }
