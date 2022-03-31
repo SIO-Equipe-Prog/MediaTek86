@@ -52,7 +52,6 @@ namespace Mediatek86.bdd
             if (instance is null)
             {
                 Log.Logger = new LoggerConfiguration()
-                    .WriteTo.Console()
                     .WriteTo.File("logs/log.txt")
                     .CreateLogger();
                 instance = new BddMySql(stringConnect);
@@ -131,7 +130,7 @@ namespace Mediatek86.bdd
             }
             catch(Exception e)
             {
-                Log.Error("BddMySql.Field catch erreur={0}", e.Message);
+                Log.Error("BddMySql.Field catch nameField={0} erreur={1}", nameField, e.Message);
                 return null;
             }
         }
