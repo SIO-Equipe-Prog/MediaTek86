@@ -45,7 +45,6 @@ namespace Mediatek86.vue
 
         #endregion
 
-
         internal FrmMediatek(Controle controle, string role)
         {
             InitializeComponent();
@@ -559,7 +558,6 @@ namespace Mediatek86.vue
                 catch
                 {
                     VideRevuesZones();
-
                 }
             }
             else
@@ -2966,7 +2964,7 @@ namespace Mediatek86.vue
                 }
                 catch
                 {
-                    MessageBox.Show("le numéro de parution doit être numérique", "Information");
+                    MessageBox.Show("le numéro de parution doit être un nombre", "Information");
                     txbReceptionExemplaireNumero.Text = "";
                     txbReceptionExemplaireNumero.Focus();
                 }
