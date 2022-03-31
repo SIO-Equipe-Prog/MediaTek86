@@ -760,11 +760,11 @@ namespace Mediatek86.vue
             }
             else
             {
-                if (nbCommandes == 0)
+                if (nbCommandes != 0)
                 {
                     MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas de commandes associées.");
                 }
-                if (nbExemplaires == 0)
+                if (nbExemplaires != 0)
                 {
                     MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas d'exemplaires.");
                 }
@@ -1443,11 +1443,11 @@ namespace Mediatek86.vue
             }
             else
             {
-                if (nbCommandes == 0)
+                if (nbCommandes != 0)
                 {
                     MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas de commandes associées.");
                 }
-                if (nbExemplaires == 0)
+                if (nbExemplaires != 0)
                 {
                     MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas d'exemplaires.");
                 }
@@ -2313,11 +2313,11 @@ namespace Mediatek86.vue
             }
             else
             {
-                if (nbCommandes == 0)
+                if (nbCommandes != 0)
                 {
                     MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas de commandes associées.");
                 }
-                if (nbExemplaires == 0)
+                if (nbExemplaires != 0)
                 {
                     MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas d'exemplaires.");
                 }
