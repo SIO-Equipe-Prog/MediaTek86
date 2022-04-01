@@ -3874,7 +3874,7 @@ namespace Mediatek86.vue
         /// </summary>
         /// <param name="abonnement"></param>
         /// <param name="lesexemplaires"></param>
-        /// <returns></returns>
+        /// <returns>true si l'abonnement a des exemplaires associés</returns>
         private bool HasExemplairesDansAbonnement(Abonnement abonnement, List<Exemplaire> lesexemplaires)
         {
             return lesexemplaires.Any(x => abonnement.ParutionDansAbonnement(abonnement.DateCommande, x.DateAchat, abonnement.DateFinAbonnement));
