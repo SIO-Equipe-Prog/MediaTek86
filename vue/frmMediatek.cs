@@ -3622,6 +3622,10 @@ namespace Mediatek86.vue
         {
             lesRevues = controle.GetAllRevues();
             lesSuivis = controle.GetAllSuivis();
+            if (dgvAbonnementsListe.DataSource != null)
+            {
+                dgvAbonnementsListe_SelectionChanged(null, null);
+            }
         }
 
         /// <summary>
