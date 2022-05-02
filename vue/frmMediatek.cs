@@ -45,7 +45,6 @@ namespace Mediatek86.vue
 
         #endregion
 
-
         internal FrmMediatek(Controle controle, string role)
         {
             InitializeComponent();
@@ -559,7 +558,6 @@ namespace Mediatek86.vue
                 catch
                 {
                     VideRevuesZones();
-
                 }
             }
             else
@@ -762,11 +760,11 @@ namespace Mediatek86.vue
             }
             else
             {
-                if (nbCommandes == 0)
+                if (nbCommandes != 0)
                 {
                     MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas de commandes associées.");
                 }
-                if (nbExemplaires == 0)
+                if (nbExemplaires != 0)
                 {
                     MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas d'exemplaires.");
                 }
@@ -1445,11 +1443,11 @@ namespace Mediatek86.vue
             }
             else
             {
-                if (nbCommandes == 0)
+                if (nbCommandes != 0)
                 {
                     MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas de commandes associées.");
                 }
-                if (nbExemplaires == 0)
+                if (nbExemplaires != 0)
                 {
                     MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas d'exemplaires.");
                 }
@@ -2315,11 +2313,11 @@ namespace Mediatek86.vue
             }
             else
             {
-                if (nbCommandes == 0)
+                if (nbCommandes != 0)
                 {
                     MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas de commandes associées.");
                 }
-                if (nbExemplaires == 0)
+                if (nbExemplaires != 0)
                 {
                     MessageBox.Show("Un document ne peut être supprimé que s'il n'a pas d'exemplaires.");
                 }
@@ -2966,7 +2964,7 @@ namespace Mediatek86.vue
                 }
                 catch
                 {
-                    MessageBox.Show("le numéro de parution doit être numérique", "Information");
+                    MessageBox.Show("le numéro de parution doit être un nombre", "Information");
                     txbReceptionExemplaireNumero.Text = "";
                     txbReceptionExemplaireNumero.Focus();
                 }
@@ -3624,6 +3622,10 @@ namespace Mediatek86.vue
         {
             lesRevues = controle.GetAllRevues();
             lesSuivis = controle.GetAllSuivis();
+            if (dgvAbonnementsListe.DataSource != null)
+            {
+                dgvAbonnementsListe_SelectionChanged(null, null);
+            }
         }
 
         /// <summary>
