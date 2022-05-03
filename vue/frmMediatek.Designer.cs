@@ -405,7 +405,7 @@
             this.tabOngletsApplication.Location = new System.Drawing.Point(0, 0);
             this.tabOngletsApplication.Name = "tabOngletsApplication";
             this.tabOngletsApplication.SelectedIndex = 0;
-            this.tabOngletsApplication.Size = new System.Drawing.Size(893, 1061);
+            this.tabOngletsApplication.Size = new System.Drawing.Size(893, 1006);
             this.tabOngletsApplication.TabIndex = 0;
             // 
             // tabLivres
@@ -416,7 +416,7 @@
             this.tabLivres.Controls.Add(this.grpLivresRecherche);
             this.tabLivres.Location = new System.Drawing.Point(4, 22);
             this.tabLivres.Name = "tabLivres";
-            this.tabLivres.Size = new System.Drawing.Size(885, 1035);
+            this.tabLivres.Size = new System.Drawing.Size(885, 980);
             this.tabLivres.TabIndex = 2;
             this.tabLivres.Text = "Livres";
             this.tabLivres.UseVisualStyleBackColor = true;
@@ -441,7 +441,7 @@
             this.grpLivreExemplaire.Controls.Add(this.btnLivreExemplaireModifier);
             this.grpLivreExemplaire.Location = new System.Drawing.Point(8, 681);
             this.grpLivreExemplaire.Name = "grpLivreExemplaire";
-            this.grpLivreExemplaire.Size = new System.Drawing.Size(859, 346);
+            this.grpLivreExemplaire.Size = new System.Drawing.Size(859, 295);
             this.grpLivreExemplaire.TabIndex = 27;
             this.grpLivreExemplaire.TabStop = false;
             this.grpLivreExemplaire.Text = "Exemplaires";
@@ -502,7 +502,7 @@
             this.btnLivreExemplaireImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLivreExemplaireImage.Location = new System.Drawing.Point(446, 211);
             this.btnLivreExemplaireImage.Name = "btnLivreExemplaireImage";
-            this.btnLivreExemplaireImage.Size = new System.Drawing.Size(96, 19);
+            this.btnLivreExemplaireImage.Size = new System.Drawing.Size(96, 22);
             this.btnLivreExemplaireImage.TabIndex = 45;
             this.btnLivreExemplaireImage.Text = "Rechercher";
             this.btnLivreExemplaireImage.UseVisualStyleBackColor = true;
@@ -535,7 +535,7 @@
             // 
             this.btnLivreExemplaireSupprimer.Enabled = false;
             this.btnLivreExemplaireSupprimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLivreExemplaireSupprimer.Location = new System.Drawing.Point(693, 318);
+            this.btnLivreExemplaireSupprimer.Location = new System.Drawing.Point(696, 266);
             this.btnLivreExemplaireSupprimer.Name = "btnLivreExemplaireSupprimer";
             this.btnLivreExemplaireSupprimer.Size = new System.Drawing.Size(151, 22);
             this.btnLivreExemplaireSupprimer.TabIndex = 40;
@@ -585,9 +585,9 @@
             // 
             this.btnLivreExemplaireModifier.Enabled = false;
             this.btnLivreExemplaireModifier.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLivreExemplaireModifier.Location = new System.Drawing.Point(693, 266);
+            this.btnLivreExemplaireModifier.Location = new System.Drawing.Point(560, 266);
             this.btnLivreExemplaireModifier.Name = "btnLivreExemplaireModifier";
-            this.btnLivreExemplaireModifier.Size = new System.Drawing.Size(151, 22);
+            this.btnLivreExemplaireModifier.Size = new System.Drawing.Size(130, 22);
             this.btnLivreExemplaireModifier.TabIndex = 40;
             this.btnLivreExemplaireModifier.Text = "Modifier l\'exemplaire";
             this.btnLivreExemplaireModifier.UseVisualStyleBackColor = true;
@@ -1047,7 +1047,7 @@
             this.tabDvd.Controls.Add(this.grpDvdRecherche);
             this.tabDvd.Location = new System.Drawing.Point(4, 22);
             this.tabDvd.Name = "tabDvd";
-            this.tabDvd.Size = new System.Drawing.Size(885, 1035);
+            this.tabDvd.Size = new System.Drawing.Size(885, 980);
             this.tabDvd.TabIndex = 3;
             this.tabDvd.Text = "DVD";
             this.tabDvd.UseVisualStyleBackColor = true;
@@ -1072,7 +1072,7 @@
             this.grpDvdExemplaire.Controls.Add(this.cbxDvdExemplaireEtatModifier);
             this.grpDvdExemplaire.Location = new System.Drawing.Point(8, 681);
             this.grpDvdExemplaire.Name = "grpDvdExemplaire";
-            this.grpDvdExemplaire.Size = new System.Drawing.Size(859, 350);
+            this.grpDvdExemplaire.Size = new System.Drawing.Size(859, 295);
             this.grpDvdExemplaire.TabIndex = 28;
             this.grpDvdExemplaire.TabStop = false;
             this.grpDvdExemplaire.Text = "Exemplaires";
@@ -1137,9 +1137,9 @@
             this.label105.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label105.Location = new System.Drawing.Point(6, 162);
             this.label105.Name = "label105";
-            this.label105.Size = new System.Drawing.Size(146, 13);
+            this.label105.Size = new System.Drawing.Size(132, 13);
             this.label105.TabIndex = 51;
-            this.label105.Text = "Numéro de l\'exemplaire :";
+            this.label105.Text = "Numéro d\'exemplaire :";
             // 
             // pcbDvdExemplaireImage
             // 
@@ -1186,9 +1186,9 @@
             // 
             this.btnDvdExemplaireSupprimer.Enabled = false;
             this.btnDvdExemplaireSupprimer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDvdExemplaireSupprimer.Location = new System.Drawing.Point(678, 322);
+            this.btnDvdExemplaireSupprimer.Location = new System.Drawing.Point(698, 266);
             this.btnDvdExemplaireSupprimer.Name = "btnDvdExemplaireSupprimer";
-            this.btnDvdExemplaireSupprimer.Size = new System.Drawing.Size(166, 22);
+            this.btnDvdExemplaireSupprimer.Size = new System.Drawing.Size(146, 22);
             this.btnDvdExemplaireSupprimer.TabIndex = 40;
             this.btnDvdExemplaireSupprimer.Text = "Supprimer l\'exemplaire";
             this.btnDvdExemplaireSupprimer.UseVisualStyleBackColor = true;
@@ -1198,9 +1198,9 @@
             // 
             this.btnDvdExemplaireModifier.Enabled = false;
             this.btnDvdExemplaireModifier.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDvdExemplaireModifier.Location = new System.Drawing.Point(678, 266);
+            this.btnDvdExemplaireModifier.Location = new System.Drawing.Point(560, 266);
             this.btnDvdExemplaireModifier.Name = "btnDvdExemplaireModifier";
-            this.btnDvdExemplaireModifier.Size = new System.Drawing.Size(166, 22);
+            this.btnDvdExemplaireModifier.Size = new System.Drawing.Size(132, 22);
             this.btnDvdExemplaireModifier.TabIndex = 40;
             this.btnDvdExemplaireModifier.Text = "Modifier l\'exemplaire";
             this.btnDvdExemplaireModifier.UseVisualStyleBackColor = true;
@@ -1681,7 +1681,7 @@
             this.tabRevues.Location = new System.Drawing.Point(4, 22);
             this.tabRevues.Name = "tabRevues";
             this.tabRevues.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRevues.Size = new System.Drawing.Size(885, 959);
+            this.tabRevues.Size = new System.Drawing.Size(885, 1035);
             this.tabRevues.TabIndex = 1;
             this.tabRevues.Text = "Revues";
             this.tabRevues.UseVisualStyleBackColor = true;
@@ -2141,7 +2141,7 @@
             this.tabReceptionRevue.Controls.Add(this.grpReceptionRevue);
             this.tabReceptionRevue.Location = new System.Drawing.Point(4, 22);
             this.tabReceptionRevue.Name = "tabReceptionRevue";
-            this.tabReceptionRevue.Size = new System.Drawing.Size(885, 959);
+            this.tabReceptionRevue.Size = new System.Drawing.Size(885, 980);
             this.tabReceptionRevue.TabIndex = 4;
             this.tabReceptionRevue.Text = "Parutions des revues";
             this.tabReceptionRevue.UseVisualStyleBackColor = true;
@@ -3697,7 +3697,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(893, 1061);
+            this.ClientSize = new System.Drawing.Size(893, 1006);
             this.Controls.Add(this.tabOngletsApplication);
             this.Name = "FrmMediatek";
             this.Text = "Gestion Médiathèque";
