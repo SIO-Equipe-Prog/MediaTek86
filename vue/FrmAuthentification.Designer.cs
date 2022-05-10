@@ -47,6 +47,7 @@ namespace Mediatek86.vue
             // 
             this.txtPwd.Location = new System.Drawing.Point(64, 67);
             this.txtPwd.Name = "txtPwd";
+            this.txtPwd.PasswordChar = '*';
             this.txtPwd.Size = new System.Drawing.Size(100, 20);
             this.txtPwd.TabIndex = 3;
             // 
