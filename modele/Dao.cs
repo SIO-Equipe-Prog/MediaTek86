@@ -9,12 +9,11 @@ namespace Mediatek86.modele
     public static class Dao
     {
 
-        private static readonly string server = "ga1049421-001.eu.clouddb.ovh.net";
-        private static readonly string port = "35165";
-        private static readonly string userid = "mediatekuser";
-        private static readonly string password = "cYMrw8qzTOdD9PeJ";
+        private static readonly string server = "localhost";
+        private static readonly string userid = "root";
+        private static readonly string password = "";
         private static readonly string database = "mediatek86";
-        private static readonly string connectionString = "server=" + server + ";port=" + port + ";user id=" + userid + ";password=" + password + ";database=" + database + ";SslMode=none";
+        private static readonly string connectionString = "server=" + server + ";user id=" + userid + ";password=" + password + ";database=" + database + ";SslMode=none";
 
         /// <summary>
         /// Retourne tous les genres à partir de la BDD
