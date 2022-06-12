@@ -62,6 +62,7 @@ namespace Mediatek86.vue
                                     controle.ShowAbonnementsLimite(), "Alerte abonnements");
                 }
             }
+            
         }
 
         public void AffichageApplication(string role)
@@ -222,22 +223,22 @@ namespace Mediatek86.vue
         {
             List<Commande> lesCommandes = controle.GetAllCommandes();
             lesCommandes = lesCommandes.OrderBy(o => o.Id).ToList();
-            string dernierId;
+            string nouvelId;
             if (lesCommandes.Count > 0)
             {
-                dernierId = lesCommandes[lesCommandes.Count - 1].Id;
+                string dernierId = lesCommandes[lesCommandes.Count - 1].Id;
+                int idmath = int.Parse(dernierId) + 1;
+                nouvelId = idmath.ToString();
+                while (nouvelId.Length < 5)
+                {
+                    nouvelId = "0" + nouvelId;
+                }
             }
             else
             {
-                dernierId = "00001";
+                nouvelId = "00001";
             }
-            int idmath = int.Parse(dernierId) + 1;
-            string nouvelId = idmath.ToString();
-            while (nouvelId.Length < 5)
-            {
-                nouvelId = "0" + nouvelId;
-            }
-            return nouvelId;
+                return nouvelId;
         }
 
         /// <summary>
@@ -971,22 +972,21 @@ namespace Mediatek86.vue
         private string AutoIncrementRevueId()
         {
             List<Revue> revueTries = lesRevues.OrderBy(o => o.Id).ToList();
-            string dernierId;
+            string nouvelId;
             if (revueTries.Count > 0)
             {
-                dernierId = revueTries[revueTries.Count - 1].Id;
+                string dernierId = revueTries[revueTries.Count - 1].Id;
+                int idmath = int.Parse(dernierId) + 1;
+                nouvelId = idmath.ToString();
+                while (nouvelId.Length < 5)
+                {
+                    nouvelId = "0" + nouvelId;
+                }
             }
             else
             {
-                dernierId = "10001";
+                nouvelId = "10001";
             }
-            int idmath = int.Parse(dernierId) + 1;
-            string nouvelId = idmath.ToString();
-            while (nouvelId.Length < 4)
-            {
-                nouvelId = "0" + nouvelId;
-            }
-
             return nouvelId;
         }
 
@@ -1133,7 +1133,7 @@ namespace Mediatek86.vue
             {
                 pcbLivresImage.Image = Image.FromFile(image);
             }
-            catch
+            catch 
             {
                 pcbLivresImage.Image = null;
             }
@@ -1239,7 +1239,7 @@ namespace Mediatek86.vue
                         rdbLivreVisionnage.Checked = true;
                     }
                 }
-                catch
+                catch 
                 {
                     VideLivresZones();
                     VideLivreExemplairesListe();
@@ -1404,6 +1404,8 @@ namespace Mediatek86.vue
             catch
             {
                 MessageBox.Show("Certaines des informations indiquées sont invalides.");
+
+
             }
             if (nouveauLivre != null)
             {
@@ -1648,20 +1650,20 @@ namespace Mediatek86.vue
         private string AutoIncrementLivreId()
         {
             List<Livre> LivreTries = lesLivres.OrderBy(o => o.Id).ToList();
-            string dernierId;
+            string nouvelId;
             if (LivreTries.Count > 0)
             {
-                dernierId = LivreTries[LivreTries.Count - 1].Id;
+                string dernierId = LivreTries[LivreTries.Count - 1].Id;
+                int idmath = int.Parse(dernierId) + 1;
+                nouvelId = idmath.ToString();
+                while (nouvelId.Length < 5)
+                {
+                    nouvelId = "0" + nouvelId;
+                }
             }
             else
             {
-                dernierId = "00001";
-            }
-            int idmath = int.Parse(dernierId) + 1;
-            string nouvelId = idmath.ToString();
-            while (nouvelId.Length < 5)
-            {
-                nouvelId = "0" + nouvelId;
+                nouvelId = "00001";
             }
             return nouvelId;
         }
@@ -1876,6 +1878,7 @@ namespace Mediatek86.vue
             catch
             {
                 pcbLivreExemplaireImage.Image = null;
+  
             }
         }
         #endregion
@@ -2524,20 +2527,20 @@ namespace Mediatek86.vue
         private string AutoIncrementDvdId()
         {
             List<Dvd> dvdTries = lesDvd.OrderBy(o => o.Id).ToList();
-            string dernierId;
+            string nouvelId;
             if (dvdTries.Count > 0)
             {
-                dernierId = dvdTries[dvdTries.Count - 1].Id;
+                string dernierId = dvdTries[dvdTries.Count - 1].Id;
+                int idmath = int.Parse(dernierId) + 1;
+                nouvelId = idmath.ToString();
+                while (nouvelId.Length < 5)
+                {
+                    nouvelId = "0" + nouvelId;
+                }
             }
             else
             {
-                dernierId = "20001";
-            }
-            int idmath = int.Parse(dernierId) + 1;
-            string nouvelId = idmath.ToString();
-            while (nouvelId.Length < 5)
-            {
-                nouvelId = "0" + nouvelId;
+                nouvelId = "00001";
             }
             return nouvelId;
         }
@@ -2851,7 +2854,7 @@ namespace Mediatek86.vue
             {
                 pcbReceptionRevueImage.Image = Image.FromFile(image);
             }
-            catch
+            catch 
             {
                 pcbReceptionRevueImage.Image = null;
             }
@@ -3014,7 +3017,7 @@ namespace Mediatek86.vue
                 {
                     pcbReceptionExemplaireRevueImage.Image = Image.FromFile(image);
                 }
-                catch
+                catch 
                 {
                     pcbReceptionExemplaireRevueImage.Image = null;
                 }
@@ -3204,7 +3207,7 @@ namespace Mediatek86.vue
             {
                 pcbCommandeDvdImage.Image = Image.FromFile(image);
             }
-            catch
+            catch 
             {
                 pcbCommandeDvdImage.Image = null;
             }
@@ -3298,7 +3301,7 @@ namespace Mediatek86.vue
                         btnCommandeDvdSupprimer.Enabled = false;
                     }
                 }
-                catch
+                catch 
                 {
                     VideCommandeDvdListe();
                 }
@@ -3386,7 +3389,7 @@ namespace Mediatek86.vue
             {
                 pcbLivresImage.Image = Image.FromFile(image);
             }
-            catch
+            catch 
             {
                 pcbLivresImage.Image = null;
             }
@@ -3562,7 +3565,7 @@ namespace Mediatek86.vue
                         btnCommandeLivreSupprimer.Enabled = false;
                     }
                 }
-                catch
+                catch 
                 {
                     VideCommandesLivresListe();
                 }
@@ -3596,7 +3599,7 @@ namespace Mediatek86.vue
         private void btnCommandesLivreSupprimer_Click(object sender, EventArgs e)
         {
             CommandeDocument commande = (CommandeDocument)bdgCommandesLivresListe.List[bdgCommandesLivresListe.Position];
-            DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer la commande de DVD n° " + commande.Id + " ?" + Environment.NewLine +
+            DialogResult reponse = MessageBox.Show("Voulez-vous vraiment supprimer la commande de livre n° " + commande.Id + " ?" + Environment.NewLine +
                                                        "Date de la commande : " + commande.DateCommande.ToShortDateString() + Environment.NewLine +
                                                        "Nombre d'exemplaires commandés : " + commande.NbExemplaire, "Confirmation", MessageBoxButtons.YesNo);
             if (reponse == DialogResult.Yes && SupprimerCommandeDocument(commande))
@@ -3648,7 +3651,7 @@ namespace Mediatek86.vue
             {
                 pcbRevuesImage.Image = Image.FromFile(image);
             }
-            catch
+            catch 
             {
                 pcbRevuesImage.Image = null;
             }
@@ -3837,7 +3840,7 @@ namespace Mediatek86.vue
                         btnCommandeRevueSupprimer.Enabled = false;
                     }
                 }
-                catch
+                catch 
                 {
                     VideAbonnementsListe();
                 }
